@@ -62,6 +62,17 @@ enum NotificationLevel {
   ALL
 }
 
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  CANCELED
+}
+
 // =====================================================
 // FAMILY
 // =====================================================
@@ -137,6 +148,8 @@ model FamilyMember {
 
   accounts Account[] @relation("FamilyMemberAccounts")
 
+  transactions Transaction[]
+
   createdAt DateTime @default(now())
 
   updatedAt DateTime @updatedAt
@@ -182,6 +195,8 @@ model Account {
 
   familyMember FamilyMember @relation("FamilyMemberAccounts", fields: [familyMemberId], references: [id], onDelete: Cascade)
 
+  transactions Transaction[]
+
   createdAt DateTime @default(now())
 
   updatedAt DateTime @updatedAt
@@ -190,6 +205,46 @@ model Account {
 
   @@index([familyMemberId])
   @@map("accounts")
+}
+
+//==================================
+// TransactionStatus
+//==================================
+model Transaction {
+  id String @id @default(uuid())
+
+  familyMemberId String
+
+  accountId String
+
+  description String
+
+  notes String?
+
+  amount Decimal @db.Decimal(12, 2)
+
+  type TransactionType
+
+  status TransactionStatus @default(PENDING)
+
+  transactionDate DateTime
+
+  effectiveDate DateTime?
+
+  familyMember FamilyMember @relation(fields: [familyMemberId], references: [id], onDelete: Cascade)
+
+  account Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  deletedAt DateTime?
+
+  @@index([transactionDate])
+  @@index([accountId])
+  @@index([familyMemberId])
+  @@map("transactions")
 }
 
 //==================================
