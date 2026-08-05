@@ -301,6 +301,284 @@ Toda nova funcionalidade deverá respeitar o modelo de domínio previamente defi
 
 ---
 
+# Desenho de Dominio
+                     User
+                       │
+      ┌────────────────┼────────────────┐
+      │                │                │
+      ▼                ▼                ▼
+   Account         Category         Settings
+      │                │
+      │                │
+      └──────────┐     │
+                 ▼     ▼
+             Transaction
+                 │
+      ┌──────────┴──────────┐
+      ▼                     ▼
+RecurringTransaction      Attachment
+
+                 │
+                 ▼
+          Financial Engine
+      ┌─────────┼────────────┬──────────────┬─────────────┐
+      ▼         ▼            ▼              ▼             ▼
+ Current    Projected    Crunch Day    Daily Saving   Timeline
+
+                 │
+                 ▼
+              Calendar
+
+                 │
+                 ▼
+               Reports
+
+                 │
+                 ▼
+                 Goal
+
+---
+# Arquitetura Geral do projeto
+
+
+                              Planejamento Financeiro
+                                       │
+    ┌──────────────────────────────────┼──────────────────────────────────┐
+    │                                  │                                  │
+Authentication                     Financial Core                     User Experience
+    │                                  │                                  │
+    ▼                                  ▼                                  ▼
+User                           Financial Engine                    Dashboard
+Session                        Ledger                              Calendar
+Auth                           Planning                            Reports
+                               Simulation                          PWA
+                               Goals                              Notifications
+
+---
+# ERD (Modelo Conceitual)
+
+User
+──────────────────────────────
+id (UUID)
+name
+email
+passwordHash
+image
+createdAt
+updatedAt
+deletedAt
+
+
+Relacionamentos
+1 User
+
+↓
+
+N Accounts
+
+N Categories
+
+N Transactions
+
+N Goals
+
+1 Settings
+
+
+
+Account
+──────────────────────────────
+id
+userId
+name
+type
+initialBalance
+color
+icon
+isDefault
+isActive
+createdAt
+updatedAt
+deletedAt
+
+
+Category
+──────────────────────────────
+id
+userId
+name
+icon
+color
+type
+isDefault
+isActive
+createdAt
+updatedAt
+deletedAt
+
+
+Transaction
+──────────────────────────────
+id
+userId
+accountId
+categoryId
+
+description
+
+amount
+
+transactionType
+
+status
+
+transactionDate
+
+competencyDate
+
+isRecurring
+
+notes
+
+createdAt
+
+updatedAt
+
+deletedAt
+
+
+
+
+Relacionamentos
+
+User
+
+↓
+
+Transaction
+
+↓
+
+Category
+
+↓
+
+Account
+
+Goal
+──────────────────────────────
+id
+
+userId
+
+title
+
+description
+
+targetAmount
+
+currentAmount
+
+targetDate
+
+status
+
+createdAt
+
+updatedAt
+
+
+Settings
+──────────────────────────────
+id
+
+userId
+
+theme
+
+language
+
+currency
+
+firstDayOfMonth
+
+createdAt
+
+updatedAt
+
+
+RecurringTransaction
+──────────────────────────────
+id
+
+transactionId
+
+frequency
+
+interval
+
+startDate
+
+endDate
+
+nextExecution
+
+
+Attachment
+──────────────────────────────
+id
+
+transactionId
+
+fileName
+
+mimeType
+
+size
+
+url
+
+createdAt
+
+
+
+# Model Schema
+Enums
+
+↓
+
+User
+
+↓
+
+Settings
+
+↓
+
+Account
+
+↓
+
+Category
+
+↓
+
+Goal
+
+↓
+
+Transaction
+
+↓
+
+RecurringTransaction
+
+↓
+
+Attachment
+
+---
+
 # 📄 Licença
 
 Projeto em desenvolvimento.
