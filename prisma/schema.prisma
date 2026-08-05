@@ -1,7 +1,11 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// =====================================================
+// Planejamento Financeiro App
+// Domain Model - Initial Version
+// =====================================================
 
-// Get a free hosted Postgres database in seconds: `npx create-db`
+// =====================================================
+// Prisma Configuration
+// =====================================================
 
 generator client {
   provider = "prisma-client"
@@ -10,4 +14,150 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+}
+
+// =====================================================
+// ENUMS
+// =====================================================
+
+enum FamilyRole {
+  OWNER
+  MEMBER
+  VIEWER
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum AccountType {
+  CHECKING
+  SAVINGS
+  CASH
+  INVESTMENT
+  OTHER
+}
+
+// =====================================================
+// FAMILY
+// =====================================================
+
+model Family {
+  id String @id @default(uuid())
+
+  name String
+
+  ownerId String
+
+  owner User @relation("FamilyOwner", fields: [ownerId], references: [id])
+
+  members FamilyMember[] @relation("FamilyMembers")
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  deletedAt DateTime?
+
+  @@map("families")
+}
+
+// =====================================================
+// USER
+// =====================================================
+
+model User {
+  id String @id @default(uuid())
+
+  name String
+
+  email String @unique
+
+  passwordHash String?
+
+  image String?
+
+  status UserStatus @default(ACTIVE)
+
+  familyMembers FamilyMember[] @relation("UserFamilyMembers")
+
+  ownedFamilies Family[] @relation("FamilyOwner")
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  deletedAt DateTime?
+
+  @@map("users")
+}
+
+// =====================================================
+// FAMILY MEMBER
+// =====================================================
+
+model FamilyMember {
+  id String @id @default(uuid())
+
+  familyId String
+
+  userId String
+
+  role FamilyRole @default(MEMBER)
+
+  family Family @relation("FamilyMembers", fields: [familyId], references: [id], onDelete: Cascade)
+
+  user User @relation("UserFamilyMembers", fields: [userId], references: [id], onDelete: Cascade)
+
+  accounts Account[] @relation("FamilyMemberAccounts")
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  deletedAt DateTime?
+
+  @@unique([familyId, userId])
+  @@map("family_members")
+}
+
+// =====================================================
+// ACCOUNT
+// =====================================================
+
+model Account {
+  id String @id @default(uuid())
+
+  familyMemberId String
+
+  name String
+
+  description String?
+
+  type AccountType @default(CHECKING)
+
+  initialBalanceDate DateTime
+
+  initialBalance Decimal @db.Decimal(12, 2)
+
+  currency String @default("BRL")
+
+  icon String?
+
+  color String?
+
+  isDefault Boolean @default(false)
+
+  isActive Boolean @default(true)
+
+  familyMember FamilyMember @relation("FamilyMemberAccounts", fields: [familyMemberId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+
+  deletedAt DateTime?
+
+  @@map("accounts")
 }

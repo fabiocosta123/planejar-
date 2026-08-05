@@ -356,6 +356,31 @@ Auth                           Planning                            Reports
 
 ---
 # ERD (Modelo Conceitual)
+                         User
+                          |
+                          |
+                    FamilyMember
+                          |
+              ┌───────────┼───────────┐
+              |           |           |
+              ▼           ▼           ▼
+           Account     Transaction   (futuro)
+                          |
+                          |
+                        Category
+
+
+                         Family
+                           |
+              ┌────────────┼────────────┐
+              |                         |
+              ▼                         ▼
+          Members                  Categories
+
+              |
+              ▼
+
+            Goals
 
 User
 ──────────────────────────────
