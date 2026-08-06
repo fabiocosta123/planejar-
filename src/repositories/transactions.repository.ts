@@ -1,5 +1,6 @@
 import { prisma } from "../lib/prisma";
 import { FinancialPeriod } from "../domain/financial/models/financial-period";
+import { TransactionMapper } from "./mappers/transaction.mapper";
 
 export class TransactionsRepository {
 
@@ -7,7 +8,7 @@ export class TransactionsRepository {
     familyMemberId: string,
     period: FinancialPeriod
   ) {
-    return prisma.transaction.findMany({
+    const transactions = await prisma.transaction.findMany({
       where: {
         familyMemberId,
         transactionDate: {
@@ -19,6 +20,7 @@ export class TransactionsRepository {
         transactionDate: "asc",
       },
     });
+    return transactions.map(TransactionMapper.toDomain);
   }
 
 

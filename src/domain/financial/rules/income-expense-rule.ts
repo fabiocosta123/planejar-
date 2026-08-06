@@ -1,32 +1,41 @@
 import { TransactionInput } from "../models/transaction-input";
 
+
 export class IncomeExpenseRule {
 
-  calculateIncome(
+  calculate(
     transactions: TransactionInput[]
-  ): number {
+  ) {
 
-    return transactions
-      .filter(transaction => transaction.type === "INCOME")
-      .reduce(
-        (total, transaction) => total + transaction.amount,
-        0
-      );
-  }
+    const income =
+      transactions
+        .filter(
+          transaction =>
+            transaction.type === "INCOME"
+        )
+        .reduce(
+          (total, transaction) =>
+            total + transaction.amount,
+          0
+        );
 
 
-  calculateExpenses(
-    transactions: TransactionInput[]
-  ): number {
+    const expenses =
+      transactions
+        .filter(
+          transaction =>
+            transaction.type === "EXPENSE"
+        )
+        .reduce(
+          (total, transaction) =>
+            total + transaction.amount,
+          0
+        );
 
-    return transactions
-      .filter(transaction => transaction.type === "EXPENSE")
-      .reduce(
-        (total, transaction) => total + transaction.amount,
-        0
-      );
+
+    return {
+      income,
+      expenses
+    };
   }
 }
-
-
-export const incomeExpenseRule = new IncomeExpenseRule();
