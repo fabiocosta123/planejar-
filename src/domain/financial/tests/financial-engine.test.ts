@@ -54,6 +54,102 @@ describe("FinancialEngine", () => {
 
   });
 
+  it("não deve considerar como futura uma transação na data de referência", () => {
+
+    const transactions: TransactionInput[] = [
+
+      {
+        type: "INCOME",
+        amount: 500,
+        transactionDate: new Date("2026-08-07")
+      },
+
+      {
+        type: "EXPENSE",
+        amount: 300,
+        transactionDate: new Date("2026-08-10")
+      }
+
+    ];
+
+
+    const result =
+      financialEngine.calculateFutureBalance(
+        1000,
+        transactions,
+        new Date("2026-08-07")
+      );
+
+
+    expect(result.futureIncome)
+      .toBe(0);
+
+
+    expect(result.futureExpenses)
+      .toBe(300);
+
+
+    expect(result.futureBalance)
+      .toBe(700);
+
+  });
+
+  it("deve calcular o saldo futuro considerando apenas transações futuras", () => {
+
+    const transactions: TransactionInput[] = [
+
+      {
+        type: "INCOME",
+        amount: 500,
+        transactionDate: new Date("2026-08-05")
+      },
+
+      {
+        type: "INCOME",
+        amount: 1000,
+        transactionDate: new Date("2026-08-10")
+      },
+
+      {
+        type: "EXPENSE",
+        amount: 300,
+        transactionDate: new Date("2026-08-15")
+      },
+
+      {
+        type: "EXPENSE",
+        amount: 200,
+        transactionDate: new Date("2026-08-20")
+      }
+
+    ];
+
+
+    const result =
+      financialEngine.calculateFutureBalance(
+        2000,
+        transactions,
+        new Date("2026-08-07")
+      );
+
+
+    expect(result.currentBalance)
+      .toBe(2000);
+
+
+    expect(result.futureIncome)
+      .toBe(1000);
+
+
+    expect(result.futureExpenses)
+      .toBe(500);
+
+
+    expect(result.futureBalance)
+      .toBe(2500);
+
+  });
+
 
 
   it("deve identificar quando ultrapassa limite de gastos", () => {
@@ -80,6 +176,9 @@ describe("FinancialEngine", () => {
         transactions,
         3000
       );
+
+
+
 
 
     expect(result.limitExceeded)
