@@ -8,8 +8,15 @@ export class TransactionMapper {
   ): TransactionInput {
 
     return {
+
       type: transaction.type,
-      amount: Number(transaction.amount)
+
+      amount:
+        Number(transaction.amount),
+
+      transactionDate:
+        transaction.transactionDate
+
     };
 
   }

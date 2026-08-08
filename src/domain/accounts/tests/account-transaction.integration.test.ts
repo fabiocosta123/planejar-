@@ -3,11 +3,10 @@ import { describe, expect, it } from "vitest";
 import { Account } from "../models/account";
 import { AccountBalanceRule } from "../rules/account-balance.rule";
 
-
 describe("Account + Transaction integration", () => {
 
-
   it("deve calcular o saldo após uma sequência de transações", () => {
+
 
     const account =
       new Account(
@@ -17,28 +16,26 @@ describe("Account + Transaction integration", () => {
         1000
       );
 
-
     const rule =
       new AccountBalanceRule();
 
-
     const income = {
       amount: 500,
-      type: "INCOME" as const
+      type: "INCOME" as const,
+      transactionDate: new Date("2026-08-20")
     };
-
 
     const expense = {
       amount: 200,
-      type: "EXPENSE" as const
+      type: "EXPENSE" as const,
+      transactionDate: new Date("2026-08-15")
     };
-
 
     const futureExpense = {
       amount: 1400,
-      type: "EXPENSE" as const
+      type: "EXPENSE" as const,
+      transactionDate: new Date("2026-08-25")
     };
-
 
     const balanceAfterIncome =
       rule.calculateAfterTransactionInput(
@@ -46,13 +43,11 @@ describe("Account + Transaction integration", () => {
         income
       );
 
-
     const balanceAfterExpense =
       rule.calculateAfterTransactionInput(
         balanceAfterIncome,
         expense
       );
-
 
     const finalBalance =
       rule.calculateAfterTransactionInput(
@@ -60,19 +55,16 @@ describe("Account + Transaction integration", () => {
         futureExpense
       );
 
-
     expect(balanceAfterIncome)
       .toBe(1500);
-
 
     expect(balanceAfterExpense)
       .toBe(1300);
 
-
     expect(finalBalance)
       .toBe(-100);
 
-  });
 
+  });
 
 });

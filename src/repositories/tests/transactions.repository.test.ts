@@ -22,7 +22,8 @@ describe("TransactionsRepository", () => {
                 id: "1",
                 description: "Salário",
                 amount: 5000,
-                type: "INCOME"
+                type: "INCOME",
+                transactionDate: new Date("2026-08-15"),
             }
         ];
 

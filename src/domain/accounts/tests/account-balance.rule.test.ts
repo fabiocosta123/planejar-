@@ -111,14 +111,16 @@ describe("AccountBalanceRule", () => {
 
     const transaction = {
       amount: 300,
-      type: "INCOME" as const
+      type: "INCOME" as const,
+      transactionDate: new Date("2026-08-20")
     };
 
 
     const result =
       rule.calculateAfterTransactionInput(
         1000,
-        transaction
+        transaction,
+        
       );
 
 
@@ -136,14 +138,16 @@ describe("AccountBalanceRule", () => {
 
     const transaction = {
       amount: 300,
-      type: "EXPENSE" as const
+      type: "EXPENSE" as const,
+      transactionDate: new Date("2026-08-20")
     };
 
 
     const result =
       rule.calculateAfterTransactionInput(
         1000,
-        transaction
+        transaction,
+        
       );
 
 

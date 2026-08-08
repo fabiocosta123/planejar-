@@ -29,16 +29,19 @@ describe("CalculateFinancialSummaryAction - Integration", () => {
       {
         type: "INCOME",
         amount: 5000,
+        transactionDate: new Date("2026-08-15")
       },
 
       {
         type: "EXPENSE",
         amount: 2000,
+        transactionDate: new Date("2026-08-20")
       },
 
       {
         type: "EXPENSE",
         amount: 500,
+        transactionDate: new Date("2026-08-25")
       },
 
     ]);
@@ -103,11 +106,13 @@ describe("CalculateFinancialSummaryAction - Integration", () => {
       {
         type: "INCOME",
         amount: 2000,
+        transactionDate: new Date("2026-08-15")
       },
 
       {
         type: "EXPENSE",
         amount: 3000,
+        transactionDate: new Date("2026-08-20")
       },
 
     ]);
@@ -148,11 +153,13 @@ describe("CalculateFinancialSummaryAction - Integration", () => {
       {
         type: "INCOME",
         amount: 5000,
+        transactionDate: new Date("2026-08-15")
       },
 
       {
         type: "EXPENSE",
         amount: 3500,
+        transactionDate: new Date("2026-08-20")
       },
 
     ]);

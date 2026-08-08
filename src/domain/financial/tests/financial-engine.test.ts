@@ -12,17 +12,20 @@ describe("FinancialEngine", () => {
 
       {
         type: "INCOME",
-        amount: 5000
+        amount: 5000,
+        transactionDate: new Date("2026-08-10")
       },
 
       {
         type: "EXPENSE",
-        amount: 3000
+        amount: 3000,
+        transactionDate: new Date("2026-08-15")
       },
 
       {
         type: "EXPENSE",
-        amount: 500
+        amount: 500,
+        transactionDate: new Date("2026-08-20")
       }
 
     ];
@@ -59,12 +62,14 @@ describe("FinancialEngine", () => {
 
       {
         type: "INCOME",
-        amount: 4000
+        amount: 4000,
+        transactionDate: new Date("2026-08-10")
       },
 
       {
         type: "EXPENSE",
-        amount: 3500
+        amount: 3500,
+        transactionDate: new Date("2026-08-15")
       }
 
     ];
