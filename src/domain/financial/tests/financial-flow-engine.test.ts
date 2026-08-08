@@ -21,14 +21,16 @@ describe("FinancialFlowEngine", () => {
         type: "EXPENSE",
         amount: 50,
         transactionDate:
-          new Date("2026-08-06")
+          new Date("2026-08-06"),
+          status: "COMPLETED"
       },
 
       {
         type: "EXPENSE",
         amount: 60,
         transactionDate:
-          new Date("2026-08-08")
+          new Date("2026-08-08"),
+          status: "COMPLETED"
       }
 
     ];
@@ -88,21 +90,24 @@ describe("FinancialFlowEngine", () => {
         type: "INCOME",
         amount: 1000,
         transactionDate:
-          new Date("2026-08-10T08:00:00")
+          new Date("2026-08-10T08:00:00"),
+        status: "COMPLETED"
       },
 
       {
         type: "INCOME",
         amount: 500,
         transactionDate:
-          new Date("2026-08-10T12:00:00")
+          new Date("2026-08-10T12:00:00"),
+        status: "COMPLETED"
       },
 
       {
         type: "EXPENSE",
         amount: 300,
         transactionDate:
-          new Date("2026-08-10T18:00:00")
+          new Date("2026-08-10T18:00:00"),
+        status: "COMPLETED"
       }
 
     ];
@@ -142,14 +147,16 @@ describe("FinancialFlowEngine", () => {
         type: "EXPENSE",
         amount: 100,
         transactionDate:
-          new Date("2026-08-20")
+          new Date("2026-08-20"),
+        status: "COMPLETED"
       },
 
       {
         type: "INCOME",
         amount: 500,
         transactionDate:
-          new Date("2026-08-10")
+          new Date("2026-08-10"),
+        status: "COMPLETED"
       }
 
     ];

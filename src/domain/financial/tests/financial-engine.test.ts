@@ -13,19 +13,22 @@ describe("FinancialEngine", () => {
       {
         type: "INCOME",
         amount: 5000,
-        transactionDate: new Date("2026-08-10")
+        transactionDate: new Date("2026-08-10"),
+        status: "COMPLETED"
       },
 
       {
         type: "EXPENSE",
         amount: 3000,
-        transactionDate: new Date("2026-08-15")
+        transactionDate: new Date("2026-08-15"),
+        status: "COMPLETED"
       },
 
       {
         type: "EXPENSE",
         amount: 500,
-        transactionDate: new Date("2026-08-20")
+        transactionDate: new Date("2026-08-20"),
+        status: "PENDING"
       }
 
     ];
@@ -61,13 +64,15 @@ describe("FinancialEngine", () => {
       {
         type: "INCOME",
         amount: 500,
-        transactionDate: new Date("2026-08-07")
+        transactionDate: new Date("2026-08-07"),
+        status: "COMPLETED"
       },
 
       {
         type: "EXPENSE",
         amount: 300,
-        transactionDate: new Date("2026-08-10")
+        transactionDate: new Date("2026-08-10"),
+        status: "PENDING"
       }
 
     ];
@@ -101,25 +106,29 @@ describe("FinancialEngine", () => {
       {
         type: "INCOME",
         amount: 500,
-        transactionDate: new Date("2026-08-05")
+        transactionDate: new Date("2026-08-05"),
+        status: "COMPLETED"
       },
 
       {
         type: "INCOME",
         amount: 1000,
-        transactionDate: new Date("2026-08-10")
+        transactionDate: new Date("2026-08-10"),
+        status: "PENDING"
       },
 
       {
         type: "EXPENSE",
         amount: 300,
-        transactionDate: new Date("2026-08-15")
+        transactionDate: new Date("2026-08-15"),
+        status: "PENDING"
       },
 
       {
         type: "EXPENSE",
         amount: 200,
-        transactionDate: new Date("2026-08-20")
+        transactionDate: new Date("2026-08-20"),
+        status: "PENDING"
       }
 
     ];
@@ -159,13 +168,15 @@ describe("FinancialEngine", () => {
       {
         type: "INCOME",
         amount: 4000,
-        transactionDate: new Date("2026-08-10")
+        transactionDate: new Date("2026-08-10"),
+        status: "COMPLETED"
       },
 
       {
         type: "EXPENSE",
         amount: 3500,
-        transactionDate: new Date("2026-08-15")
+        transactionDate: new Date("2026-08-15"),
+        status: "PENDING"
       }
 
     ];

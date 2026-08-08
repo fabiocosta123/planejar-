@@ -19,7 +19,8 @@ describe("FutureTransactionRule", () => {
       amount: 500,
 
       transactionDate:
-        new Date("2026-08-10")
+        new Date("2026-08-10"),
+        status: "COMPLETED" as const
 
     };
 
@@ -46,7 +47,8 @@ describe("FutureTransactionRule", () => {
       amount: 500,
 
       transactionDate:
-        new Date("2026-08-07")
+        new Date("2026-08-07"),
+      status: "COMPLETED" as const
 
     };
 
@@ -73,7 +75,8 @@ describe("FutureTransactionRule", () => {
       amount: 1000,
 
       transactionDate:
-        new Date("2026-08-05")
+        new Date("2026-08-05"),
+      status: "COMPLETED" as const
 
     };
 
@@ -99,28 +102,32 @@ describe("FutureTransactionRule", () => {
         type: "INCOME",
         amount: 1000,
         transactionDate:
-          new Date("2026-08-05")
+          new Date("2026-08-05"),
+        status: "COMPLETED" as const
       },
 
       {
         type: "EXPENSE",
         amount: 300,
         transactionDate:
-          new Date("2026-08-07")
+          new Date("2026-08-07"),
+        status: "COMPLETED" as const
       },
 
       {
         type: "EXPENSE",
         amount: 500,
         transactionDate:
-          new Date("2026-08-10")
+          new Date("2026-08-10"),
+        status: "COMPLETED" as const
       },
 
       {
         type: "EXPENSE",
         amount: 200,
         transactionDate:
-          new Date("2026-08-20")
+          new Date("2026-08-20"),
+        status: "COMPLETED" as const
       }
 
     ];

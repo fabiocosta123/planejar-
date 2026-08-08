@@ -1,3 +1,4 @@
+
 import { TransactionInput } from "../../domain/financial/models/transaction-input";
 
 
@@ -15,10 +16,14 @@ export class TransactionMapper {
         Number(transaction.amount),
 
       transactionDate:
-        transaction.transactionDate
+        transaction.transactionDate,
+
+      status:
+        transaction.status
 
     };
 
   }
 
 }
+

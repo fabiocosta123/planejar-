@@ -3,4 +3,6 @@ export interface TransactionInput {
   type: "INCOME" | "EXPENSE";
 
   transactionDate: Date;
+
+  status: "PENDING" | "COMPLETED" | "CANCELED";
 }

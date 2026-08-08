@@ -22,31 +22,37 @@ describe("Account + Transaction integration", () => {
     const income = {
       amount: 500,
       type: "INCOME" as const,
-      transactionDate: new Date("2026-08-20")
+      transactionDate: new Date("2026-08-20"),
+      status: "COMPLETED" as const
     };
 
     const expense = {
       amount: 200,
       type: "EXPENSE" as const,
-      transactionDate: new Date("2026-08-15")
+      transactionDate: new Date("2026-08-15"),
+      status: "COMPLETED" as const
     };
 
     const futureExpense = {
       amount: 1400,
       type: "EXPENSE" as const,
-      transactionDate: new Date("2026-08-25")
+      transactionDate: new Date("2026-08-25"),
+      status: "COMPLETED" as const
     };
 
     const balanceAfterIncome =
       rule.calculateAfterTransactionInput(
         account.currentBalance,
-        income
+        income,
+        
+        
       );
 
     const balanceAfterExpense =
       rule.calculateAfterTransactionInput(
         balanceAfterIncome,
-        expense
+        expense,
+        
       );
 
     const finalBalance =
