@@ -27,7 +27,7 @@ describe("AccountBalanceRule", () => {
         200
       )
     )
-    .toBe(true);
+      .toBe(true);
 
   });
 
@@ -54,7 +54,7 @@ describe("AccountBalanceRule", () => {
         200
       )
     )
-    .toBe(false);
+      .toBe(false);
 
   });
 
@@ -80,7 +80,7 @@ describe("AccountBalanceRule", () => {
         account
       )
     )
-    .toBe(true);
+      .toBe(true);
 
   });
 
@@ -99,7 +99,56 @@ describe("AccountBalanceRule", () => {
         "CREDIT"
       )
     )
-    .toBe(150);
+      .toBe(150);
+
+  });
+
+  it("deve aplicar receita como crédito", () => {
+
+    const rule =
+      new AccountBalanceRule();
+
+
+    const transaction = {
+      amount: 300,
+      type: "INCOME" as const
+    };
+
+
+    const result =
+      rule.calculateAfterTransactionInput(
+        1000,
+        transaction
+      );
+
+
+    expect(result)
+      .toBe(1300);
+
+  });
+
+
+  it("deve aplicar despesa como débito", () => {
+
+    const rule =
+      new AccountBalanceRule();
+
+
+    const transaction = {
+      amount: 300,
+      type: "EXPENSE" as const
+    };
+
+
+    const result =
+      rule.calculateAfterTransactionInput(
+        1000,
+        transaction
+      );
+
+
+    expect(result)
+      .toBe(700);
 
   });
 

@@ -1,4 +1,5 @@
 import { Account } from "../models/account";
+import { TransactionInput } from "../../financial/models/transaction-input";
 
 
 export class AccountBalanceRule {
@@ -22,13 +23,33 @@ export class AccountBalanceRule {
     type: "CREDIT" | "DEBIT"
   ): number {
 
-
     if (type === "CREDIT") {
+
       return currentBalance + amount;
+
     }
 
-
     return currentBalance - amount;
+
+  }
+
+
+  calculateAfterTransactionInput(
+    currentBalance: number,
+    transaction: TransactionInput
+  ): number {
+
+    const type =
+      transaction.type === "INCOME"
+        ? "CREDIT"
+        : "DEBIT";
+
+
+    return this.calculateAfterTransaction(
+      currentBalance,
+      transaction.amount,
+      type
+    );
 
   }
 
