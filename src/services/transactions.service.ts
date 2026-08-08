@@ -1,14 +1,17 @@
 import { transactionsRepository } from "../repositories/transactions.repository";
 import { FinancialPeriod } from "../domain/financial/models/financial-period";
-import { balanceEngine } from "../domain/financial/engine/balance-engine";
+import { financialEngine } from "../domain/financial/engine/financial-engine";
 
 
 export class TransactionsService {
 
-  async calculateBalance(
+
+  async calculateSummary(
     familyMemberId: string,
-    period: FinancialPeriod
+    period: FinancialPeriod,
+    spendingLimit?: number
   ) {
+
 
     const transactions =
       await transactionsRepository.findByPeriod(
@@ -17,29 +20,13 @@ export class TransactionsService {
       );
 
 
-    const income = transactions
-      .filter(transaction => transaction.type === "INCOME")
-      .reduce(
-        (total, transaction) =>
-          total + Number(transaction.amount),
-        0
-      );
-
-
-    const expenses = transactions
-      .filter(transaction => transaction.type === "EXPENSE")
-      .reduce(
-        (total, transaction) =>
-          total + Number(transaction.amount),
-        0
-      );
-
-
-    return balanceEngine.calculate(
-      income,
-      expenses
+    return financialEngine.calculateSummary(
+      transactions,
+      spendingLimit      
     );
+
   }
+
 }
 
 
