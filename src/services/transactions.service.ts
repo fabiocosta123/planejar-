@@ -29,7 +29,8 @@ export class TransactionsService {
     familyMemberId: string,
     period: FinancialPeriod,
     currentBalance: number,
-    spendingLimit?: number
+    spendingLimit?: number,
+    referenceDate: Date = new Date()
   ) {
 
     const transactions =
@@ -48,7 +49,7 @@ export class TransactionsService {
       financialEngine.calculateFutureBalance(
         currentBalance,
         transactions,
-        new Date()
+        referenceDate
       );
 
     const financialFlow =
@@ -69,7 +70,8 @@ export class TransactionsService {
   async calculateFutureBalance(
     familyMemberId: string,
     period: FinancialPeriod,
-    currentBalance: number
+    currentBalance: number,
+    referenceDate: Date = new Date()
   ) {
 
     const transactions =
@@ -82,7 +84,7 @@ export class TransactionsService {
     return financialEngine.calculateFutureBalance(
       currentBalance,
       transactions,
-      new Date()
+      referenceDate
     );
 
   }

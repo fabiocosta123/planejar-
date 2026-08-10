@@ -44,7 +44,8 @@ describe("TransactionsService", () => {
           new Date("2026-08-01"),
           new Date("2026-08-31")
         ),
-        1000
+        1000,
+        new Date("2026-08-07")
       );
 
     expect(result.currentBalance)

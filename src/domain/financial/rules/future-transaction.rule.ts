@@ -1,6 +1,5 @@
 import { TransactionInput } from "../models/transaction-input";
 
-
 export class FutureTransactionRule {
 
   isFuture(
@@ -8,9 +7,29 @@ export class FutureTransactionRule {
     referenceDate: Date
   ): boolean {
 
+    const transactionDay =
+      new Date(transaction.transactionDate);
+
+    const referenceDay =
+      new Date(referenceDate);
+
+    transactionDay.setHours(
+      0,
+      0,
+      0,
+      0
+    );
+
+    referenceDay.setHours(
+      0,
+      0,
+      0,
+      0
+    );
+
     return (
-      transaction.transactionDate >
-      referenceDate
+      transactionDay >
+      referenceDay
     );
 
   }
