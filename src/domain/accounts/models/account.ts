@@ -8,12 +8,12 @@ export type AccountType =
 
 export class Account {
 
-
   constructor(
     public readonly id: string,
     public readonly name: string,
     public readonly type: AccountType,
-    private balance: number = 0
+    private balance: number = 0,
+    public readonly initialBalanceDate?: Date
   ) {
 
     if (!name.trim()) {
@@ -63,4 +63,5 @@ export class Account {
     }
 
   }
+
 }

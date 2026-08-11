@@ -5,6 +5,46 @@ import { TransactionInput } from "../models/transaction-input";
 
 describe("FinancialEngine", () => {
 
+  it(
+    "deve calcular o saldo atual de uma conta",
+    () => {
+
+      const result =
+        financialEngine.calculateCurrentBalance(
+          1000,
+          [
+            {
+              amount: 500,
+              type: "INCOME",
+              transactionDate:
+                new Date("2026-08-05"),
+              status: "COMPLETED"
+            },
+            {
+              amount: 200,
+              type: "EXPENSE",
+              transactionDate:
+                new Date("2026-08-06"),
+              status: "COMPLETED"
+            },
+            {
+              amount: 300,
+              type: "EXPENSE",
+              transactionDate:
+                new Date("2026-08-15"),
+              status: "COMPLETED"
+            }
+          ],
+          new Date("2026-08-10")
+        );
+
+
+      expect(result)
+        .toBe(1300);
+
+    }
+  );
+
 
   it("deve calcular resumo financeiro corretamente", () => {
 

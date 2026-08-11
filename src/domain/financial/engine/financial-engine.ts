@@ -5,9 +5,14 @@ import { IncomeExpenseRule } from "../rules/income-expense-rule";
 import { SpendingLimitRule } from "../rules/spending-limit-rule";
 import { FutureBalanceResult } from "../models/future-balance-result";
 import { FutureTransactionRule } from "../rules/future-transaction.rule";
-
+import { CurrentBalanceRule } from "../rules/current-balance.rules";
+import { AccountCurrentBalanceRule } from "../../accounts/rules/account-current-balance.rule";
 
 export class FinancialEngine {
+
+  private readonly accountCurrentBalanceRule = new AccountCurrentBalanceRule();
+
+  private readonly currentBalanceRule = new CurrentBalanceRule();
 
   private readonly balanceEngine =
     new BalanceEngine();
@@ -23,6 +28,22 @@ export class FinancialEngine {
 
   private readonly futureTransactionRule =
     new FutureTransactionRule();
+
+  calculateCurrentBalance(
+    initialBalance: number,
+    transactions: TransactionInput[],
+    referenceDate: Date
+  ): number {
+
+    return this.accountCurrentBalanceRule.calculate(
+      initialBalance,
+      transactions,
+      referenceDate
+    );
+
+  }
+
+
 
   calculateFutureBalance(
     currentBalance: number,
@@ -63,13 +84,14 @@ export class FinancialEngine {
         );
 
 
+
     return new FutureBalanceResult(
       currentBalance,
       futureIncome,
       futureExpenses
     );
 
-  }
+  } 
 
 
   calculateSummary(

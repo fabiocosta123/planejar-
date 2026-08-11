@@ -14,6 +14,7 @@ export interface AccountPersistence {
     | "INVESTMENT"
     | "OTHER";
 
+  initialBalanceDate: Date
   initialBalance: MoneyValue;
 
 }
