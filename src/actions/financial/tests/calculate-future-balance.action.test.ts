@@ -18,6 +18,16 @@ import {
   FutureBalanceResult
 } from "../../../domain/financial/models/future-balance-result";
 
+import { accountBalanceService } from "../../../services/account-balance.service";
+
+vi.mock(
+  "../../../services/account-balance.service",
+  () => ({
+    accountBalanceService: {
+      calculateCurrentBalance: vi.fn()
+    }
+  })
+);
 
 describe(
   "calculateFutureBalanceAction",
@@ -51,16 +61,16 @@ describe(
             futureBalance
           );
 
+        vi.mocked(
+          accountBalanceService.calculateCurrentBalance
+        )
+          .mockResolvedValue(1000);
 
         const result =
           await calculateFutureBalanceAction(
             "family-member-id",
-
             new Date("2026-08-01"),
-
             new Date("2026-08-31"),
-
-            1000
           );
 
 
@@ -94,6 +104,13 @@ describe(
 
             1000
 
+          );
+
+        expect(
+          accountBalanceService.calculateCurrentBalance
+        )
+          .toHaveBeenCalledWith(
+            "family-member-id"
           );
 
       }
