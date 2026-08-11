@@ -12,7 +12,78 @@ describe("TransactionsRepository", () => {
         vi.restoreAllMocks();
     });
 
+    it("deve buscar transações de uma conta", async () => {
 
+        const transactionsMock = [
+            {
+                id: "1",
+                description: "Salário",
+                amount: 5000,
+                type: "INCOME",
+                transactionDate: new Date("2026-08-15"),
+            },
+
+            {
+                id: "2",
+                description: "Aluguel",
+                amount: 1500,
+                type: "EXPENSE",
+                transactionDate: new Date("2026-08-16"),
+            }
+        ];
+
+
+        const findManyMock =
+            vi.spyOn(
+                prisma.transaction,
+                "findMany"
+            )
+                .mockResolvedValue(
+                    transactionsMock as any
+                );
+
+
+        const result =
+            await transactionsRepository.findByAccountId(
+                "account-id"
+            );
+
+
+        expect(result)
+            .toHaveLength(2);
+
+
+        expect(result[0].amount)
+            .toBe(5000);
+
+
+        expect(result[0].type)
+            .toBe("INCOME");
+
+
+        expect(result[1].amount)
+            .toBe(1500);
+
+
+        expect(result[1].type)
+            .toBe("EXPENSE");
+
+
+        expect(findManyMock)
+            .toHaveBeenCalledWith({
+
+                where: {
+                    accountId: "account-id",
+                    deletedAt: null
+                },
+
+                orderBy: {
+                    transactionDate: "asc"
+                }
+
+            });
+
+    });
 
     it("deve buscar transações dentro de um período financeiro", async () => {
 

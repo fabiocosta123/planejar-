@@ -24,6 +24,34 @@ export class TransactionsRepository {
   }
 
 
+  async findByAccountId(
+    accountId: string
+  ) {
+
+    const transactions =
+      await prisma.transaction.findMany({
+
+        where: {
+          accountId,
+          deletedAt: null
+        },
+
+        orderBy: {
+          transactionDate: "asc"
+        }
+
+      });
+
+
+    return transactions.map(
+      TransactionMapper.toDomain
+    );
+
+  }
+
+
+
+
   async findIncomeByPeriod(
     familyMemberId: string,
     period: FinancialPeriod
@@ -56,6 +84,8 @@ export class TransactionsRepository {
       },
     });
   }
+
+
 }
 
 
