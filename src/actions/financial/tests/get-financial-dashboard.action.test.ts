@@ -1,208 +1,223 @@
 import {
-beforeEach,
-describe,
-expect,
-it,
-vi
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi
 } from "vitest";
 
 import {
-getFinancialDashboardAction
+  getFinancialDashboardAction
 } from "../get-financial-dashboard.action";
 
 import {
-transactionsService
+  transactionsService
 } from "../../../services/transactions.service";
 
 import {
-FinancialSummary
+  FinancialSummary
 } from "../../../domain/financial/models/financial-summary";
 
 import {
-FutureBalanceResult
+  FutureBalanceResult
 } from "../../../domain/financial/models/future-balance-result";
 
 import {
-FinancialFlowEntry
+  FinancialFlowEntry
 } from "../../../domain/financial/models/financial-flow-entry";
 
+import {
+  accountBalanceService
+} from "../../../services/account-balance.service";
+
 describe(
-"getFinancialDashboardAction",
-() => {
+  "getFinancialDashboardAction",
+  () => {
 
 
-beforeEach(() => {
+    beforeEach(() => {
 
-  vi.restoreAllMocks();
+      vi.restoreAllMocks();
 
-});
+    });
 
 
-it(
-  "deve retornar o dashboard financeiro completo",
-  async () => {
+    it(
+      "deve retornar o dashboard financeiro completo",
+      async () => {
 
-    const summary =
-      new FinancialSummary(
-        5000,
-        3000,
-        2000,
-        false
-      );
+        const summary =
+          new FinancialSummary(
+            5000,
+            3000,
+            2000,
+            false
+          );
 
 
-    const futureBalance =
-      new FutureBalanceResult(
-        2000,
-        1000,
-        1500
-      );
+        const futureBalance =
+          new FutureBalanceResult(
+            2000,
+            1000,
+            1500
+          );
 
 
-    const financialFlow = [
+        const financialFlow = [
 
-      new FinancialFlowEntry(
-        new Date("2026-08-10"),
-        500,
-        200,
-        2300
-      ),
+          new FinancialFlowEntry(
+            new Date("2026-08-10"),
+            500,
+            200,
+            2300
+          ),
 
-      new FinancialFlowEntry(
-        new Date("2026-08-15"),
-        0,
-        300,
-        2000
-      )
+          new FinancialFlowEntry(
+            new Date("2026-08-15"),
+            0,
+            300,
+            2000
+          )
 
-    ];
+        ];
 
 
-    vi.spyOn(
-      transactionsService,
-      "calculateDashboard"
-    )
-      .mockResolvedValue({
+        vi.spyOn(
+          transactionsService,
+          "calculateDashboard"
+        )
+          .mockResolvedValue({
 
-        summary,
+            summary,
 
-        futureBalance,
+            futureBalance,
 
-        financialFlow
+            financialFlow
 
-      });
+          });
 
+        vi.spyOn(
+          accountBalanceService,
+          "calculateCurrentBalance"
+        )
+          .mockResolvedValue(2000);
 
-    const result =
-      await getFinancialDashboardAction(
 
-        "family-member-id",
+        const result =
+          await getFinancialDashboardAction(
 
-        new Date("2026-08-01"),
+            "family-member-id",
+            new Date("2026-08-01"),
+            new Date("2026-08-31"),
+            3500,
+            new Date("2026-08-10")
 
-        new Date("2026-08-31"),
+          );
 
-        2000,
 
-        3500
+        expect(
+          accountBalanceService.calculateCurrentBalance
+        )
+          .toHaveBeenCalledWith(
+            "family-member-id",
+            new Date("2026-08-10")
+          );
 
-      );
+        expect(result.summary)
+          .toEqual({
 
+            income: 5000,
 
-    expect(result.summary)
-      .toEqual({
+            expenses: 3000,
 
-        income: 5000,
+            balance: 2000,
 
-        expenses: 3000,
+            limitExceeded: false
 
-        balance: 2000,
+          });
 
-        limitExceeded: false
 
-      });
+        expect(result.futureBalance)
+          .toEqual({
 
+            currentBalance: 2000,
 
-    expect(result.futureBalance)
-      .toEqual({
+            futureIncome: 1000,
 
-        currentBalance: 2000,
+            futureExpenses: 1500,
 
-        futureIncome: 1000,
+            futureBalance: 1500,
 
-        futureExpenses: 1500,
+            isPositive: true,
 
-        futureBalance: 1500,
+            isNegative: false
 
-        isPositive: true,
+          });
 
-        isNegative: false
 
-      });
+        expect(result.financialFlow)
+          .toHaveLength(2);
 
 
-    expect(result.financialFlow)
-      .toHaveLength(2);
+        expect(result.financialFlow[0])
+          .toEqual({
 
+            date:
+              new Date("2026-08-10"),
 
-    expect(result.financialFlow[0])
-      .toEqual({
+            income: 500,
 
-        date:
-          new Date("2026-08-10"),
+            expenses: 200,
 
-        income: 500,
+            balance: 2300,
 
-        expenses: 200,
+            isPositive: true,
 
-        balance: 2300,
+            isNegative: false
 
-        isPositive: true,
+          });
 
-        isNegative: false
 
-      });
+        expect(result.financialFlow[1])
+          .toEqual({
 
+            date:
+              new Date("2026-08-15"),
 
-    expect(result.financialFlow[1])
-      .toEqual({
+            income: 0,
 
-        date:
-          new Date("2026-08-15"),
+            expenses: 300,
 
-        income: 0,
+            balance: 2000,
 
-        expenses: 300,
+            isPositive: true,
 
-        balance: 2000,
+            isNegative: false
 
-        isPositive: true,
+          });
 
-        isNegative: false
 
-      });
+        expect(
+          transactionsService.calculateDashboard
+        )
+          .toHaveBeenCalledWith(
 
+            "family-member-id",
 
-    expect(
-      transactionsService.calculateDashboard
-    )
-      .toHaveBeenCalledWith(
+            expect.any(Object),
 
-        "family-member-id",
+            2000,
 
-        expect.any(Object),
+            3500,
+            new Date("2026-08-10")
 
-        2000,
+          );
 
-        3500
+      }
 
-      );
+    );
+
 
   }
-
-);
-
-
-}
 
 );
