@@ -1,16 +1,6 @@
-import {
-  ArrowDown,
-  ArrowUp,
-  TrendingDown,
-  TrendingUp,
-} from "lucide-react";
+import { ArrowDown, ArrowUp, WalletCards } from "lucide-react";
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import type { FutureBalanceContract } from "@/contracts/financial/future-balance.contract";
 
@@ -28,114 +18,92 @@ function formatCurrency(value: number) {
 export function DashboardFutureBalance({
   futureBalance,
 }: DashboardFutureBalanceProps) {
-  const isNegative = futureBalance.isNegative;
+  const {
+    currentBalance,
+    futureIncome,
+    futureExpenses,
+    futureBalance: projectedBalance,
+    isPositive,
+  } = futureBalance;
 
   return (
     <section
       className="mt-4"
       aria-label="Saldo futuro"
     >
-      <Card>
+      <Card className="rounded-2xl shadow-sm">
         <CardHeader className="pb-3">
-          <CardTitle className="text-base">
-            Saldo futuro
-          </CardTitle>
-        </CardHeader>
-
-        <CardContent className="space-y-4">
-          <div
-            className={[
-              "rounded-xl border p-4",
-              isNegative
-                ? "border-destructive/30 bg-destructive/5"
-                : "border-emerald-500/30 bg-emerald-500/5",
-            ].join(" ")}
-          >
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <p className="text-sm text-muted-foreground">
-                  Projeção
-                </p>
-
-                <p
-                  className={[
-                    "mt-1 text-2xl font-bold tracking-tight",
-                    isNegative
-                      ? "text-destructive"
-                      : "text-emerald-600",
-                  ].join(" ")}
-                >
-                  {formatCurrency(
-                    futureBalance.futureBalance
-                  )}
-                </p>
-              </div>
-
-              <div
-                className={[
-                  "flex size-10 items-center justify-center rounded-full",
-                  isNegative
-                    ? "bg-destructive/10"
-                    : "bg-emerald-500/10",
-                ].join(" ")}
-              >
-                {isNegative ? (
-                  <TrendingDown className="size-5 text-destructive" />
-                ) : (
-                  <TrendingUp className="size-5 text-emerald-600" />
-                )}
-              </div>
+          <div className="flex items-center gap-2">
+            <div className="flex size-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <WalletCards className="size-5" />
             </div>
 
-            <p className="mt-2 text-xs text-muted-foreground">
-              {isNegative
-                ? "A projeção indica saldo negativo."
-                : "A projeção indica saldo positivo."}
+            <div>
+              <CardTitle className="text-base">
+                Saldo futuro
+              </CardTitle>
+
+              <p className="text-xs text-muted-foreground">
+                Projeção financeira
+              </p>
+            </div>
+          </div>
+        </CardHeader>
+
+        <CardContent>
+          <div className="rounded-xl bg-muted/50 p-4">
+            <p className="text-xs text-muted-foreground">
+              Saldo projetado
+            </p>
+
+            <p
+              className={[
+                "mt-1 text-2xl font-bold tracking-tight",
+                isPositive
+                  ? "text-foreground"
+                  : "text-destructive",
+              ].join(" ")}
+            >
+              {formatCurrency(projectedBalance)}
             </p>
           </div>
 
-          <div className="grid grid-cols-3 gap-2">
-            <div className="rounded-lg bg-muted/50 p-3">
-              <p className="text-xs text-muted-foreground">
+          <div className="mt-4 grid grid-cols-3 gap-2">
+            <div className="rounded-xl border bg-card p-3">
+              <p className="text-[11px] text-muted-foreground">
                 Atual
               </p>
 
               <p className="mt-1 text-sm font-semibold">
-                {formatCurrency(
-                  futureBalance.currentBalance
-                )}
+                {formatCurrency(currentBalance)}
               </p>
             </div>
 
-            <div className="rounded-lg bg-emerald-500/5 p-3">
-              <div className="flex items-center gap-1">
-                <ArrowUp className="size-3.5 text-emerald-600" />
+            <div className="rounded-xl border bg-card p-3">
+              <div className="flex items-center gap-1 text-muted-foreground">
+                <ArrowUp className="size-3.5" />
 
-                <p className="text-xs text-muted-foreground">
+                <span className="text-[11px]">
                   Entradas
-                </p>
+                </span>
               </div>
 
               <p className="mt-1 text-sm font-semibold">
-                {formatCurrency(
-                  futureBalance.futureIncome
-                )}
+                {formatCurrency(futureIncome)}
               </p>
             </div>
 
-            <div className="rounded-lg bg-destructive/5 p-3">
-              <div className="flex items-center gap-1">
-                <ArrowDown className="size-3.5 text-destructive" />
+            <div className="rounded-xl border bg-card p-3">
+              <div className="flex items-center gap-1 text-muted-foreground">
+                <ArrowDown className="size-3.5" />
 
-                <p className="text-xs text-muted-foreground">
+                <span className="text-[11px]">
                   Saídas
-                </p>
+                </span>
               </div>
 
               <p className="mt-1 text-sm font-semibold">
-                {formatCurrency(
-                  futureBalance.futureExpenses
-                )}
+                {formatCurrency(futureExpenses)}
               </p>
             </div>
           </div>
