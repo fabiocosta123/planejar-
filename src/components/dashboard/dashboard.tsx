@@ -25,13 +25,14 @@ export function Dashboard({
           summary={dashboard.summary}
         />
 
-        <DashboardFinancialFlow
-          financialFlow={dashboard.financialFlow}
-        />
-
         <DashboardFutureBalance
           futureBalance={dashboard.futureBalance}
         />
+
+        <DashboardFinancialFlow
+          financialFlow={dashboard.financialFlow}
+        />
+        
       </div>
 
       <BottomNavigation />
