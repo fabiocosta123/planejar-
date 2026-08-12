@@ -4,6 +4,8 @@ import { DashboardHeader } from "./dashboard-header";
 import { DashboardSummary } from "./dashboard-summary";
 import { BottomNavigation } from "./bottom-navigation";
 import { DashboardFutureBalance } from "./dashboard-future-balance";
+import { DashboardFinancialFlow } from "./dashboard-financial-flow";
+
 
 interface DashboardProps {
   userName?: string | null;
@@ -21,6 +23,10 @@ export function Dashboard({
 
         <DashboardSummary
           summary={dashboard.summary}
+        />
+
+        <DashboardFinancialFlow
+          financialFlow={dashboard.financialFlow}
         />
 
         <DashboardFutureBalance
