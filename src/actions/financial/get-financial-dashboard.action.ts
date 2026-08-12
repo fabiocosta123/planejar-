@@ -4,6 +4,7 @@ import { FinancialPeriod } from "../../domain/financial/models/financial-period"
 import { FinancialSummaryMapper } from "../../domain/financial/mappers/financial-summary.mapper";
 import { FutureBalanceMapper } from "../../domain/financial/mappers/future-balance.mapper";
 import { FinancialFlowMapper } from "../../domain/financial/mappers/financial-flow.mapper";
+import { DashboardContract } from "../../contracts/financial/dashboard.contract";
 
 export async function getFinancialDashboardAction(
   familyMemberId: string,
@@ -11,7 +12,7 @@ export async function getFinancialDashboardAction(
   endDate: Date,
   spendingLimit?: number,
   referenceDate: Date = new Date()
-) {
+): Promise<DashboardContract> {
 
   const period =
     new FinancialPeriod(
