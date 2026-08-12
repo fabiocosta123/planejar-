@@ -3,6 +3,7 @@ import type { DashboardContract } from "@/contracts/financial/dashboard.contract
 import { DashboardHeader } from "./dashboard-header";
 import { DashboardSummary } from "./dashboard-summary";
 import { BottomNavigation } from "./bottom-navigation";
+import { DashboardFutureBalance } from "./dashboard-future-balance";
 
 interface DashboardProps {
   userName?: string | null;
@@ -20,6 +21,10 @@ export function Dashboard({
 
         <DashboardSummary
           summary={dashboard.summary}
+        />
+
+        <DashboardFutureBalance
+          futureBalance={dashboard.futureBalance}
         />
       </div>
 
