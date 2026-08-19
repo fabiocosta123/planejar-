@@ -12,7 +12,7 @@ describe("calculateFinancialSummaryAction", () => {
     const summary = {
       income: 5000,
       expenses: 2000,
-      balance: 3000,
+      currentBalance: 3000,
       limitExceeded: false
     };
 
@@ -22,7 +22,7 @@ describe("calculateFinancialSummaryAction", () => {
         transactionsService,
         "calculateSummary"
       )
-      .mockResolvedValue(summary as any);
+        .mockResolvedValue(summary as any);
 
 
 
@@ -40,13 +40,20 @@ describe("calculateFinancialSummaryAction", () => {
 
 
 
-    expect(result.balance)
+    expect(result.currentBalance)
       .toBe(3000);
 
 
 
     expect(result.income)
       .toBe(5000);
+
+
+    expect(result.expenses)
+      .toBe(2000);
+
+    expect(result.limitExceeded)
+      .toBe(false);
 
 
   });

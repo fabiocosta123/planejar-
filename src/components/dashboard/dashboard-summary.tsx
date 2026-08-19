@@ -13,6 +13,7 @@ import type { FinancialSummaryContract } from "@/contracts/financial/financial-s
 
 interface DashboardSummaryProps {
   summary: FinancialSummaryContract;
+  currentBalance: number;
 }
 
 function formatCurrency(value: number) {
@@ -24,6 +25,7 @@ function formatCurrency(value: number) {
 
 export function DashboardSummary({
   summary,
+  currentBalance
 }: DashboardSummaryProps) {
   return (
     <section
@@ -39,7 +41,7 @@ export function DashboardSummary({
               </p>
 
               <p className="mt-2 text-3xl font-bold tracking-tight">
-                {formatCurrency(summary.balance)}
+                {formatCurrency(currentBalance)}
               </p>
             </div>
 

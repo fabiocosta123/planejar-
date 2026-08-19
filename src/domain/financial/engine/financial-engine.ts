@@ -10,9 +10,11 @@ import { AccountCurrentBalanceRule } from "../../accounts/rules/account-current-
 
 export class FinancialEngine {
 
-  private readonly accountCurrentBalanceRule = new AccountCurrentBalanceRule();
+  private readonly accountCurrentBalanceRule =
+    new AccountCurrentBalanceRule();
 
-  private readonly currentBalanceRule = new CurrentBalanceRule();
+  private readonly currentBalanceRule =
+    new CurrentBalanceRule();
 
   private readonly balanceEngine =
     new BalanceEngine();
@@ -20,14 +22,18 @@ export class FinancialEngine {
   private readonly incomeExpenseRule =
     new IncomeExpenseRule();
 
+  private readonly futureTransactionRule =
+    new FutureTransactionRule();
+
+
   private createSpendingLimitRule(
     limit: number
   ): SpendingLimitRule {
+
     return new SpendingLimitRule(limit);
+
   }
 
-  private readonly futureTransactionRule =
-    new FutureTransactionRule();
 
   calculateCurrentBalance(
     initialBalance: number,
@@ -42,7 +48,6 @@ export class FinancialEngine {
     );
 
   }
-
 
 
   calculateFutureBalance(
@@ -84,21 +89,20 @@ export class FinancialEngine {
         );
 
 
-
     return new FutureBalanceResult(
       currentBalance,
       futureIncome,
       futureExpenses
     );
 
-  } 
+  }
 
 
   calculateSummary(
+    currentBalance: number,
     transactions: TransactionInput[],
     spendingLimit?: number
   ): FinancialSummary {
-
 
     const {
       income,
@@ -109,27 +113,25 @@ export class FinancialEngine {
       );
 
 
-    const balance =
-      this.balanceEngine.calculate(
-        income,
-        expenses
-      );
-
-
     const limitExceeded =
       spendingLimit !== undefined
-        ? this.createSpendingLimitRule(spendingLimit)
-          .isExceeded(expenses)
+        ? this
+            .createSpendingLimitRule(
+              spendingLimit
+            )
+            .isExceeded(expenses)
         : false;
 
 
     return new FinancialSummary(
+      currentBalance,
       income,
       expenses,
-      balance.balance,
       limitExceeded
     );
+
   }
+
 }
 
 

@@ -1,114 +1,154 @@
-import { ArrowDown, ArrowUp, WalletCards } from "lucide-react";
-
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
 import type { FutureBalanceContract } from "@/contracts/financial/future-balance.contract";
 
 interface DashboardFutureBalanceProps {
-  futureBalance: FutureBalanceContract;
-}
-
-function formatCurrency(value: number) {
-  return new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }).format(value);
+  data: FutureBalanceContract;
 }
 
 export function DashboardFutureBalance({
-  futureBalance,
+  data,
 }: DashboardFutureBalanceProps) {
+
   const {
     currentBalance,
     futureIncome,
     futureExpenses,
-    futureBalance: projectedBalance,
+    futureBalance,
     isPositive,
-  } = futureBalance;
+    isNegative,
+  } = data;
 
   return (
     <section
       className="mt-4"
       aria-label="Saldo futuro"
     >
-      <Card className="rounded-2xl shadow-sm">
-        <CardHeader className="pb-3">
-          <div className="flex items-center gap-2">
-            <div className="flex size-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
-              <WalletCards className="size-5" />
-            </div>
+      <div className="rounded-2xl border bg-card p-5 shadow-sm">
 
-            <div>
-              <CardTitle className="text-base">
-                Saldo futuro
-              </CardTitle>
+        <div className="flex items-center justify-between">
 
-              <p className="text-xs text-muted-foreground">
-                Projeção financeira
-              </p>
-            </div>
-          </div>
-        </CardHeader>
+          <div>
 
-        <CardContent>
-          <div className="rounded-xl bg-muted/50 p-4">
-            <p className="text-xs text-muted-foreground">
-              Saldo projetado
+            <p className="text-sm font-medium text-muted-foreground">
+              Saldo futuro
             </p>
 
             <p
               className={[
-                "mt-1 text-2xl font-bold tracking-tight",
-                isPositive
-                  ? "text-foreground"
-                  : "text-destructive",
-              ].join(" ")}
+                "mt-2 text-3xl font-bold tracking-tight",
+                isPositive && "text-emerald-600",
+                isNegative && "text-red-600",
+                !isPositive &&
+                  !isNegative &&
+                  "text-foreground",
+              ]
+                .filter(Boolean)
+                .join(" ")}
             >
-              {formatCurrency(projectedBalance)}
+              {formatCurrency(futureBalance)}
             </p>
+
           </div>
 
-          <div className="mt-4 grid grid-cols-3 gap-2">
-            <div className="rounded-xl border bg-card p-3">
-              <p className="text-[11px] text-muted-foreground">
-                Atual
-              </p>
-
-              <p className="mt-1 text-sm font-semibold">
-                {formatCurrency(currentBalance)}
-              </p>
-            </div>
-
-            <div className="rounded-xl border bg-card p-3">
-              <div className="flex items-center gap-1 text-muted-foreground">
-                <ArrowUp className="size-3.5" />
-
-                <span className="text-[11px]">
-                  Entradas
-                </span>
-              </div>
-
-              <p className="mt-1 text-sm font-semibold">
-                {formatCurrency(futureIncome)}
-              </p>
-            </div>
-
-            <div className="rounded-xl border bg-card p-3">
-              <div className="flex items-center gap-1 text-muted-foreground">
-                <ArrowDown className="size-3.5" />
-
-                <span className="text-[11px]">
-                  Saídas
-                </span>
-              </div>
-
-              <p className="mt-1 text-sm font-semibold">
-                {formatCurrency(futureExpenses)}
-              </p>
-            </div>
+          <div
+            className={[
+              "flex h-10 w-10 items-center justify-center rounded-full",
+              isPositive && "bg-emerald-100",
+              isNegative && "bg-red-100",
+              !isPositive &&
+                !isNegative &&
+                "bg-muted",
+            ]
+              .filter(Boolean)
+              .join(" ")}
+          >
+            <span className="text-lg">
+              {isPositive
+                ? "↗"
+                : isNegative
+                  ? "↘"
+                  : "→"}
+            </span>
           </div>
-        </CardContent>
-      </Card>
+
+        </div>
+
+
+        <div className="mt-5 grid grid-cols-3 gap-3">
+
+          <BalanceItem
+            label="Saldo atual"
+            value={currentBalance}
+          />
+
+          <BalanceItem
+            label="Entradas"
+            value={futureIncome}
+            positive
+          />
+
+          <BalanceItem
+            label="Despesas"
+            value={futureExpenses}
+            negative
+          />
+
+        </div>
+
+      </div>
     </section>
   );
+}
+
+
+interface BalanceItemProps {
+  label: string;
+  value: number;
+  positive?: boolean;
+  negative?: boolean;
+}
+
+
+function BalanceItem({
+  label,
+  value,
+  positive,
+  negative,
+}: BalanceItemProps) {
+
+  return (
+    <div className="rounded-xl bg-muted/50 p-3">
+
+      <p className="text-xs text-muted-foreground">
+        {label}
+      </p>
+
+      <p
+        className={[
+          "mt-1 text-sm font-semibold",
+          positive && "text-emerald-600",
+          negative && "text-red-600",
+        ]
+          .filter(Boolean)
+          .join(" ")}
+      >
+        {formatCurrency(value)}
+      </p>
+
+    </div>
+  );
+}
+
+
+function formatCurrency(
+  value: number
+) {
+
+  return new Intl.NumberFormat(
+    "pt-BR",
+    {
+      style: "currency",
+      currency: "BRL",
+    }
+  ).format(value);
+
 }

@@ -36,7 +36,6 @@ export async function getFinancialDashboardAction(
     );
 
   return {
-
     summary:
       FinancialSummaryMapper.toContract(
         result.summary
@@ -51,7 +50,6 @@ export async function getFinancialDashboardAction(
       FinancialFlowMapper.toContracts(
         result.financialFlow
       )
-
   };
 
 }

@@ -1,6 +1,9 @@
 import { prisma } from "../lib/prisma";
+
 import { familyRepository } from "../repositories/family.repository";
 import { familyMemberRepository } from "../repositories/family-member.repository";
+import { userSettingsRepository } from "../repositories/user-settings.repository";
+
 import { FamilyMapper } from "../domain/family/mappers/family.mapper";
 import { FamilyMemberMapper } from "../domain/family/mappers/family-member.mapper";
 
@@ -58,11 +61,18 @@ export class FamilyService {
       await prisma.$transaction(
         async (tx) => {
 
+          
+          // 1. Cria a família         
+
           const family =
             await familyRepository.createWithClient(
               tx,
               data
             );
+
+
+          
+          // 2. Cria o OWNER         
 
           const owner =
             await familyMemberRepository.createWithClient(
@@ -73,6 +83,38 @@ export class FamilyService {
                 role: "OWNER"
               }
             );
+
+
+          
+          // 3. Garante UserSettings         
+
+          const settings =
+            await userSettingsRepository.findByUserIdWithClient(
+              tx,
+              data.ownerId
+            );
+
+
+          if (!settings) {
+
+            await userSettingsRepository.createWithClient(
+              tx,
+              data.ownerId
+            );
+
+          }
+
+
+          
+          // 4. Define a família atual
+          
+
+          await userSettingsRepository.updateCurrentFamilyWithClient(
+            tx,
+            data.ownerId,
+            family.id
+          );
+
 
           return {
             family,

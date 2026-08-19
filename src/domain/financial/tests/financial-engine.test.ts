@@ -53,21 +53,24 @@ describe("FinancialEngine", () => {
       {
         type: "INCOME",
         amount: 5000,
-        transactionDate: new Date("2026-08-10"),
+        transactionDate:
+          new Date("2026-08-10"),
         status: "COMPLETED"
       },
 
       {
         type: "EXPENSE",
         amount: 3000,
-        transactionDate: new Date("2026-08-15"),
+        transactionDate:
+          new Date("2026-08-15"),
         status: "COMPLETED"
       },
 
       {
         type: "EXPENSE",
         amount: 500,
-        transactionDate: new Date("2026-08-20"),
+        transactionDate:
+          new Date("2026-08-20"),
         status: "PENDING"
       }
 
@@ -76,8 +79,13 @@ describe("FinancialEngine", () => {
 
     const result =
       financialEngine.calculateSummary(
+        1000,
         transactions
       );
+
+
+    expect(result.currentBalance)
+      .toBe(1000);
 
 
     expect(result.income)
@@ -88,8 +96,8 @@ describe("FinancialEngine", () => {
       .toBe(3500);
 
 
-    expect(result.balance)
-      .toBe(1500);
+    expect(result.currentBalance)
+      .toBe(1000);
 
 
     expect(result.hasPositiveBalance)
@@ -224,13 +232,10 @@ describe("FinancialEngine", () => {
 
     const result =
       financialEngine.calculateSummary(
+        1000,
         transactions,
         3000
       );
-
-
-
-
 
     expect(result.limitExceeded)
       .toBe(true);

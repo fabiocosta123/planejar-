@@ -23,14 +23,15 @@ export function Dashboard({
 
         <DashboardSummary
           summary={dashboard.summary}
-        />
-
-        <DashboardFutureBalance
-          futureBalance={dashboard.futureBalance}
-        />
+          currentBalance={dashboard.currentBalance}
+        />       
 
         <DashboardFinancialFlow
           financialFlow={dashboard.financialFlow}
+        />
+
+        <DashboardFutureBalance
+          data={dashboard.futureBalance}
         />
         
       </div>

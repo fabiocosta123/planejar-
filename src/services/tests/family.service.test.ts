@@ -18,6 +18,8 @@ import {
   familyMemberRepository
 } from "../../repositories/family-member.repository";
 
+import { userSettingsRepository } from "../../repositories/user-settings.repository";
+
 import {
   prisma
 } from "../../lib/prisma";
@@ -211,8 +213,46 @@ describe("FamilyService", () => {
 
     const transactionClient = {
       family: {},
-      familyMember: {}
+      familyMember: {},
+      userSettings: {}
     } as any;
+
+    const findSettingsSpy =
+      vi.spyOn(
+        userSettingsRepository,
+        "findByUserIdWithClient"
+      )
+        .mockResolvedValue(
+          null
+        );
+
+
+    const createSettingsSpy =
+      vi.spyOn(
+        userSettingsRepository,
+        "createWithClient"
+      )
+        .mockResolvedValue(
+          {
+            id: "settings-1",
+            userId: "user-1",
+            currentFamilyId: null,
+          } as any
+        );
+
+
+    const updateCurrentFamilySpy =
+      vi.spyOn(
+        userSettingsRepository,
+        "updateCurrentFamilyWithClient"
+      )
+        .mockResolvedValue(
+          {
+            id: "settings-1",
+            userId: "user-1",
+            currentFamilyId: "family-1",
+          } as any
+        );
 
 
     const transactionSpy =
@@ -272,6 +312,27 @@ describe("FamilyService", () => {
           role: "OWNER"
         }
 
+      );
+
+    expect(findSettingsSpy)
+      .toHaveBeenCalledWith(
+        transactionClient,
+        "user-1"
+      );
+
+
+    expect(createSettingsSpy)
+      .toHaveBeenCalledWith(
+        transactionClient,
+        "user-1"
+      );
+
+
+    expect(updateCurrentFamilySpy)
+      .toHaveBeenCalledWith(
+        transactionClient,
+        "user-1",
+        "family-1"
       );
 
 

@@ -8,6 +8,7 @@ export class TransactionsService {
   async calculateSummary(
     familyMemberId: string,
     period: FinancialPeriod,
+    currentBalance: number,
     spendingLimit?: number
   ) {
 
@@ -17,8 +18,8 @@ export class TransactionsService {
         period
       );
 
-
     return financialEngine.calculateSummary(
+      currentBalance,
       transactions,
       spendingLimit
     );
@@ -41,6 +42,7 @@ export class TransactionsService {
 
     const summary =
       financialEngine.calculateSummary(
+        currentBalance,
         transactions,
         spendingLimit
       );
@@ -66,7 +68,6 @@ export class TransactionsService {
 
   }
 
-
   async calculateFutureBalance(
     familyMemberId: string,
     period: FinancialPeriod,
@@ -79,7 +80,6 @@ export class TransactionsService {
         familyMemberId,
         period
       );
-
 
     return financialEngine.calculateFutureBalance(
       currentBalance,
@@ -101,12 +101,13 @@ export class TransactionsService {
         period
       );
 
-
     return financialFlowEngine.calculate(
       initialBalance,
       transactions
     );
+
   }
+
 }
 
 export const transactionsService =

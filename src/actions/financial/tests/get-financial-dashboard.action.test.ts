@@ -48,9 +48,9 @@ describe(
 
         const summary =
           new FinancialSummary(
+            2000,
             5000,
             3000,
-            2000,
             false
           );
 
@@ -127,13 +127,9 @@ describe(
           .toEqual({
 
             income: 5000,
-
             expenses: 3000,
-
-            balance: 2000,
-
+            currentBalance: 2000,
             limitExceeded: false
-
           });
 
 

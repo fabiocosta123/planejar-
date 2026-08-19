@@ -17,25 +17,66 @@ export class FamilyContextService {
         userId
       );
 
-    if (!settings?.currentFamilyId) {
-      return null;
+    if (settings?.currentFamilyId) {
+
+      const familyMember =
+        await familyMemberService.findByFamilyAndUser(
+          settings.currentFamilyId,
+          userId
+        );
+
+      if (familyMember) {
+
+        return {
+          familyId: settings.currentFamilyId,
+          familyMemberId: familyMember.id
+        };
+
+      }
+
     }
 
-    const familyMember =
-      await familyMemberService.findByFamilyAndUser(
-        settings.currentFamilyId,
+    const familyMembers =
+      await familyMemberService.findByUserId(
         userId
       );
 
-    if (!familyMember) {
+    const firstFamilyMember =
+      familyMembers.find(
+        member => !member.deletedAt
+      );
+
+    if (!firstFamilyMember) {
       return null;
     }
 
+    if (settings) {
+
+      await userSettingsRepository.updateCurrentFamily(
+        userId,
+        firstFamilyMember.familyId
+      );
+
+    } else {
+
+      await userSettingsRepository.create(
+        userId
+      );
+
+      await userSettingsRepository.updateCurrentFamily(
+        userId,
+        firstFamilyMember.familyId
+      );
+
+    }
+
     return {
-      familyId: settings.currentFamilyId,
-      familyMemberId: familyMember.id
+      familyId: firstFamilyMember.familyId,
+      familyMemberId: firstFamilyMember.id
     };
+
   }
+
 }
 
 export const familyContextService =
