@@ -35,46 +35,30 @@ export function DashboardSummary({
       aria-label="Resumo financeiro"
     >
       {/* Saldo principal */}
-      <Card className="overflow-hidden rounded-2xl border-0 shadow-sm">
+      <Card
+        className={[
+          "overflow-hidden rounded-3xl border-0 text-white shadow-lg ring-0",
+          balanceIsNegative ? "bg-destructive" : "bg-primary",
+        ].join(" ")}
+      >
         <CardContent className="p-5">
           <div className="flex items-start justify-between gap-4">
             <div className="min-w-0">
-              <p className="text-sm font-medium text-muted-foreground">
+              <p className="text-sm font-medium text-white/80">
                 Saldo disponível
               </p>
 
-              <p
-                className={[
-                  "mt-2 text-3xl font-bold tracking-tight",
-                  balanceIsNegative
-                    ? "text-destructive"
-                    : "text-foreground",
-                ].join(" ")}
-              >
+              <p className="mt-2 text-4xl font-bold tracking-tight text-white">
                 {formatCurrency(currentBalance)}
               </p>
 
-              <p className="mt-1 text-xs text-muted-foreground">
+              <p className="mt-1 text-xs text-white/75">
                 Saldo calculado até hoje
               </p>
             </div>
 
-            <div
-              className={[
-                "flex size-11 shrink-0 items-center justify-center rounded-full",
-                balanceIsNegative
-                  ? "bg-destructive/10"
-                  : "bg-primary/10",
-              ].join(" ")}
-            >
-              <Wallet
-                className={[
-                  "size-5",
-                  balanceIsNegative
-                    ? "text-destructive"
-                    : "text-primary",
-                ].join(" ")}
-              />
+            <div className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-white/15">
+              <Wallet className="size-5 text-white" />
             </div>
           </div>
 

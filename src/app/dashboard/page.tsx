@@ -1,6 +1,7 @@
 import { auth } from "../../lib/auth";
 
 import { familyContextService } from "../../services/family-context.service";
+import { familyService } from "../../services/family.service";
 
 import { settingsService } from "../../services/settings.service";
 
@@ -64,14 +65,14 @@ export default async function DashboardPage() {
       999
     );
 
-  const settings =
-    await settingsService.getSettings(
-      userId
-    );
+  const [settings, inviteCode] = await Promise.all([
+    settingsService.getSettings(userId),
+    familyService.inviteCodeForOwner(familyContext.familyId, userId),
+  ]);
 
   const dashboard =
     await getFinancialDashboardAction(
-      familyContext.familyMemberId,
+      familyContext.ledgerMemberId,
       startDate,
       endDate,
       undefined,
@@ -87,6 +88,7 @@ export default async function DashboardPage() {
       showTightDay={settings.dayOfTightnessAlert}
       plan={settings.plan}
       proAmount={readProCheckoutConfig().amount}
+      inviteCode={inviteCode}
     />
   );
 }

@@ -87,34 +87,48 @@ export default async function Home() {
   }).format(proAmount);
 
   return (
-    <main className="min-h-dvh bg-muted/30">
+    <main className="min-h-dvh bg-background">
       <div className="mx-auto flex min-h-dvh w-full max-w-2xl flex-col px-4 py-8 sm:px-6 sm:py-12">
-        <p className="text-sm font-medium text-muted-foreground">
-          Planejamento Financeiro
-        </p>
+        <section className="rounded-3xl bg-primary px-5 py-7 text-primary-foreground shadow-lg sm:px-7">
+          <p className="text-sm font-medium text-primary-foreground/80">
+            Planejamento Financeiro
+          </p>
 
-        <h1 className="mt-3 max-w-md text-3xl font-semibold tracking-tight">
-          Saiba o dia em que o dinheiro aperta.
-        </h1>
+          <h1 className="mt-3 max-w-md text-3xl font-semibold tracking-tight">
+            Saiba o dia em que o dinheiro aperta.
+          </h1>
 
-        <p className="mt-3 max-w-lg text-base leading-7 text-muted-foreground">
-          A versão gratuita organiza os lançamentos recentes. A Pro amplia
-          o histórico, compara períodos e avisa quando o dinheiro vai apertar.
-        </p>
+          <p className="mt-3 max-w-lg text-base leading-7 text-primary-foreground/85">
+            A versão gratuita organiza os lançamentos recentes. A Pro amplia
+            o histórico, compara períodos e avisa quando o dinheiro vai apertar.
+          </p>
 
-        <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-          <Button asChild className="h-11">
-            <Link href={isLoggedIn ? "/dashboard" : "/login"}>
-              {isLoggedIn ? "Abrir o painel" : "Entrar"}
-            </Link>
-          </Button>
-
-          {!isLoggedIn ? (
-            <Button asChild variant="outline" className="h-11">
-              <a href="#free-plan">Ver a versão grátis</a>
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+            <Button asChild className="h-11 bg-white text-primary hover:bg-white/90">
+              <Link href={isLoggedIn ? "/dashboard" : "/register"}>
+                {isLoggedIn ? "Abrir o painel" : "Criar conta"}
+              </Link>
             </Button>
+
+            {!isLoggedIn ? (
+              <Button
+                asChild
+                variant="outline"
+                className="h-11 border-white/40 bg-transparent text-white hover:bg-white/10 hover:text-white"
+              >
+                <Link href="/login">Entrar</Link>
+              </Button>
+            ) : null}
+          </div>
+          {!isLoggedIn ? (
+            <a
+              href="#free-plan"
+              className="mt-4 inline-block text-sm font-medium text-primary-foreground/85 underline-offset-4 hover:underline"
+            >
+              Ver a versão grátis
+            </a>
           ) : null}
-        </div>
+        </section>
 
         <section className="mt-10" aria-labelledby="free-plan">
           <h2 id="free-plan" className="text-lg font-semibold">
@@ -131,11 +145,17 @@ export default async function Home() {
           </ul>
         </section>
 
-        <section className="mt-8" aria-labelledby="pro-plan">
+        <section
+          className="mt-8 rounded-3xl border border-primary/20 bg-primary/5 p-4 sm:p-5"
+          aria-labelledby="pro-plan"
+        >
           <div className="flex items-center gap-2">
             <h2 id="pro-plan" className="text-lg font-semibold">
               Pro
             </h2>
+            <span className="rounded-full bg-primary px-2.5 py-0.5 text-xs font-medium text-primary-foreground">
+              {proPrice}
+            </span>
           </div>
           <p className="mt-1 text-sm text-muted-foreground">
             Histórico completo, comparativo e o aviso de quando separar dinheiro.
@@ -143,7 +163,7 @@ export default async function Home() {
 
           <ul className="mt-4 space-y-3">
             {proFeatures.map((feature) => (
-              <FeatureCard key={feature.title} {...feature} />
+              <FeatureCard key={feature.title} tone="pro" {...feature} />
             ))}
           </ul>
 
@@ -178,15 +198,23 @@ function FeatureCard({
   icon: Icon,
   title,
   description,
+  tone = "free",
 }: {
   icon: typeof Wallet;
   title: string;
   description: string;
+  tone?: "free" | "pro";
 }) {
   return (
     <li className="flex gap-3 rounded-2xl border bg-card p-4 shadow-sm">
-      <div className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary/10">
-        <Icon className="size-5 text-primary" aria-hidden="true" />
+      <div
+        className={
+          tone === "pro"
+            ? "flex size-11 shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground"
+            : "flex size-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary"
+        }
+      >
+        <Icon className="size-5" aria-hidden="true" />
       </div>
       <div>
         <h3 className="font-medium">{title}</h3>

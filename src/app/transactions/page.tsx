@@ -60,15 +60,15 @@ export default async function TransactionsPage() {
   const [history, accounts, series, member] =
     await Promise.all([
       getTransactionHistoryAction(
-        familyContext.familyMemberId,
+        familyContext.ledgerMemberId,
         settings.plan,
         today
       ),
       accountsService.findByFamilyMember(
-        familyContext.familyMemberId
+        familyContext.ledgerMemberId
       ),
       transactionsService.listSeries(
-        familyContext.familyMemberId
+        familyContext.ledgerMemberId
       ),
       familyMemberService.findById(
         familyContext.familyMemberId

@@ -40,6 +40,11 @@ export class UsersService {
 
   }
 
+
+  async remove(id: string) {
+    return userRepository.remove(id);
+  }
+
 }
 
 

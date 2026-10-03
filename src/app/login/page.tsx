@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -37,7 +38,7 @@ export default function LoginPage() {
 
   }
 
-  return (<main className="flex min-h-screen items-center justify-center bg-background px-4"> <div className="w-full max-w-md rounded-xl border bg-card p-8 shadow-sm"> <div className="mb-8 text-center"> <h1 className="text-2xl font-bold">
+  return (<main className="flex min-h-dvh items-center justify-center bg-background px-4 py-8"> <div className="w-full max-w-md rounded-3xl border bg-card p-8 shadow-lg"> <div className="mb-8 text-center"> <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-2xl bg-primary text-lg font-semibold text-primary-foreground">P</div> <h1 className="text-2xl font-bold">
     Planejamento Financeiro </h1>
 
     <p className="mt-2 text-sm text-muted-foreground">
@@ -68,7 +69,7 @@ export default function LoginPage() {
           placeholder="seu@email.com"
           autoComplete="email"
           required
-          className="w-full rounded-md border bg-background px-3 py-2 outline-none focus:ring-2 focus:ring-primary"
+          className="h-11 w-full rounded-xl border bg-background px-3 outline-none focus:ring-2 focus:ring-primary"
         />
       </div>
 
@@ -91,7 +92,7 @@ export default function LoginPage() {
           placeholder="Sua senha"
           autoComplete="current-password"
           required
-          className="w-full rounded-md border bg-background px-3 py-2 outline-none focus:ring-2 focus:ring-primary"
+          className="h-11 w-full rounded-xl border bg-background px-3 outline-none focus:ring-2 focus:ring-primary"
         />
       </div>
 
@@ -104,11 +105,17 @@ export default function LoginPage() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full rounded-md bg-primary px-4 py-2 font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+        className="h-11 w-full rounded-xl bg-primary px-4 font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
       >
         {loading ? "Entrando..." : "Entrar"}
       </button>
     </form>
+    <p className="mt-6 text-center text-sm text-muted-foreground">
+      Ainda não tem conta?{" "}
+      <Link href="/register" className="font-medium text-primary">
+        Criar conta
+      </Link>
+    </p>
   </div>
   </main>
   );
