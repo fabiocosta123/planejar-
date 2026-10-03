@@ -36,6 +36,7 @@ export function TransactionCreateButton({
   const [accountId, setAccountId] = useState(accounts[0]?.id ?? "");
   const [transactionDate, setTransactionDate] = useState(todayInputValue);
   const [notes, setNotes] = useState("");
+  const [repeatsMonthly, setRepeatsMonthly] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -79,6 +80,7 @@ export function TransactionCreateButton({
       type,
       transactionDate,
       notes,
+      repeatsMonthly,
     });
 
     setLoading(false);
@@ -91,6 +93,7 @@ export function TransactionCreateButton({
     setDescription("");
     setAmount("");
     setNotes("");
+    setRepeatsMonthly(false);
     setType("EXPENSE");
     setTransactionDate(todayInputValue());
     setOpen(false);
@@ -111,7 +114,7 @@ export function TransactionCreateButton({
 
       {open ? (
         <div
-          className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 sm:items-center"
+          className="fixed inset-0 z-[60] flex items-end justify-center bg-black/40 sm:items-center"
           onClick={close}
         >
           <div
@@ -234,6 +237,24 @@ export function TransactionCreateButton({
                     required
                     className="h-11 w-full rounded-md border bg-background px-3 outline-none focus:ring-2 focus:ring-primary"
                   />
+                </div>
+
+                <div className="flex items-start gap-3 rounded-xl border p-3">
+                  <input
+                    id="repeats-monthly"
+                    type="checkbox"
+                    checked={repeatsMonthly}
+                    onChange={(event) => setRepeatsMonthly(event.target.checked)}
+                    className="mt-1 size-5"
+                  />
+                  <div>
+                    <label htmlFor="repeats-monthly" className="text-sm font-medium">
+                      Repetir todo mês
+                    </label>
+                    <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                      Este lançamento fica registrado. Os próximos meses entram no dia do aperto.
+                    </p>
+                  </div>
                 </div>
 
                 <div className="space-y-2">

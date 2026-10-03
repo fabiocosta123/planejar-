@@ -24,6 +24,7 @@ describe("parseCreateTransactionInput", () => {
         type: "EXPENSE",
         transactionDate: new Date(2026, 7, 20),
         notes: undefined,
+        repeatsMonthly: false,
       },
     });
   });
@@ -45,6 +46,32 @@ describe("parseCreateTransactionInput", () => {
       })
     ).toMatchObject({
       ok: false,
+    });
+  });
+
+  it("deve aceitar repetição mensal", () => {
+    const result = parseCreateTransactionInput({
+      ...validInput,
+      repeatsMonthly: true,
+    });
+
+    expect(result).toMatchObject({
+      ok: true,
+      value: {
+        repeatsMonthly: true,
+      },
+    });
+  });
+
+  it("deve recusar repetição inválida", () => {
+    const result = parseCreateTransactionInput({
+      ...validInput,
+      repeatsMonthly: "mensal",
+    });
+
+    expect(result).toMatchObject({
+      ok: false,
+      message: "Não foi possível ler a repetição.",
     });
   });
 

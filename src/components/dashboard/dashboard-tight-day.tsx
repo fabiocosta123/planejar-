@@ -56,7 +56,7 @@ export function DashboardTightDay({
           </>
         ) : (
           <p className="mt-2 text-sm leading-6 text-muted-foreground">
-            Nenhum dia deste mês fica abaixo da reserva.
+            Nenhum dia dos próximos 12 meses fica abaixo da reserva.
           </p>
         )}
       </div>

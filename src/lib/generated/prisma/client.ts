@@ -67,6 +67,11 @@ export type Account = Prisma.AccountModel
  */
 export type Transaction = Prisma.TransactionModel
 /**
+ * Model RecurringTransaction
+ * 
+ */
+export type RecurringTransaction = Prisma.RecurringTransactionModel
+/**
  * Model UserSettings
  * 
  */

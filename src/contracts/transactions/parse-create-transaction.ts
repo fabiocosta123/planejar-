@@ -9,6 +9,7 @@ export interface ParsedCreateTransaction {
   amount: number;
   type: "INCOME" | "EXPENSE";
   transactionDate: Date;
+  repeatsMonthly: boolean;
 }
 
 export type ParseCreateTransactionResult =
@@ -63,6 +64,12 @@ export function parseCreateTransactionInput(
     return notes;
   }
 
+  const repeatsMonthly = readRepeatsMonthly(data.repeatsMonthly);
+
+  if (typeof repeatsMonthly !== "boolean") {
+    return repeatsMonthly;
+  }
+
   return {
     ok: true,
     value: {
@@ -72,6 +79,7 @@ export function parseCreateTransactionInput(
       amount,
       type,
       transactionDate,
+      repeatsMonthly,
     },
   };
 }
@@ -177,6 +185,23 @@ function readDate(
   }
 
   return date;
+}
+
+function readRepeatsMonthly(
+  value: unknown
+): boolean | ParseCreateTransactionResult {
+  if (value === undefined || value === null || value === false) {
+    return false;
+  }
+
+  if (value === true) {
+    return true;
+  }
+
+  return {
+    ok: false,
+    message: "Não foi possível ler a repetição.",
+  };
 }
 
 function readNotes(

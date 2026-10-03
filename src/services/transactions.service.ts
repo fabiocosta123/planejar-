@@ -18,6 +18,12 @@ import {
   toComparisonContract,
   TransactionHistoryContract,
 } from "../contracts/financial/transaction-history.contract";
+import { recurringTransactionsRepository } from "../repositories/recurring-transactions.repository";
+import {
+  projectMonthlyOccurrences,
+  recurrenceHorizonEnd,
+} from "../domain/financial/rules/recurrence.rule";
+import { TransactionInput } from "../domain/financial/models/transaction-input";
 
 export class TransactionsService {
 
@@ -51,11 +57,23 @@ export class TransactionsService {
     minimumReserve = 0
   ) {
 
-    const transactions =
-      await transactionsRepository.findByPeriod(
-        familyMemberId,
-        period
-      );
+    const horizonEnd = recurrenceHorizonEnd(referenceDate);
+
+    const [transactions, upcoming, rules] =
+      await Promise.all([
+        transactionsRepository.findByPeriod(
+          familyMemberId,
+          period
+        ),
+        transactionsRepository.findAfter(
+          familyMemberId,
+          period.endDate,
+          horizonEnd
+        ),
+        recurringTransactionsRepository.findActiveByFamilyMember(
+          familyMemberId
+        ),
+      ]);
 
     const summary =
       financialEngine.calculateSummary(
@@ -77,10 +95,42 @@ export class TransactionsService {
         transactions
       );
 
+    const upcomingInputs: TransactionInput[] = upcoming.map(
+      (transaction) => ({
+        amount: Number(transaction.amount),
+        type: transaction.type,
+        status: transaction.status,
+        transactionDate: transaction.transactionDate,
+      })
+    );
+
+    const projected = projectMonthlyOccurrences(
+      rules.map((rule) => ({
+        amount: Number(rule.amount),
+        type: rule.type,
+        description: rule.description,
+        startDate: rule.startDate,
+        endDate: rule.endDate,
+      })),
+      referenceDate,
+      horizonEnd,
+      upcoming
+        .filter((transaction) => transaction.status !== "CANCELED")
+        .map((transaction) => ({
+          description: transaction.description,
+          type: transaction.type,
+          transactionDate: transaction.transactionDate,
+        }))
+    );
+
     const tightDay =
       tightDayRule.calculate(
         currentBalance,
-        transactions,
+        [
+          ...transactions,
+          ...upcomingInputs,
+          ...projected,
+        ],
         referenceDate,
         minimumReserve
       );
@@ -264,7 +314,7 @@ export class TransactionsService {
       );
     }
 
-    return transactionsRepository.create({
+    const transaction = await transactionsRepository.create({
       familyMemberId: context.familyMemberId,
       accountId: account.id,
       description: parsed.value.description,
@@ -274,6 +324,19 @@ export class TransactionsService {
       status: "COMPLETED",
       transactionDate: parsed.value.transactionDate,
     });
+
+    if (parsed.value.repeatsMonthly) {
+      await recurringTransactionsRepository.create({
+        familyMemberId: context.familyMemberId,
+        accountId: account.id,
+        description: parsed.value.description,
+        amount: parsed.value.amount,
+        type: parsed.value.type,
+        startDate: parsed.value.transactionDate,
+      });
+    }
+
+    return transaction;
   }
 
 }

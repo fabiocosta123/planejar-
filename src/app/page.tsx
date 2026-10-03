@@ -4,6 +4,7 @@ import {
   Bell,
   CalendarRange,
   Landmark,
+  Repeat,
   ScrollText,
   Wallet,
 } from "lucide-react";
@@ -23,6 +24,12 @@ const freeFeatures = [
     title: "Contas e saldo",
     description:
       "Acompanhe o saldo até hoje e o resumo de entradas e saídas.",
+  },
+  {
+    icon: Repeat,
+    title: "Repetir todo mês",
+    description:
+      "Aluguel e salário seguem para os próximos meses no dia do aperto.",
   },
   {
     icon: ScrollText,

@@ -202,6 +202,7 @@ export type FamilyMemberWhereInput = {
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   accounts?: Prisma.AccountListRelationFilter
   transactions?: Prisma.TransactionListRelationFilter
+  recurringTransactions?: Prisma.RecurringTransactionListRelationFilter
 }
 
 export type FamilyMemberOrderByWithRelationInput = {
@@ -216,6 +217,7 @@ export type FamilyMemberOrderByWithRelationInput = {
   user?: Prisma.UserOrderByWithRelationInput
   accounts?: Prisma.AccountOrderByRelationAggregateInput
   transactions?: Prisma.TransactionOrderByRelationAggregateInput
+  recurringTransactions?: Prisma.RecurringTransactionOrderByRelationAggregateInput
 }
 
 export type FamilyMemberWhereUniqueInput = Prisma.AtLeast<{
@@ -234,6 +236,7 @@ export type FamilyMemberWhereUniqueInput = Prisma.AtLeast<{
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   accounts?: Prisma.AccountListRelationFilter
   transactions?: Prisma.TransactionListRelationFilter
+  recurringTransactions?: Prisma.RecurringTransactionListRelationFilter
 }, "id" | "familyId_userId">
 
 export type FamilyMemberOrderByWithAggregationInput = {
@@ -272,6 +275,7 @@ export type FamilyMemberCreateInput = {
   user: Prisma.UserCreateNestedOneWithoutFamilyMembersInput
   accounts?: Prisma.AccountCreateNestedManyWithoutFamilyMemberInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutFamilyMemberInput
+  recurringTransactions?: Prisma.RecurringTransactionCreateNestedManyWithoutFamilyMemberInput
 }
 
 export type FamilyMemberUncheckedCreateInput = {
@@ -284,6 +288,7 @@ export type FamilyMemberUncheckedCreateInput = {
   deletedAt?: Date | string | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutFamilyMemberInput
   transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutFamilyMemberInput
+  recurringTransactions?: Prisma.RecurringTransactionUncheckedCreateNestedManyWithoutFamilyMemberInput
 }
 
 export type FamilyMemberUpdateInput = {
@@ -296,6 +301,7 @@ export type FamilyMemberUpdateInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutFamilyMembersNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutFamilyMemberNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutFamilyMemberNestedInput
+  recurringTransactions?: Prisma.RecurringTransactionUpdateManyWithoutFamilyMemberNestedInput
 }
 
 export type FamilyMemberUncheckedUpdateInput = {
@@ -308,6 +314,7 @@ export type FamilyMemberUncheckedUpdateInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutFamilyMemberNestedInput
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutFamilyMemberNestedInput
+  recurringTransactions?: Prisma.RecurringTransactionUncheckedUpdateManyWithoutFamilyMemberNestedInput
 }
 
 export type FamilyMemberCreateManyInput = {
@@ -504,6 +511,20 @@ export type FamilyMemberUpdateOneRequiredWithoutTransactionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.FamilyMemberUpdateToOneWithWhereWithoutTransactionsInput, Prisma.FamilyMemberUpdateWithoutTransactionsInput>, Prisma.FamilyMemberUncheckedUpdateWithoutTransactionsInput>
 }
 
+export type FamilyMemberCreateNestedOneWithoutRecurringTransactionsInput = {
+  create?: Prisma.XOR<Prisma.FamilyMemberCreateWithoutRecurringTransactionsInput, Prisma.FamilyMemberUncheckedCreateWithoutRecurringTransactionsInput>
+  connectOrCreate?: Prisma.FamilyMemberCreateOrConnectWithoutRecurringTransactionsInput
+  connect?: Prisma.FamilyMemberWhereUniqueInput
+}
+
+export type FamilyMemberUpdateOneRequiredWithoutRecurringTransactionsNestedInput = {
+  create?: Prisma.XOR<Prisma.FamilyMemberCreateWithoutRecurringTransactionsInput, Prisma.FamilyMemberUncheckedCreateWithoutRecurringTransactionsInput>
+  connectOrCreate?: Prisma.FamilyMemberCreateOrConnectWithoutRecurringTransactionsInput
+  upsert?: Prisma.FamilyMemberUpsertWithoutRecurringTransactionsInput
+  connect?: Prisma.FamilyMemberWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.FamilyMemberUpdateToOneWithWhereWithoutRecurringTransactionsInput, Prisma.FamilyMemberUpdateWithoutRecurringTransactionsInput>, Prisma.FamilyMemberUncheckedUpdateWithoutRecurringTransactionsInput>
+}
+
 export type FamilyMemberCreateWithoutFamilyInput = {
   id?: string
   role?: $Enums.FamilyRole
@@ -513,6 +534,7 @@ export type FamilyMemberCreateWithoutFamilyInput = {
   user: Prisma.UserCreateNestedOneWithoutFamilyMembersInput
   accounts?: Prisma.AccountCreateNestedManyWithoutFamilyMemberInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutFamilyMemberInput
+  recurringTransactions?: Prisma.RecurringTransactionCreateNestedManyWithoutFamilyMemberInput
 }
 
 export type FamilyMemberUncheckedCreateWithoutFamilyInput = {
@@ -524,6 +546,7 @@ export type FamilyMemberUncheckedCreateWithoutFamilyInput = {
   deletedAt?: Date | string | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutFamilyMemberInput
   transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutFamilyMemberInput
+  recurringTransactions?: Prisma.RecurringTransactionUncheckedCreateNestedManyWithoutFamilyMemberInput
 }
 
 export type FamilyMemberCreateOrConnectWithoutFamilyInput = {
@@ -574,6 +597,7 @@ export type FamilyMemberCreateWithoutUserInput = {
   family: Prisma.FamilyCreateNestedOneWithoutMembersInput
   accounts?: Prisma.AccountCreateNestedManyWithoutFamilyMemberInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutFamilyMemberInput
+  recurringTransactions?: Prisma.RecurringTransactionCreateNestedManyWithoutFamilyMemberInput
 }
 
 export type FamilyMemberUncheckedCreateWithoutUserInput = {
@@ -585,6 +609,7 @@ export type FamilyMemberUncheckedCreateWithoutUserInput = {
   deletedAt?: Date | string | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutFamilyMemberInput
   transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutFamilyMemberInput
+  recurringTransactions?: Prisma.RecurringTransactionUncheckedCreateNestedManyWithoutFamilyMemberInput
 }
 
 export type FamilyMemberCreateOrConnectWithoutUserInput = {
@@ -622,6 +647,7 @@ export type FamilyMemberCreateWithoutAccountsInput = {
   family: Prisma.FamilyCreateNestedOneWithoutMembersInput
   user: Prisma.UserCreateNestedOneWithoutFamilyMembersInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutFamilyMemberInput
+  recurringTransactions?: Prisma.RecurringTransactionCreateNestedManyWithoutFamilyMemberInput
 }
 
 export type FamilyMemberUncheckedCreateWithoutAccountsInput = {
@@ -633,6 +659,7 @@ export type FamilyMemberUncheckedCreateWithoutAccountsInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutFamilyMemberInput
+  recurringTransactions?: Prisma.RecurringTransactionUncheckedCreateNestedManyWithoutFamilyMemberInput
 }
 
 export type FamilyMemberCreateOrConnectWithoutAccountsInput = {
@@ -660,6 +687,7 @@ export type FamilyMemberUpdateWithoutAccountsInput = {
   family?: Prisma.FamilyUpdateOneRequiredWithoutMembersNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutFamilyMembersNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutFamilyMemberNestedInput
+  recurringTransactions?: Prisma.RecurringTransactionUpdateManyWithoutFamilyMemberNestedInput
 }
 
 export type FamilyMemberUncheckedUpdateWithoutAccountsInput = {
@@ -671,6 +699,7 @@ export type FamilyMemberUncheckedUpdateWithoutAccountsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutFamilyMemberNestedInput
+  recurringTransactions?: Prisma.RecurringTransactionUncheckedUpdateManyWithoutFamilyMemberNestedInput
 }
 
 export type FamilyMemberCreateWithoutTransactionsInput = {
@@ -682,6 +711,7 @@ export type FamilyMemberCreateWithoutTransactionsInput = {
   family: Prisma.FamilyCreateNestedOneWithoutMembersInput
   user: Prisma.UserCreateNestedOneWithoutFamilyMembersInput
   accounts?: Prisma.AccountCreateNestedManyWithoutFamilyMemberInput
+  recurringTransactions?: Prisma.RecurringTransactionCreateNestedManyWithoutFamilyMemberInput
 }
 
 export type FamilyMemberUncheckedCreateWithoutTransactionsInput = {
@@ -693,6 +723,7 @@ export type FamilyMemberUncheckedCreateWithoutTransactionsInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutFamilyMemberInput
+  recurringTransactions?: Prisma.RecurringTransactionUncheckedCreateNestedManyWithoutFamilyMemberInput
 }
 
 export type FamilyMemberCreateOrConnectWithoutTransactionsInput = {
@@ -720,6 +751,7 @@ export type FamilyMemberUpdateWithoutTransactionsInput = {
   family?: Prisma.FamilyUpdateOneRequiredWithoutMembersNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutFamilyMembersNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutFamilyMemberNestedInput
+  recurringTransactions?: Prisma.RecurringTransactionUpdateManyWithoutFamilyMemberNestedInput
 }
 
 export type FamilyMemberUncheckedUpdateWithoutTransactionsInput = {
@@ -731,6 +763,71 @@ export type FamilyMemberUncheckedUpdateWithoutTransactionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutFamilyMemberNestedInput
+  recurringTransactions?: Prisma.RecurringTransactionUncheckedUpdateManyWithoutFamilyMemberNestedInput
+}
+
+export type FamilyMemberCreateWithoutRecurringTransactionsInput = {
+  id?: string
+  role?: $Enums.FamilyRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  family: Prisma.FamilyCreateNestedOneWithoutMembersInput
+  user: Prisma.UserCreateNestedOneWithoutFamilyMembersInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutFamilyMemberInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutFamilyMemberInput
+}
+
+export type FamilyMemberUncheckedCreateWithoutRecurringTransactionsInput = {
+  id?: string
+  familyId: string
+  userId: string
+  role?: $Enums.FamilyRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutFamilyMemberInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutFamilyMemberInput
+}
+
+export type FamilyMemberCreateOrConnectWithoutRecurringTransactionsInput = {
+  where: Prisma.FamilyMemberWhereUniqueInput
+  create: Prisma.XOR<Prisma.FamilyMemberCreateWithoutRecurringTransactionsInput, Prisma.FamilyMemberUncheckedCreateWithoutRecurringTransactionsInput>
+}
+
+export type FamilyMemberUpsertWithoutRecurringTransactionsInput = {
+  update: Prisma.XOR<Prisma.FamilyMemberUpdateWithoutRecurringTransactionsInput, Prisma.FamilyMemberUncheckedUpdateWithoutRecurringTransactionsInput>
+  create: Prisma.XOR<Prisma.FamilyMemberCreateWithoutRecurringTransactionsInput, Prisma.FamilyMemberUncheckedCreateWithoutRecurringTransactionsInput>
+  where?: Prisma.FamilyMemberWhereInput
+}
+
+export type FamilyMemberUpdateToOneWithWhereWithoutRecurringTransactionsInput = {
+  where?: Prisma.FamilyMemberWhereInput
+  data: Prisma.XOR<Prisma.FamilyMemberUpdateWithoutRecurringTransactionsInput, Prisma.FamilyMemberUncheckedUpdateWithoutRecurringTransactionsInput>
+}
+
+export type FamilyMemberUpdateWithoutRecurringTransactionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumFamilyRoleFieldUpdateOperationsInput | $Enums.FamilyRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  family?: Prisma.FamilyUpdateOneRequiredWithoutMembersNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutFamilyMembersNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutFamilyMemberNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutFamilyMemberNestedInput
+}
+
+export type FamilyMemberUncheckedUpdateWithoutRecurringTransactionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  familyId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumFamilyRoleFieldUpdateOperationsInput | $Enums.FamilyRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutFamilyMemberNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutFamilyMemberNestedInput
 }
 
 export type FamilyMemberCreateManyFamilyInput = {
@@ -751,6 +848,7 @@ export type FamilyMemberUpdateWithoutFamilyInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutFamilyMembersNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutFamilyMemberNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutFamilyMemberNestedInput
+  recurringTransactions?: Prisma.RecurringTransactionUpdateManyWithoutFamilyMemberNestedInput
 }
 
 export type FamilyMemberUncheckedUpdateWithoutFamilyInput = {
@@ -762,6 +860,7 @@ export type FamilyMemberUncheckedUpdateWithoutFamilyInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutFamilyMemberNestedInput
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutFamilyMemberNestedInput
+  recurringTransactions?: Prisma.RecurringTransactionUncheckedUpdateManyWithoutFamilyMemberNestedInput
 }
 
 export type FamilyMemberUncheckedUpdateManyWithoutFamilyInput = {
@@ -791,6 +890,7 @@ export type FamilyMemberUpdateWithoutUserInput = {
   family?: Prisma.FamilyUpdateOneRequiredWithoutMembersNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutFamilyMemberNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutFamilyMemberNestedInput
+  recurringTransactions?: Prisma.RecurringTransactionUpdateManyWithoutFamilyMemberNestedInput
 }
 
 export type FamilyMemberUncheckedUpdateWithoutUserInput = {
@@ -802,6 +902,7 @@ export type FamilyMemberUncheckedUpdateWithoutUserInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutFamilyMemberNestedInput
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutFamilyMemberNestedInput
+  recurringTransactions?: Prisma.RecurringTransactionUncheckedUpdateManyWithoutFamilyMemberNestedInput
 }
 
 export type FamilyMemberUncheckedUpdateManyWithoutUserInput = {
@@ -821,11 +922,13 @@ export type FamilyMemberUncheckedUpdateManyWithoutUserInput = {
 export type FamilyMemberCountOutputType = {
   accounts: number
   transactions: number
+  recurringTransactions: number
 }
 
 export type FamilyMemberCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   accounts?: boolean | FamilyMemberCountOutputTypeCountAccountsArgs
   transactions?: boolean | FamilyMemberCountOutputTypeCountTransactionsArgs
+  recurringTransactions?: boolean | FamilyMemberCountOutputTypeCountRecurringTransactionsArgs
 }
 
 /**
@@ -852,6 +955,13 @@ export type FamilyMemberCountOutputTypeCountTransactionsArgs<ExtArgs extends run
   where?: Prisma.TransactionWhereInput
 }
 
+/**
+ * FamilyMemberCountOutputType without action
+ */
+export type FamilyMemberCountOutputTypeCountRecurringTransactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RecurringTransactionWhereInput
+}
+
 
 export type FamilyMemberSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -865,6 +975,7 @@ export type FamilyMemberSelect<ExtArgs extends runtime.Types.Extensions.Internal
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   accounts?: boolean | Prisma.FamilyMember$accountsArgs<ExtArgs>
   transactions?: boolean | Prisma.FamilyMember$transactionsArgs<ExtArgs>
+  recurringTransactions?: boolean | Prisma.FamilyMember$recurringTransactionsArgs<ExtArgs>
   _count?: boolean | Prisma.FamilyMemberCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["familyMember"]>
 
@@ -908,6 +1019,7 @@ export type FamilyMemberInclude<ExtArgs extends runtime.Types.Extensions.Interna
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   accounts?: boolean | Prisma.FamilyMember$accountsArgs<ExtArgs>
   transactions?: boolean | Prisma.FamilyMember$transactionsArgs<ExtArgs>
+  recurringTransactions?: boolean | Prisma.FamilyMember$recurringTransactionsArgs<ExtArgs>
   _count?: boolean | Prisma.FamilyMemberCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type FamilyMemberIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -926,6 +1038,7 @@ export type $FamilyMemberPayload<ExtArgs extends runtime.Types.Extensions.Intern
     user: Prisma.$UserPayload<ExtArgs>
     accounts: Prisma.$AccountPayload<ExtArgs>[]
     transactions: Prisma.$TransactionPayload<ExtArgs>[]
+    recurringTransactions: Prisma.$RecurringTransactionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1333,6 +1446,7 @@ export interface Prisma__FamilyMemberClient<T, Null = never, ExtArgs extends run
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   accounts<T extends Prisma.FamilyMember$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FamilyMember$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   transactions<T extends Prisma.FamilyMember$transactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FamilyMember$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  recurringTransactions<T extends Prisma.FamilyMember$recurringTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FamilyMember$recurringTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecurringTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1815,6 +1929,30 @@ export type FamilyMember$transactionsArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   distinct?: Prisma.TransactionScalarFieldEnum | Prisma.TransactionScalarFieldEnum[]
+}
+
+/**
+ * FamilyMember.recurringTransactions
+ */
+export type FamilyMember$recurringTransactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RecurringTransaction
+   */
+  select?: Prisma.RecurringTransactionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RecurringTransaction
+   */
+  omit?: Prisma.RecurringTransactionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RecurringTransactionInclude<ExtArgs> | null
+  where?: Prisma.RecurringTransactionWhereInput
+  orderBy?: Prisma.RecurringTransactionOrderByWithRelationInput | Prisma.RecurringTransactionOrderByWithRelationInput[]
+  cursor?: Prisma.RecurringTransactionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RecurringTransactionScalarFieldEnum | Prisma.RecurringTransactionScalarFieldEnum[]
 }
 
 /**
