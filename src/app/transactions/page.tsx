@@ -6,7 +6,9 @@ import { familyContextService } from "../../services/family-context.service";
 
 import { accountsService } from "../../services/accounts.service";
 
-import { getTransactionsAction } from "../../actions/transactions/get-transactions.action";
+import { settingsService } from "../../services/settings.service";
+
+import { getTransactionHistoryAction } from "../../actions/transactions/get-transaction-history.action";
 
 import { Transactions } from "../../components/transactions/transactions";
 
@@ -48,30 +50,15 @@ export default async function TransactionsPage() {
   const today =
     new Date();
 
-  const startDate =
-    new Date(
-      today.getFullYear(),
-      today.getMonth(),
-      1
-    );
+  const settings =
+    await settingsService.getSettings(userId);
 
-  const endDate =
-    new Date(
-      today.getFullYear(),
-      today.getMonth() + 1,
-      0,
-      23,
-      59,
-      59,
-      999
-    );
-
-  const [transactions, accounts] =
+  const [history, accounts] =
     await Promise.all([
-      getTransactionsAction(
+      getTransactionHistoryAction(
         familyContext.familyMemberId,
-        startDate,
-        endDate
+        settings.plan,
+        today
       ),
       accountsService.findByFamilyMember(
         familyContext.familyMemberId
@@ -80,7 +67,10 @@ export default async function TransactionsPage() {
 
   return (
     <Transactions
-      transactions={transactions}
+      transactions={history.transactions}
+      currentMonth={history.currentMonth}
+      comparison={history.comparison}
+      plan={history.plan}
       accounts={accounts.map((account) => ({
         id: account.id,
         name: account.name,

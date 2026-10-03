@@ -997,6 +997,7 @@ export const UserSettingsScalarFieldEnum = {
   notificationLevel: 'notificationLevel',
   dayOfTightnessAlert: 'dayOfTightnessAlert',
   minimumReserve: 'minimumReserve',
+  plan: 'plan',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1220,6 +1221,20 @@ export type EnumNotificationLevelFieldRefInput<$PrismaModel> = FieldRefInputType
  * Reference to a field of type 'NotificationLevel[]'
  */
 export type ListEnumNotificationLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationLevel[]'>
+    
+
+
+/**
+ * Reference to a field of type 'SubscriptionPlan'
+ */
+export type EnumSubscriptionPlanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SubscriptionPlan'>
+    
+
+
+/**
+ * Reference to a field of type 'SubscriptionPlan[]'
+ */
+export type ListEnumSubscriptionPlanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SubscriptionPlan[]'>
     
 
 

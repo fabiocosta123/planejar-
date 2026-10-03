@@ -72,6 +72,14 @@ export const NotificationLevel = {
 export type NotificationLevel = (typeof NotificationLevel)[keyof typeof NotificationLevel]
 
 
+export const SubscriptionPlan = {
+  FREE: 'FREE',
+  PRO: 'PRO'
+} as const
+
+export type SubscriptionPlan = (typeof SubscriptionPlan)[keyof typeof SubscriptionPlan]
+
+
 export const TransactionType = {
   INCOME: 'INCOME',
   EXPENSE: 'EXPENSE'

@@ -92,7 +92,9 @@ describe(
 
             futureBalance,
 
-            financialFlow
+            financialFlow,
+
+            tightDay: null
 
           });
 
@@ -154,6 +156,9 @@ describe(
         expect(result.financialFlow)
           .toHaveLength(2);
 
+        expect(result.tightDay)
+          .toBeNull();
+
 
         expect(result.financialFlow[0])
           .toEqual({
@@ -205,7 +210,8 @@ describe(
             2000,
 
             3500,
-            new Date("2026-08-10")
+            new Date("2026-08-10"),
+            0
 
           );
 

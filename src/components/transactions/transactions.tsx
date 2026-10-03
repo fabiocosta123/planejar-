@@ -19,23 +19,27 @@ import type {
   TransactionSummaryContract,
 } from "@/contracts/financial/transaction-summary.contract";
 
-import {
-  TransactionsList,
-} from "../transactions/transactions-list";
+import type {
+  HistoryComparisonContract,
+  PeriodTotalsContract,
+} from "@/contracts/financial/transaction-history.contract";
 
+import type { SubscriptionPlan } from "@/domain/financial/rules/transaction-history-window.rule";
+
+import { TransactionsBrowser } from "./transactions-browser";
+import { TransactionComparison } from "./transaction-comparison";
 import { TransactionCreateButton } from "./transaction-create-button";
 import { BottomNavigation } from "../dashboard/bottom-navigation";
 
 interface TransactionsProps {
-
-  transactions:
-    TransactionSummaryContract[];
-
+  transactions: TransactionSummaryContract[];
+  currentMonth: PeriodTotalsContract;
+  comparison: HistoryComparisonContract | null;
+  plan: SubscriptionPlan;
   accounts: {
     id: string;
     name: string;
   }[];
-
 }
 
 function formatCurrency(
@@ -54,38 +58,13 @@ function formatCurrency(
 
 export function Transactions({
   transactions,
+  currentMonth,
+  comparison,
+  plan,
   accounts,
 }: TransactionsProps) {
-
-  const counted =
-    transactions.filter(
-      (transaction) =>
-        transaction.status !== "CANCELED"
-    );
-
-  const income =
-    counted
-      .filter(
-        transaction =>
-          transaction.type === "INCOME"
-      )
-      .reduce(
-        (total, transaction) =>
-          total + transaction.amount,
-        0
-      );
-
-  const expenses =
-    counted
-      .filter(
-        transaction =>
-          transaction.type === "EXPENSE"
-      )
-      .reduce(
-        (total, transaction) =>
-          total + transaction.amount,
-        0
-      );
+  const income = currentMonth.income;
+  const expenses = currentMonth.expenses;
 
   return (
     <main className="min-h-dvh bg-muted/30">
@@ -195,11 +174,13 @@ export function Transactions({
 
         </section>
 
+        {comparison ? (
+          <TransactionComparison comparison={comparison} />
+        ) : null}
 
-        {/* Lista */}
-
-        <TransactionsList
+        <TransactionsBrowser
           transactions={transactions}
+          plan={plan}
         />
 
       </div>
