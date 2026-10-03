@@ -125,4 +125,25 @@ describe("projectMonthlyOccurrences", () => {
     expect(projected.at(-1)?.transactionDate).toEqual(new Date(2027, 8, 10));
     expect(projected).toHaveLength(11);
   });
+
+  it("mantém o dia 31 mesmo quando a série começou num mês curto", () => {
+    const projected = projectMonthlyOccurrences(
+      [
+        {
+          amount: 90,
+          type: "EXPENSE",
+          description: "Aluguel",
+          startDate: new Date(2026, 1, 10),
+          endDate: null,
+          dayOfMonth: 31,
+        },
+      ],
+      new Date(2026, 1, 10),
+      new Date(2026, 2, 31)
+    );
+
+    expect(projected.map((item) => item.transactionDate)).toEqual([
+      new Date(2026, 2, 31),
+    ]);
+  });
 });

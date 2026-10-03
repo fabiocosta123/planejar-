@@ -5,7 +5,8 @@ import { financialEngine } from "../domain/financial/engine/financial-engine";
 import { financialFlowEngine } from "../domain/financial/engine/financial-flow-engine";
 import { tightDayRule } from "../domain/financial/rules/tight-day.rule";
 import { TransactionSummaryMapper } from "../repositories/mappers/transaction-summary.mapper";
-import { parseCreateTransactionInput } from "../contracts/transactions/parse-create-transaction";
+import { parseCreateTransactionInput, parseUpdateSeriesInput } from "../contracts/transactions/parse-create-transaction";
+import { SeriesContract } from "../contracts/financial/series.contract";
 import { familyContextService } from "./family-context.service";
 import { familyMemberService } from "./family-member.service";
 import { TransactionCreateError } from "./errors/transaction-create.error";
@@ -111,6 +112,7 @@ export class TransactionsService {
         description: rule.description,
         startDate: rule.startDate,
         endDate: rule.endDate,
+        dayOfMonth: rule.dayOfMonth,
       })),
       referenceDate,
       horizonEnd,
@@ -333,10 +335,103 @@ export class TransactionsService {
         amount: parsed.value.amount,
         type: parsed.value.type,
         startDate: parsed.value.transactionDate,
+        dayOfMonth: parsed.value.transactionDate.getDate(),
       });
     }
 
     return transaction;
+  }
+
+  async listSeries(familyMemberId: string): Promise<SeriesContract[]> {
+    const series =
+      await recurringTransactionsRepository.findActiveByFamilyMember(
+        familyMemberId
+      );
+
+    return series.map((item) => ({
+      id: item.id,
+      description: item.description,
+      amount: Number(item.amount),
+      type: item.type,
+      dayOfMonth: item.dayOfMonth,
+      accountId: item.accountId,
+      accountName: item.account.name,
+    }));
+  }
+
+  async updateSeriesForUser(userId: string, input: unknown) {
+    const parsed = parseUpdateSeriesInput(input);
+
+    if (!parsed.ok) {
+      throw new TransactionCreateError(parsed.message);
+    }
+
+    const context = await this.requireWriter(userId);
+    const account = await accountsRepository.findById(
+      parsed.value.accountId
+    );
+
+    if (
+      !account ||
+      account.deletedAt ||
+      account.isActive === false ||
+      account.familyMemberId !== context.familyMemberId
+    ) {
+      throw new TransactionCreateError("Conta não encontrada.");
+    }
+
+    const updated = await recurringTransactionsRepository.updateOwned(
+      parsed.value.id,
+      context.familyMemberId,
+      {
+        accountId: account.id,
+        description: parsed.value.description,
+        amount: parsed.value.amount,
+        type: parsed.value.type,
+        dayOfMonth: parsed.value.dayOfMonth,
+      }
+    );
+
+    if (updated.count === 0) {
+      throw new TransactionCreateError("Repetição não encontrada.");
+    }
+  }
+
+  async stopSeriesForUser(userId: string, seriesId: string) {
+    const context = await this.requireWriter(userId);
+    const stopped = await recurringTransactionsRepository.deactivateOwned(
+      seriesId,
+      context.familyMemberId
+    );
+
+    if (stopped.count === 0) {
+      throw new TransactionCreateError("Repetição não encontrada.");
+    }
+  }
+
+  private async requireWriter(userId: string) {
+    const context =
+      await familyContextService.getCurrentContext(userId);
+
+    if (!context) {
+      throw new TransactionCreateError("Nenhuma família encontrada.");
+    }
+
+    const member = await familyMemberService.findById(
+      context.familyMemberId
+    );
+
+    if (!member || member.deletedAt) {
+      throw new TransactionCreateError("Nenhuma família encontrada.");
+    }
+
+    if (member.role === "VIEWER") {
+      throw new TransactionCreateError(
+        "Seu acesso permite apenas consulta."
+      );
+    }
+
+    return context;
   }
 
 }

@@ -187,6 +187,111 @@ function readDate(
   return date;
 }
 
+export interface ParsedUpdateSeries {
+  id: string;
+  accountId: string;
+  description: string;
+  amount: number;
+  type: "INCOME" | "EXPENSE";
+  dayOfMonth: number;
+}
+
+export type ParseUpdateSeriesResult =
+  | { ok: true; value: ParsedUpdateSeries }
+  | { ok: false; message: string };
+
+export function parseUpdateSeriesInput(
+  input: unknown
+): ParseUpdateSeriesResult {
+  if (!input || typeof input !== "object") {
+    return {
+      ok: false,
+      message: "Não foi possível ler a repetição.",
+    };
+  }
+
+  const data = input as Record<string, unknown>;
+  const id = readSeriesId(data.id);
+
+  if (typeof id !== "string") {
+    return id;
+  }
+
+  const description = readDescription(data.description);
+
+  if (typeof description !== "string") {
+    return description;
+  }
+
+  const amount = readAmount(data.amount);
+
+  if (typeof amount !== "number") {
+    return amount;
+  }
+
+  const type = readType(data.type);
+
+  if (type !== "INCOME" && type !== "EXPENSE") {
+    return type;
+  }
+
+  const accountId = readAccountId(data.accountId);
+
+  if (typeof accountId !== "string") {
+    return accountId;
+  }
+
+  const dayOfMonth = readDayOfMonth(data.dayOfMonth);
+
+  if (typeof dayOfMonth !== "number") {
+    return dayOfMonth;
+  }
+
+  return {
+    ok: true,
+    value: {
+      id,
+      accountId,
+      description,
+      amount,
+      type,
+      dayOfMonth,
+    },
+  };
+}
+
+function readSeriesId(
+  value: unknown
+): string | ParseUpdateSeriesResult {
+  if (typeof value !== "string" || !value.trim() || value.trim().length > 64) {
+    return {
+      ok: false,
+      message: "Não foi possível identificar a repetição.",
+    };
+  }
+
+  return value.trim();
+}
+
+function readDayOfMonth(
+  value: unknown
+): number | ParseUpdateSeriesResult {
+  const day = typeof value === "number"
+    ? value
+    : typeof value === "string" && /^\d{1,2}$/.test(value.trim())
+      ? Number(value.trim())
+      : Number.NaN;
+
+  if (!Number.isInteger(day) || day < 1 || day > 31) {
+    return {
+      ok: false,
+      message: "Informe um dia entre 1 e 31.",
+    };
+  }
+
+  return day;
+}
+
 function readRepeatsMonthly(
   value: unknown
 ): boolean | ParseCreateTransactionResult {

@@ -1070,6 +1070,7 @@ export const RecurringTransactionScalarFieldEnum = {
   type: 'type',
   frequency: 'frequency',
   startDate: 'startDate',
+  dayOfMonth: 'dayOfMonth',
   endDate: 'endDate',
   isActive: 'isActive',
   createdAt: 'createdAt',

@@ -8,6 +8,10 @@ import { accountsService } from "../../services/accounts.service";
 
 import { settingsService } from "../../services/settings.service";
 
+import { familyMemberService } from "../../services/family-member.service";
+
+import { transactionsService } from "../../services/transactions.service";
+
 import { getTransactionHistoryAction } from "../../actions/transactions/get-transaction-history.action";
 
 import { Transactions } from "../../components/transactions/transactions";
@@ -53,7 +57,7 @@ export default async function TransactionsPage() {
   const settings =
     await settingsService.getSettings(userId);
 
-  const [history, accounts] =
+  const [history, accounts, series, member] =
     await Promise.all([
       getTransactionHistoryAction(
         familyContext.familyMemberId,
@@ -61,6 +65,12 @@ export default async function TransactionsPage() {
         today
       ),
       accountsService.findByFamilyMember(
+        familyContext.familyMemberId
+      ),
+      transactionsService.listSeries(
+        familyContext.familyMemberId
+      ),
+      familyMemberService.findById(
         familyContext.familyMemberId
       ),
     ]);
@@ -75,6 +85,8 @@ export default async function TransactionsPage() {
         id: account.id,
         name: account.name,
       }))}
+      series={series}
+      canManageSeries={member?.role !== "VIEWER"}
     />
   );
 

@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { parseCreateTransactionInput } from "../parse-create-transaction";
+import {
+  parseCreateTransactionInput,
+  parseUpdateSeriesInput,
+} from "../parse-create-transaction";
 
 const validInput = {
   accountId: "account-1",
@@ -72,6 +75,45 @@ describe("parseCreateTransactionInput", () => {
     expect(result).toMatchObject({
       ok: false,
       message: "Não foi possível ler a repetição.",
+    });
+  });
+
+  it("deve aceitar a alteração da repetição", () => {
+    const result = parseUpdateSeriesInput({
+      id: "series-1",
+      accountId: "account-1",
+      description: " Aluguel ",
+      amount: "800,00",
+      type: "EXPENSE",
+      dayOfMonth: "10",
+    });
+
+    expect(result).toEqual({
+      ok: true,
+      value: {
+        id: "series-1",
+        accountId: "account-1",
+        description: "Aluguel",
+        amount: 800,
+        type: "EXPENSE",
+        dayOfMonth: 10,
+      },
+    });
+  });
+
+  it("deve recusar dia fora do mês", () => {
+    const result = parseUpdateSeriesInput({
+      id: "series-1",
+      accountId: "account-1",
+      description: "Aluguel",
+      amount: "10,00",
+      type: "EXPENSE",
+      dayOfMonth: "32",
+    });
+
+    expect(result).toMatchObject({
+      ok: false,
+      message: "Informe um dia entre 1 e 31.",
     });
   });
 
