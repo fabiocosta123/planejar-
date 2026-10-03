@@ -7,6 +7,8 @@ import { settingsService } from "../../services/settings.service";
 import { getFinancialDashboardAction } from "../../actions/financial/get-financial-dashboard.action";
 
 import { Dashboard } from "../../components/dashboard/dashboard";
+import { canAccessTightDay } from "../../domain/financial/rules/plan-access.rule";
+import { readProCheckoutConfig } from "../../integrations/mycredit/config";
 
 export default async function DashboardPage() {
 
@@ -74,7 +76,8 @@ export default async function DashboardPage() {
       endDate,
       undefined,
       today,
-      Number(settings.minimumReserve)
+      Number(settings.minimumReserve),
+      canAccessTightDay(settings.plan)
     );
 
   return (
@@ -82,6 +85,8 @@ export default async function DashboardPage() {
       userName={session?.user?.name}
       dashboard={dashboard}
       showTightDay={settings.dayOfTightnessAlert}
+      plan={settings.plan}
+      proAmount={readProCheckoutConfig().amount}
     />
   );
 }

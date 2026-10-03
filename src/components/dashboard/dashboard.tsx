@@ -6,18 +6,24 @@ import { BottomNavigation } from "./bottom-navigation";
 import { DashboardFutureBalance } from "./dashboard-future-balance";
 import { DashboardFinancialFlow } from "./dashboard-financial-flow";
 import { DashboardTightDay } from "./dashboard-tight-day";
+import { DashboardProOffer } from "./dashboard-pro-offer";
+import type { SubscriptionPlan } from "../../domain/financial/rules/transaction-history-window.rule";
 
 
 interface DashboardProps {
   userName?: string | null;
   dashboard: DashboardContract;
   showTightDay?: boolean;
+  plan: SubscriptionPlan;
+  proAmount: number;
 }
 
 export function Dashboard({
   userName,
   dashboard,
   showTightDay = true,
+  plan,
+  proAmount,
 }: DashboardProps) {
   return (
     <main className="min-h-dvh bg-muted/30">
@@ -28,10 +34,14 @@ export function Dashboard({
           summary={dashboard.summary}
         />
 
-        {showTightDay ? (
+        {showTightDay && plan === "PRO" ? (
           <DashboardTightDay
             data={dashboard.tightDay}
           />
+        ) : null}
+
+        {plan === "FREE" ? (
+          <DashboardProOffer amount={proAmount} />
         ) : null}
 
         <DashboardFinancialFlow

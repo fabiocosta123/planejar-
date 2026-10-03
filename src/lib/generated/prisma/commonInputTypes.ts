@@ -389,6 +389,23 @@ export type EnumSubscriptionPlanWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumSubscriptionPlanFilter<$PrismaModel>
 }
 
+export type EnumPixChargeStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.PixChargeStatus | Prisma.EnumPixChargeStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PixChargeStatus[] | Prisma.ListEnumPixChargeStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PixChargeStatus[] | Prisma.ListEnumPixChargeStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPixChargeStatusFilter<$PrismaModel> | $Enums.PixChargeStatus
+}
+
+export type EnumPixChargeStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PixChargeStatus | Prisma.EnumPixChargeStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PixChargeStatus[] | Prisma.ListEnumPixChargeStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PixChargeStatus[] | Prisma.ListEnumPixChargeStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPixChargeStatusWithAggregatesFilter<$PrismaModel> | $Enums.PixChargeStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPixChargeStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPixChargeStatusFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -775,6 +792,23 @@ export type NestedEnumSubscriptionPlanWithAggregatesFilter<$PrismaModel = never>
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumSubscriptionPlanFilter<$PrismaModel>
   _max?: Prisma.NestedEnumSubscriptionPlanFilter<$PrismaModel>
+}
+
+export type NestedEnumPixChargeStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.PixChargeStatus | Prisma.EnumPixChargeStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PixChargeStatus[] | Prisma.ListEnumPixChargeStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PixChargeStatus[] | Prisma.ListEnumPixChargeStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPixChargeStatusFilter<$PrismaModel> | $Enums.PixChargeStatus
+}
+
+export type NestedEnumPixChargeStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PixChargeStatus | Prisma.EnumPixChargeStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PixChargeStatus[] | Prisma.ListEnumPixChargeStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PixChargeStatus[] | Prisma.ListEnumPixChargeStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPixChargeStatusWithAggregatesFilter<$PrismaModel> | $Enums.PixChargeStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPixChargeStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPixChargeStatusFilter<$PrismaModel>
 }
 
 

@@ -57,7 +57,9 @@ export const ModelName = {
   Account: 'Account',
   Transaction: 'Transaction',
   RecurringTransaction: 'RecurringTransaction',
-  UserSettings: 'UserSettings'
+  UserSettings: 'UserSettings',
+  PixCharge: 'PixCharge',
+  PixWebhookEvent: 'PixWebhookEvent'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -194,6 +196,33 @@ export const UserSettingsScalarFieldEnum = {
 } as const
 
 export type UserSettingsScalarFieldEnum = (typeof UserSettingsScalarFieldEnum)[keyof typeof UserSettingsScalarFieldEnum]
+
+
+export const PixChargeScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  idFaturaPag: 'idFaturaPag',
+  amount: 'amount',
+  status: 'status',
+  copyPaste: 'copyPaste',
+  expiresAt: 'expiresAt',
+  paidAt: 'paidAt',
+  refundedAt: 'refundedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PixChargeScalarFieldEnum = (typeof PixChargeScalarFieldEnum)[keyof typeof PixChargeScalarFieldEnum]
+
+
+export const PixWebhookEventScalarFieldEnum = {
+  id: 'id',
+  tipo: 'tipo',
+  idFaturaPag: 'idFaturaPag',
+  createdAt: 'createdAt'
+} as const
+
+export type PixWebhookEventScalarFieldEnum = (typeof PixWebhookEventScalarFieldEnum)[keyof typeof PixWebhookEventScalarFieldEnum]
 
 
 export const SortOrder = {

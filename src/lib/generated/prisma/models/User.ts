@@ -215,6 +215,7 @@ export type UserWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   settings?: Prisma.XOR<Prisma.UserSettingsNullableScalarRelationFilter, Prisma.UserSettingsWhereInput> | null
+  pixCharges?: Prisma.PixChargeListRelationFilter
   familyMembers?: Prisma.FamilyMemberListRelationFilter
   ownedFamilies?: Prisma.FamilyListRelationFilter
 }
@@ -230,6 +231,7 @@ export type UserOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   settings?: Prisma.UserSettingsOrderByWithRelationInput
+  pixCharges?: Prisma.PixChargeOrderByRelationAggregateInput
   familyMembers?: Prisma.FamilyMemberOrderByRelationAggregateInput
   ownedFamilies?: Prisma.FamilyOrderByRelationAggregateInput
 }
@@ -248,6 +250,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   settings?: Prisma.XOR<Prisma.UserSettingsNullableScalarRelationFilter, Prisma.UserSettingsWhereInput> | null
+  pixCharges?: Prisma.PixChargeListRelationFilter
   familyMembers?: Prisma.FamilyMemberListRelationFilter
   ownedFamilies?: Prisma.FamilyListRelationFilter
 }, "id" | "email">
@@ -293,6 +296,7 @@ export type UserCreateInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   settings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
+  pixCharges?: Prisma.PixChargeCreateNestedManyWithoutUserInput
   familyMembers?: Prisma.FamilyMemberCreateNestedManyWithoutUserInput
   ownedFamilies?: Prisma.FamilyCreateNestedManyWithoutOwnerInput
 }
@@ -308,6 +312,7 @@ export type UserUncheckedCreateInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   settings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
+  pixCharges?: Prisma.PixChargeUncheckedCreateNestedManyWithoutUserInput
   familyMembers?: Prisma.FamilyMemberUncheckedCreateNestedManyWithoutUserInput
   ownedFamilies?: Prisma.FamilyUncheckedCreateNestedManyWithoutOwnerInput
 }
@@ -323,6 +328,7 @@ export type UserUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   settings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
+  pixCharges?: Prisma.PixChargeUpdateManyWithoutUserNestedInput
   familyMembers?: Prisma.FamilyMemberUpdateManyWithoutUserNestedInput
   ownedFamilies?: Prisma.FamilyUpdateManyWithoutOwnerNestedInput
 }
@@ -338,6 +344,7 @@ export type UserUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   settings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
+  pixCharges?: Prisma.PixChargeUncheckedUpdateManyWithoutUserNestedInput
   familyMembers?: Prisma.FamilyMemberUncheckedUpdateManyWithoutUserNestedInput
   ownedFamilies?: Prisma.FamilyUncheckedUpdateManyWithoutOwnerNestedInput
 }
@@ -469,6 +476,20 @@ export type UserUpdateOneRequiredWithoutSettingsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSettingsInput, Prisma.UserUpdateWithoutSettingsInput>, Prisma.UserUncheckedUpdateWithoutSettingsInput>
 }
 
+export type UserCreateNestedOneWithoutPixChargesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPixChargesInput, Prisma.UserUncheckedCreateWithoutPixChargesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPixChargesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPixChargesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPixChargesInput, Prisma.UserUncheckedCreateWithoutPixChargesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPixChargesInput
+  upsert?: Prisma.UserUpsertWithoutPixChargesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPixChargesInput, Prisma.UserUpdateWithoutPixChargesInput>, Prisma.UserUncheckedUpdateWithoutPixChargesInput>
+}
+
 export type UserCreateWithoutOwnedFamiliesInput = {
   id?: string
   name: string
@@ -480,6 +501,7 @@ export type UserCreateWithoutOwnedFamiliesInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   settings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
+  pixCharges?: Prisma.PixChargeCreateNestedManyWithoutUserInput
   familyMembers?: Prisma.FamilyMemberCreateNestedManyWithoutUserInput
 }
 
@@ -494,6 +516,7 @@ export type UserUncheckedCreateWithoutOwnedFamiliesInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   settings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
+  pixCharges?: Prisma.PixChargeUncheckedCreateNestedManyWithoutUserInput
   familyMembers?: Prisma.FamilyMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -524,6 +547,7 @@ export type UserUpdateWithoutOwnedFamiliesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   settings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
+  pixCharges?: Prisma.PixChargeUpdateManyWithoutUserNestedInput
   familyMembers?: Prisma.FamilyMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -538,6 +562,7 @@ export type UserUncheckedUpdateWithoutOwnedFamiliesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   settings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
+  pixCharges?: Prisma.PixChargeUncheckedUpdateManyWithoutUserNestedInput
   familyMembers?: Prisma.FamilyMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -552,6 +577,7 @@ export type UserCreateWithoutFamilyMembersInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   settings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
+  pixCharges?: Prisma.PixChargeCreateNestedManyWithoutUserInput
   ownedFamilies?: Prisma.FamilyCreateNestedManyWithoutOwnerInput
 }
 
@@ -566,6 +592,7 @@ export type UserUncheckedCreateWithoutFamilyMembersInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   settings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
+  pixCharges?: Prisma.PixChargeUncheckedCreateNestedManyWithoutUserInput
   ownedFamilies?: Prisma.FamilyUncheckedCreateNestedManyWithoutOwnerInput
 }
 
@@ -596,6 +623,7 @@ export type UserUpdateWithoutFamilyMembersInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   settings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
+  pixCharges?: Prisma.PixChargeUpdateManyWithoutUserNestedInput
   ownedFamilies?: Prisma.FamilyUpdateManyWithoutOwnerNestedInput
 }
 
@@ -610,6 +638,7 @@ export type UserUncheckedUpdateWithoutFamilyMembersInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   settings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
+  pixCharges?: Prisma.PixChargeUncheckedUpdateManyWithoutUserNestedInput
   ownedFamilies?: Prisma.FamilyUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
@@ -623,6 +652,7 @@ export type UserCreateWithoutSettingsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  pixCharges?: Prisma.PixChargeCreateNestedManyWithoutUserInput
   familyMembers?: Prisma.FamilyMemberCreateNestedManyWithoutUserInput
   ownedFamilies?: Prisma.FamilyCreateNestedManyWithoutOwnerInput
 }
@@ -637,6 +667,7 @@ export type UserUncheckedCreateWithoutSettingsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  pixCharges?: Prisma.PixChargeUncheckedCreateNestedManyWithoutUserInput
   familyMembers?: Prisma.FamilyMemberUncheckedCreateNestedManyWithoutUserInput
   ownedFamilies?: Prisma.FamilyUncheckedCreateNestedManyWithoutOwnerInput
 }
@@ -667,6 +698,7 @@ export type UserUpdateWithoutSettingsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pixCharges?: Prisma.PixChargeUpdateManyWithoutUserNestedInput
   familyMembers?: Prisma.FamilyMemberUpdateManyWithoutUserNestedInput
   ownedFamilies?: Prisma.FamilyUpdateManyWithoutOwnerNestedInput
 }
@@ -681,6 +713,83 @@ export type UserUncheckedUpdateWithoutSettingsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pixCharges?: Prisma.PixChargeUncheckedUpdateManyWithoutUserNestedInput
+  familyMembers?: Prisma.FamilyMemberUncheckedUpdateManyWithoutUserNestedInput
+  ownedFamilies?: Prisma.FamilyUncheckedUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserCreateWithoutPixChargesInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  image?: string | null
+  status?: $Enums.UserStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  settings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
+  familyMembers?: Prisma.FamilyMemberCreateNestedManyWithoutUserInput
+  ownedFamilies?: Prisma.FamilyCreateNestedManyWithoutOwnerInput
+}
+
+export type UserUncheckedCreateWithoutPixChargesInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  image?: string | null
+  status?: $Enums.UserStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  settings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
+  familyMembers?: Prisma.FamilyMemberUncheckedCreateNestedManyWithoutUserInput
+  ownedFamilies?: Prisma.FamilyUncheckedCreateNestedManyWithoutOwnerInput
+}
+
+export type UserCreateOrConnectWithoutPixChargesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPixChargesInput, Prisma.UserUncheckedCreateWithoutPixChargesInput>
+}
+
+export type UserUpsertWithoutPixChargesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPixChargesInput, Prisma.UserUncheckedUpdateWithoutPixChargesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPixChargesInput, Prisma.UserUncheckedCreateWithoutPixChargesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPixChargesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPixChargesInput, Prisma.UserUncheckedUpdateWithoutPixChargesInput>
+}
+
+export type UserUpdateWithoutPixChargesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  settings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
+  familyMembers?: Prisma.FamilyMemberUpdateManyWithoutUserNestedInput
+  ownedFamilies?: Prisma.FamilyUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPixChargesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  settings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
   familyMembers?: Prisma.FamilyMemberUncheckedUpdateManyWithoutUserNestedInput
   ownedFamilies?: Prisma.FamilyUncheckedUpdateManyWithoutOwnerNestedInput
 }
@@ -691,11 +800,13 @@ export type UserUncheckedUpdateWithoutSettingsInput = {
  */
 
 export type UserCountOutputType = {
+  pixCharges: number
   familyMembers: number
   ownedFamilies: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  pixCharges?: boolean | UserCountOutputTypeCountPixChargesArgs
   familyMembers?: boolean | UserCountOutputTypeCountFamilyMembersArgs
   ownedFamilies?: boolean | UserCountOutputTypeCountOwnedFamiliesArgs
 }
@@ -708,6 +819,13 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
    * Select specific fields to fetch from the UserCountOutputType
    */
   select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPixChargesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PixChargeWhereInput
 }
 
 /**
@@ -736,6 +854,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   updatedAt?: boolean
   deletedAt?: boolean
   settings?: boolean | Prisma.User$settingsArgs<ExtArgs>
+  pixCharges?: boolean | Prisma.User$pixChargesArgs<ExtArgs>
   familyMembers?: boolean | Prisma.User$familyMembersArgs<ExtArgs>
   ownedFamilies?: boolean | Prisma.User$ownedFamiliesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -780,6 +899,7 @@ export type UserSelectScalar = {
 export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "passwordHash" | "image" | "status" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   settings?: boolean | Prisma.User$settingsArgs<ExtArgs>
+  pixCharges?: boolean | Prisma.User$pixChargesArgs<ExtArgs>
   familyMembers?: boolean | Prisma.User$familyMembersArgs<ExtArgs>
   ownedFamilies?: boolean | Prisma.User$ownedFamiliesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -791,6 +911,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "User"
   objects: {
     settings: Prisma.$UserSettingsPayload<ExtArgs> | null
+    pixCharges: Prisma.$PixChargePayload<ExtArgs>[]
     familyMembers: Prisma.$FamilyMemberPayload<ExtArgs>[]
     ownedFamilies: Prisma.$FamilyPayload<ExtArgs>[]
   }
@@ -1199,6 +1320,7 @@ readonly fields: UserFieldRefs;
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   settings<T extends Prisma.User$settingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$settingsArgs<ExtArgs>>): Prisma.Prisma__UserSettingsClient<runtime.Types.Result.GetResult<Prisma.$UserSettingsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  pixCharges<T extends Prisma.User$pixChargesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$pixChargesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PixChargePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   familyMembers<T extends Prisma.User$familyMembersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$familyMembersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FamilyMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   ownedFamilies<T extends Prisma.User$ownedFamiliesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ownedFamiliesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FamilyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -1648,6 +1770,30 @@ export type User$settingsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    */
   include?: Prisma.UserSettingsInclude<ExtArgs> | null
   where?: Prisma.UserSettingsWhereInput
+}
+
+/**
+ * User.pixCharges
+ */
+export type User$pixChargesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PixCharge
+   */
+  select?: Prisma.PixChargeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PixCharge
+   */
+  omit?: Prisma.PixChargeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PixChargeInclude<ExtArgs> | null
+  where?: Prisma.PixChargeWhereInput
+  orderBy?: Prisma.PixChargeOrderByWithRelationInput | Prisma.PixChargeOrderByWithRelationInput[]
+  cursor?: Prisma.PixChargeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PixChargeScalarFieldEnum | Prisma.PixChargeScalarFieldEnum[]
 }
 
 /**

@@ -9,8 +9,11 @@ import {
   Wallet,
 } from "lucide-react";
 
+import { DashboardProOffer } from "@/components/dashboard/dashboard-pro-offer";
 import { Button } from "@/components/ui/button";
 import { auth } from "../lib/auth";
+import { readProCheckoutConfig } from "../integrations/mycredit/config";
+import { settingsService } from "../services/settings.service";
 
 const freeFeatures = [
   {
@@ -74,7 +77,14 @@ const proFeatures = [
 
 export default async function Home() {
   const session = await auth();
-  const isLoggedIn = Boolean(session?.user);
+  const userId = session?.user?.id;
+  const isLoggedIn = Boolean(userId);
+  const settings = userId ? await settingsService.getSettings(userId) : null;
+  const proAmount = readProCheckoutConfig().amount;
+  const proPrice = new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(proAmount);
 
   return (
     <main className="min-h-dvh bg-muted/30">
@@ -136,6 +146,28 @@ export default async function Home() {
               <FeatureCard key={feature.title} {...feature} />
             ))}
           </ul>
+
+          {settings?.plan === "PRO" ? (
+            <div className="mt-6">
+              <Button asChild className="h-11 w-full">
+                <Link href="/dashboard">Abrir o dia do aperto</Link>
+              </Button>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Versão Pro liberada nesta conta.
+              </p>
+            </div>
+          ) : isLoggedIn ? (
+            <DashboardProOffer amount={proAmount} variant="button" />
+          ) : (
+            <div className="mt-6">
+              <Button asChild className="h-11 w-full">
+                <Link href="/login">Liberar versão Pro</Link>
+              </Button>
+              <p className="mt-2 text-sm text-muted-foreground">
+                {proPrice} · pagamento único por PIX.
+              </p>
+            </div>
+          )}
         </section>
       </div>
     </main>

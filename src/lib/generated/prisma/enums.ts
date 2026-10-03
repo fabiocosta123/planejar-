@@ -80,6 +80,15 @@ export const SubscriptionPlan = {
 export type SubscriptionPlan = (typeof SubscriptionPlan)[keyof typeof SubscriptionPlan]
 
 
+export const PixChargeStatus = {
+  PENDING: 'PENDING',
+  PAID: 'PAID',
+  REFUNDED: 'REFUNDED'
+} as const
+
+export type PixChargeStatus = (typeof PixChargeStatus)[keyof typeof PixChargeStatus]
+
+
 export const TransactionType = {
   INCOME: 'INCOME',
   EXPENSE: 'EXPENSE'
