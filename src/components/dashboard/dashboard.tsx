@@ -7,6 +7,7 @@ import { DashboardFutureBalance } from "./dashboard-future-balance";
 import { DashboardFinancialFlow } from "./dashboard-financial-flow";
 import { DashboardTightDay } from "./dashboard-tight-day";
 import { DashboardProOffer } from "./dashboard-pro-offer";
+import { FamilyInviteCode } from "./family-invite-code";
 import type { SubscriptionPlan } from "../../domain/financial/rules/transaction-history-window.rule";
 
 
@@ -16,6 +17,7 @@ interface DashboardProps {
   showTightDay?: boolean;
   plan: SubscriptionPlan;
   proAmount: number;
+  inviteCode?: string | null;
 }
 
 export function Dashboard({
@@ -24,11 +26,14 @@ export function Dashboard({
   showTightDay = true,
   plan,
   proAmount,
+  inviteCode,
 }: DashboardProps) {
   return (
-    <main className="min-h-dvh bg-muted/30">
+    <main className="min-h-dvh bg-background">
       <div className="mx-auto min-h-dvh w-full max-w-2xl px-4 pb-24 pt-6 sm:px-6">
         <DashboardHeader userName={userName} />
+
+        {inviteCode ? <FamilyInviteCode code={inviteCode} /> : null}
 
         <DashboardSummary
           summary={dashboard.summary}

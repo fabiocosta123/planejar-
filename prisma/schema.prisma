@@ -97,6 +97,8 @@ model Family {
 
   name String
 
+  inviteCode String @unique
+
   ownerId String
 
   owner User @relation("FamilyOwner", fields: [ownerId], references: [id])

@@ -1,5 +1,6 @@
 import { prisma } from "../lib/prisma";
 import { PrismaClient } from "../lib/generated/prisma/client";
+import { createInviteCode } from "../domain/family/invite-code";
 
 type PrismaTransactionClient =
   Parameters<
@@ -19,6 +20,15 @@ export class FamilyRepository {
       }
     });
 
+  }
+
+
+  async findByInviteCode(inviteCode: string) {
+    return prisma.family.findUnique({
+      where: {
+        inviteCode,
+      },
+    });
   }
 
 
@@ -44,11 +54,15 @@ export class FamilyRepository {
     data: {
       name: string;
       ownerId: string;
+      inviteCode?: string;
     }
   ) {
 
     return prisma.family.create({
-      data
+      data: {
+        ...data,
+        inviteCode: data.inviteCode ?? createInviteCode(),
+      },
     });
 
   }
@@ -59,11 +73,15 @@ export class FamilyRepository {
     data: {
       name: string;
       ownerId: string;
+      inviteCode?: string;
     }
   ) {
 
     return client.family.create({
-      data
+      data: {
+        ...data,
+        inviteCode: data.inviteCode ?? createInviteCode(),
+      },
     });
 
   }

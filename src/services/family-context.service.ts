@@ -4,6 +4,7 @@ import { userSettingsRepository } from "../repositories/user-settings.repository
 export interface CurrentFamilyContext {
   familyId: string;
   familyMemberId: string;
+  ledgerMemberId: string;
 }
 
 export class FamilyContextService {
@@ -27,10 +28,10 @@ export class FamilyContextService {
 
       if (familyMember) {
 
-        return {
-          familyId: settings.currentFamilyId,
-          familyMemberId: familyMember.id
-        };
+        return this.withLedger(
+          settings.currentFamilyId,
+          familyMember.id
+        );
 
       }
 
@@ -70,11 +71,24 @@ export class FamilyContextService {
 
     }
 
-    return {
-      familyId: firstFamilyMember.familyId,
-      familyMemberId: firstFamilyMember.id
-    };
+    return this.withLedger(
+      firstFamilyMember.familyId,
+      firstFamilyMember.id
+    );
 
+  }
+
+  private async withLedger(familyId: string, familyMemberId: string) {
+    const members = await familyMemberService.findByFamilyId(familyId);
+    const owner = members.find(
+      (member) => member.role === "OWNER" && !member.deletedAt
+    );
+
+    return {
+      familyId,
+      familyMemberId,
+      ledgerMemberId: owner?.id ?? familyMemberId,
+    };
   }
 
 }

@@ -229,7 +229,7 @@ export function DashboardProOffer({
 
   return (
     <section className="mt-4" aria-label="Versão Pro">
-      <div className="rounded-2xl border bg-card p-5 shadow-sm">
+      <div className="rounded-2xl border border-primary/20 bg-primary/5 p-5 shadow-sm">
         <p className="text-sm font-medium text-muted-foreground">
           Dia do aperto
         </p>

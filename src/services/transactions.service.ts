@@ -307,6 +307,7 @@ export class TransactionsService {
       );
     }
 
+    const ledgerMemberId = context.ledgerMemberId ?? context.familyMemberId;
     const account = await accountsRepository.findById(
       parsed.value.accountId
     );
@@ -315,7 +316,7 @@ export class TransactionsService {
       !account ||
       account.deletedAt ||
       account.isActive === false ||
-      account.familyMemberId !== context.familyMemberId
+      account.familyMemberId !== ledgerMemberId
     ) {
       throw new TransactionCreateError(
         "Conta não encontrada."
@@ -323,7 +324,7 @@ export class TransactionsService {
     }
 
     const transaction = await transactionsRepository.create({
-      familyMemberId: context.familyMemberId,
+      familyMemberId: ledgerMemberId,
       accountId: account.id,
       description: parsed.value.description,
       notes: parsed.value.notes,
@@ -335,7 +336,7 @@ export class TransactionsService {
 
     if (parsed.value.repeatsMonthly) {
       await recurringTransactionsRepository.create({
-        familyMemberId: context.familyMemberId,
+        familyMemberId: ledgerMemberId,
         accountId: account.id,
         description: parsed.value.description,
         amount: parsed.value.amount,
@@ -373,6 +374,7 @@ export class TransactionsService {
     }
 
     const context = await this.requireWriter(userId);
+    const ledgerMemberId = context.ledgerMemberId ?? context.familyMemberId;
     const account = await accountsRepository.findById(
       parsed.value.accountId
     );
@@ -381,14 +383,14 @@ export class TransactionsService {
       !account ||
       account.deletedAt ||
       account.isActive === false ||
-      account.familyMemberId !== context.familyMemberId
+      account.familyMemberId !== ledgerMemberId
     ) {
       throw new TransactionCreateError("Conta não encontrada.");
     }
 
     const updated = await recurringTransactionsRepository.updateOwned(
       parsed.value.id,
-      context.familyMemberId,
+      ledgerMemberId,
       {
         accountId: account.id,
         description: parsed.value.description,
@@ -407,7 +409,7 @@ export class TransactionsService {
     const context = await this.requireWriter(userId);
     const stopped = await recurringTransactionsRepository.deactivateOwned(
       seriesId,
-      context.familyMemberId
+      context.ledgerMemberId ?? context.familyMemberId
     );
 
     if (stopped.count === 0) {

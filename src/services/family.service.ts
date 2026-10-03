@@ -9,6 +9,17 @@ import { FamilyMemberMapper } from "../domain/family/mappers/family-member.mappe
 
 export class FamilyService {
 
+  async inviteCodeForOwner(familyId: string, userId: string) {
+    const family = await familyRepository.findById(familyId);
+
+    if (!family || family.deletedAt || family.ownerId !== userId) {
+      return null;
+    }
+
+    return family.inviteCode;
+  }
+
+
   async findById(
     id: string
   ) {

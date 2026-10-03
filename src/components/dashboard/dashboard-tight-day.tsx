@@ -27,7 +27,7 @@ export function DashboardTightDay({
       className="mt-4"
       aria-label="Dia do aperto"
     >
-      <div className="rounded-2xl border bg-card p-5 shadow-sm">
+      <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5 shadow-sm dark:border-amber-900/60 dark:bg-amber-950/40">
         <p className="text-sm font-medium text-muted-foreground">
           Dia do aperto
         </p>
