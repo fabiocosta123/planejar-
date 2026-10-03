@@ -37,6 +37,7 @@ export type UserSettingsSumAggregateOutputType = {
 export type UserSettingsMinAggregateOutputType = {
   id: string | null
   userId: string | null
+  currentFamilyId: string | null
   currency: $Enums.Currency | null
   locale: string | null
   theme: $Enums.Theme | null
@@ -51,6 +52,7 @@ export type UserSettingsMinAggregateOutputType = {
 export type UserSettingsMaxAggregateOutputType = {
   id: string | null
   userId: string | null
+  currentFamilyId: string | null
   currency: $Enums.Currency | null
   locale: string | null
   theme: $Enums.Theme | null
@@ -65,6 +67,7 @@ export type UserSettingsMaxAggregateOutputType = {
 export type UserSettingsCountAggregateOutputType = {
   id: number
   userId: number
+  currentFamilyId: number
   currency: number
   locale: number
   theme: number
@@ -89,6 +92,7 @@ export type UserSettingsSumAggregateInputType = {
 export type UserSettingsMinAggregateInputType = {
   id?: true
   userId?: true
+  currentFamilyId?: true
   currency?: true
   locale?: true
   theme?: true
@@ -103,6 +107,7 @@ export type UserSettingsMinAggregateInputType = {
 export type UserSettingsMaxAggregateInputType = {
   id?: true
   userId?: true
+  currentFamilyId?: true
   currency?: true
   locale?: true
   theme?: true
@@ -117,6 +122,7 @@ export type UserSettingsMaxAggregateInputType = {
 export type UserSettingsCountAggregateInputType = {
   id?: true
   userId?: true
+  currentFamilyId?: true
   currency?: true
   locale?: true
   theme?: true
@@ -218,6 +224,7 @@ export type UserSettingsGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
 export type UserSettingsGroupByOutputType = {
   id: string
   userId: string
+  currentFamilyId: string | null
   currency: $Enums.Currency
   locale: string
   theme: $Enums.Theme
@@ -255,6 +262,7 @@ export type UserSettingsWhereInput = {
   NOT?: Prisma.UserSettingsWhereInput | Prisma.UserSettingsWhereInput[]
   id?: Prisma.StringFilter<"UserSettings"> | string
   userId?: Prisma.StringFilter<"UserSettings"> | string
+  currentFamilyId?: Prisma.StringNullableFilter<"UserSettings"> | string | null
   currency?: Prisma.EnumCurrencyFilter<"UserSettings"> | $Enums.Currency
   locale?: Prisma.StringFilter<"UserSettings"> | string
   theme?: Prisma.EnumThemeFilter<"UserSettings"> | $Enums.Theme
@@ -265,11 +273,13 @@ export type UserSettingsWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"UserSettings"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"UserSettings"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  currentFamily?: Prisma.XOR<Prisma.FamilyNullableScalarRelationFilter, Prisma.FamilyWhereInput> | null
 }
 
 export type UserSettingsOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  currentFamilyId?: Prisma.SortOrderInput | Prisma.SortOrder
   currency?: Prisma.SortOrder
   locale?: Prisma.SortOrder
   theme?: Prisma.SortOrder
@@ -280,6 +290,7 @@ export type UserSettingsOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
+  currentFamily?: Prisma.FamilyOrderByWithRelationInput
 }
 
 export type UserSettingsWhereUniqueInput = Prisma.AtLeast<{
@@ -288,6 +299,7 @@ export type UserSettingsWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.UserSettingsWhereInput | Prisma.UserSettingsWhereInput[]
   OR?: Prisma.UserSettingsWhereInput[]
   NOT?: Prisma.UserSettingsWhereInput | Prisma.UserSettingsWhereInput[]
+  currentFamilyId?: Prisma.StringNullableFilter<"UserSettings"> | string | null
   currency?: Prisma.EnumCurrencyFilter<"UserSettings"> | $Enums.Currency
   locale?: Prisma.StringFilter<"UserSettings"> | string
   theme?: Prisma.EnumThemeFilter<"UserSettings"> | $Enums.Theme
@@ -298,11 +310,13 @@ export type UserSettingsWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"UserSettings"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"UserSettings"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  currentFamily?: Prisma.XOR<Prisma.FamilyNullableScalarRelationFilter, Prisma.FamilyWhereInput> | null
 }, "id" | "userId">
 
 export type UserSettingsOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  currentFamilyId?: Prisma.SortOrderInput | Prisma.SortOrder
   currency?: Prisma.SortOrder
   locale?: Prisma.SortOrder
   theme?: Prisma.SortOrder
@@ -325,6 +339,7 @@ export type UserSettingsScalarWhereWithAggregatesInput = {
   NOT?: Prisma.UserSettingsScalarWhereWithAggregatesInput | Prisma.UserSettingsScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"UserSettings"> | string
   userId?: Prisma.StringWithAggregatesFilter<"UserSettings"> | string
+  currentFamilyId?: Prisma.StringNullableWithAggregatesFilter<"UserSettings"> | string | null
   currency?: Prisma.EnumCurrencyWithAggregatesFilter<"UserSettings"> | $Enums.Currency
   locale?: Prisma.StringWithAggregatesFilter<"UserSettings"> | string
   theme?: Prisma.EnumThemeWithAggregatesFilter<"UserSettings"> | $Enums.Theme
@@ -348,11 +363,13 @@ export type UserSettingsCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutSettingsInput
+  currentFamily?: Prisma.FamilyCreateNestedOneWithoutCurrentUserSettingsInput
 }
 
 export type UserSettingsUncheckedCreateInput = {
   id?: string
   userId: string
+  currentFamilyId?: string | null
   currency?: $Enums.Currency
   locale?: string
   theme?: $Enums.Theme
@@ -376,11 +393,13 @@ export type UserSettingsUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutSettingsNestedInput
+  currentFamily?: Prisma.FamilyUpdateOneWithoutCurrentUserSettingsNestedInput
 }
 
 export type UserSettingsUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  currentFamilyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currency?: Prisma.EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   theme?: Prisma.EnumThemeFieldUpdateOperationsInput | $Enums.Theme
@@ -395,6 +414,7 @@ export type UserSettingsUncheckedUpdateInput = {
 export type UserSettingsCreateManyInput = {
   id?: string
   userId: string
+  currentFamilyId?: string | null
   currency?: $Enums.Currency
   locale?: string
   theme?: $Enums.Theme
@@ -422,6 +442,7 @@ export type UserSettingsUpdateManyMutationInput = {
 export type UserSettingsUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  currentFamilyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   currency?: Prisma.EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   theme?: Prisma.EnumThemeFieldUpdateOperationsInput | $Enums.Theme
@@ -433,6 +454,16 @@ export type UserSettingsUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type UserSettingsListRelationFilter = {
+  every?: Prisma.UserSettingsWhereInput
+  some?: Prisma.UserSettingsWhereInput
+  none?: Prisma.UserSettingsWhereInput
+}
+
+export type UserSettingsOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
 export type UserSettingsNullableScalarRelationFilter = {
   is?: Prisma.UserSettingsWhereInput | null
   isNot?: Prisma.UserSettingsWhereInput | null
@@ -441,6 +472,7 @@ export type UserSettingsNullableScalarRelationFilter = {
 export type UserSettingsCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  currentFamilyId?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   locale?: Prisma.SortOrder
   theme?: Prisma.SortOrder
@@ -459,6 +491,7 @@ export type UserSettingsAvgOrderByAggregateInput = {
 export type UserSettingsMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  currentFamilyId?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   locale?: Prisma.SortOrder
   theme?: Prisma.SortOrder
@@ -473,6 +506,7 @@ export type UserSettingsMaxOrderByAggregateInput = {
 export type UserSettingsMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  currentFamilyId?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   locale?: Prisma.SortOrder
   theme?: Prisma.SortOrder
@@ -486,6 +520,48 @@ export type UserSettingsMinOrderByAggregateInput = {
 
 export type UserSettingsSumOrderByAggregateInput = {
   minimumReserve?: Prisma.SortOrder
+}
+
+export type UserSettingsCreateNestedManyWithoutCurrentFamilyInput = {
+  create?: Prisma.XOR<Prisma.UserSettingsCreateWithoutCurrentFamilyInput, Prisma.UserSettingsUncheckedCreateWithoutCurrentFamilyInput> | Prisma.UserSettingsCreateWithoutCurrentFamilyInput[] | Prisma.UserSettingsUncheckedCreateWithoutCurrentFamilyInput[]
+  connectOrCreate?: Prisma.UserSettingsCreateOrConnectWithoutCurrentFamilyInput | Prisma.UserSettingsCreateOrConnectWithoutCurrentFamilyInput[]
+  createMany?: Prisma.UserSettingsCreateManyCurrentFamilyInputEnvelope
+  connect?: Prisma.UserSettingsWhereUniqueInput | Prisma.UserSettingsWhereUniqueInput[]
+}
+
+export type UserSettingsUncheckedCreateNestedManyWithoutCurrentFamilyInput = {
+  create?: Prisma.XOR<Prisma.UserSettingsCreateWithoutCurrentFamilyInput, Prisma.UserSettingsUncheckedCreateWithoutCurrentFamilyInput> | Prisma.UserSettingsCreateWithoutCurrentFamilyInput[] | Prisma.UserSettingsUncheckedCreateWithoutCurrentFamilyInput[]
+  connectOrCreate?: Prisma.UserSettingsCreateOrConnectWithoutCurrentFamilyInput | Prisma.UserSettingsCreateOrConnectWithoutCurrentFamilyInput[]
+  createMany?: Prisma.UserSettingsCreateManyCurrentFamilyInputEnvelope
+  connect?: Prisma.UserSettingsWhereUniqueInput | Prisma.UserSettingsWhereUniqueInput[]
+}
+
+export type UserSettingsUpdateManyWithoutCurrentFamilyNestedInput = {
+  create?: Prisma.XOR<Prisma.UserSettingsCreateWithoutCurrentFamilyInput, Prisma.UserSettingsUncheckedCreateWithoutCurrentFamilyInput> | Prisma.UserSettingsCreateWithoutCurrentFamilyInput[] | Prisma.UserSettingsUncheckedCreateWithoutCurrentFamilyInput[]
+  connectOrCreate?: Prisma.UserSettingsCreateOrConnectWithoutCurrentFamilyInput | Prisma.UserSettingsCreateOrConnectWithoutCurrentFamilyInput[]
+  upsert?: Prisma.UserSettingsUpsertWithWhereUniqueWithoutCurrentFamilyInput | Prisma.UserSettingsUpsertWithWhereUniqueWithoutCurrentFamilyInput[]
+  createMany?: Prisma.UserSettingsCreateManyCurrentFamilyInputEnvelope
+  set?: Prisma.UserSettingsWhereUniqueInput | Prisma.UserSettingsWhereUniqueInput[]
+  disconnect?: Prisma.UserSettingsWhereUniqueInput | Prisma.UserSettingsWhereUniqueInput[]
+  delete?: Prisma.UserSettingsWhereUniqueInput | Prisma.UserSettingsWhereUniqueInput[]
+  connect?: Prisma.UserSettingsWhereUniqueInput | Prisma.UserSettingsWhereUniqueInput[]
+  update?: Prisma.UserSettingsUpdateWithWhereUniqueWithoutCurrentFamilyInput | Prisma.UserSettingsUpdateWithWhereUniqueWithoutCurrentFamilyInput[]
+  updateMany?: Prisma.UserSettingsUpdateManyWithWhereWithoutCurrentFamilyInput | Prisma.UserSettingsUpdateManyWithWhereWithoutCurrentFamilyInput[]
+  deleteMany?: Prisma.UserSettingsScalarWhereInput | Prisma.UserSettingsScalarWhereInput[]
+}
+
+export type UserSettingsUncheckedUpdateManyWithoutCurrentFamilyNestedInput = {
+  create?: Prisma.XOR<Prisma.UserSettingsCreateWithoutCurrentFamilyInput, Prisma.UserSettingsUncheckedCreateWithoutCurrentFamilyInput> | Prisma.UserSettingsCreateWithoutCurrentFamilyInput[] | Prisma.UserSettingsUncheckedCreateWithoutCurrentFamilyInput[]
+  connectOrCreate?: Prisma.UserSettingsCreateOrConnectWithoutCurrentFamilyInput | Prisma.UserSettingsCreateOrConnectWithoutCurrentFamilyInput[]
+  upsert?: Prisma.UserSettingsUpsertWithWhereUniqueWithoutCurrentFamilyInput | Prisma.UserSettingsUpsertWithWhereUniqueWithoutCurrentFamilyInput[]
+  createMany?: Prisma.UserSettingsCreateManyCurrentFamilyInputEnvelope
+  set?: Prisma.UserSettingsWhereUniqueInput | Prisma.UserSettingsWhereUniqueInput[]
+  disconnect?: Prisma.UserSettingsWhereUniqueInput | Prisma.UserSettingsWhereUniqueInput[]
+  delete?: Prisma.UserSettingsWhereUniqueInput | Prisma.UserSettingsWhereUniqueInput[]
+  connect?: Prisma.UserSettingsWhereUniqueInput | Prisma.UserSettingsWhereUniqueInput[]
+  update?: Prisma.UserSettingsUpdateWithWhereUniqueWithoutCurrentFamilyInput | Prisma.UserSettingsUpdateWithWhereUniqueWithoutCurrentFamilyInput[]
+  updateMany?: Prisma.UserSettingsUpdateManyWithWhereWithoutCurrentFamilyInput | Prisma.UserSettingsUpdateManyWithWhereWithoutCurrentFamilyInput[]
+  deleteMany?: Prisma.UserSettingsScalarWhereInput | Prisma.UserSettingsScalarWhereInput[]
 }
 
 export type UserSettingsCreateNestedOneWithoutUserInput = {
@@ -532,8 +608,23 @@ export type EnumNotificationLevelFieldUpdateOperationsInput = {
   set?: $Enums.NotificationLevel
 }
 
-export type UserSettingsCreateWithoutUserInput = {
+export type UserSettingsCreateWithoutCurrentFamilyInput = {
   id?: string
+  currency?: $Enums.Currency
+  locale?: string
+  theme?: $Enums.Theme
+  weekStartsOn?: $Enums.WeekStartDay
+  notificationLevel?: $Enums.NotificationLevel
+  dayOfTightnessAlert?: boolean
+  minimumReserve?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutSettingsInput
+}
+
+export type UserSettingsUncheckedCreateWithoutCurrentFamilyInput = {
+  id?: string
+  userId: string
   currency?: $Enums.Currency
   locale?: string
   theme?: $Enums.Theme
@@ -545,8 +636,67 @@ export type UserSettingsCreateWithoutUserInput = {
   updatedAt?: Date | string
 }
 
+export type UserSettingsCreateOrConnectWithoutCurrentFamilyInput = {
+  where: Prisma.UserSettingsWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserSettingsCreateWithoutCurrentFamilyInput, Prisma.UserSettingsUncheckedCreateWithoutCurrentFamilyInput>
+}
+
+export type UserSettingsCreateManyCurrentFamilyInputEnvelope = {
+  data: Prisma.UserSettingsCreateManyCurrentFamilyInput | Prisma.UserSettingsCreateManyCurrentFamilyInput[]
+  skipDuplicates?: boolean
+}
+
+export type UserSettingsUpsertWithWhereUniqueWithoutCurrentFamilyInput = {
+  where: Prisma.UserSettingsWhereUniqueInput
+  update: Prisma.XOR<Prisma.UserSettingsUpdateWithoutCurrentFamilyInput, Prisma.UserSettingsUncheckedUpdateWithoutCurrentFamilyInput>
+  create: Prisma.XOR<Prisma.UserSettingsCreateWithoutCurrentFamilyInput, Prisma.UserSettingsUncheckedCreateWithoutCurrentFamilyInput>
+}
+
+export type UserSettingsUpdateWithWhereUniqueWithoutCurrentFamilyInput = {
+  where: Prisma.UserSettingsWhereUniqueInput
+  data: Prisma.XOR<Prisma.UserSettingsUpdateWithoutCurrentFamilyInput, Prisma.UserSettingsUncheckedUpdateWithoutCurrentFamilyInput>
+}
+
+export type UserSettingsUpdateManyWithWhereWithoutCurrentFamilyInput = {
+  where: Prisma.UserSettingsScalarWhereInput
+  data: Prisma.XOR<Prisma.UserSettingsUpdateManyMutationInput, Prisma.UserSettingsUncheckedUpdateManyWithoutCurrentFamilyInput>
+}
+
+export type UserSettingsScalarWhereInput = {
+  AND?: Prisma.UserSettingsScalarWhereInput | Prisma.UserSettingsScalarWhereInput[]
+  OR?: Prisma.UserSettingsScalarWhereInput[]
+  NOT?: Prisma.UserSettingsScalarWhereInput | Prisma.UserSettingsScalarWhereInput[]
+  id?: Prisma.StringFilter<"UserSettings"> | string
+  userId?: Prisma.StringFilter<"UserSettings"> | string
+  currentFamilyId?: Prisma.StringNullableFilter<"UserSettings"> | string | null
+  currency?: Prisma.EnumCurrencyFilter<"UserSettings"> | $Enums.Currency
+  locale?: Prisma.StringFilter<"UserSettings"> | string
+  theme?: Prisma.EnumThemeFilter<"UserSettings"> | $Enums.Theme
+  weekStartsOn?: Prisma.EnumWeekStartDayFilter<"UserSettings"> | $Enums.WeekStartDay
+  notificationLevel?: Prisma.EnumNotificationLevelFilter<"UserSettings"> | $Enums.NotificationLevel
+  dayOfTightnessAlert?: Prisma.BoolFilter<"UserSettings"> | boolean
+  minimumReserve?: Prisma.DecimalFilter<"UserSettings"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Prisma.DateTimeFilter<"UserSettings"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"UserSettings"> | Date | string
+}
+
+export type UserSettingsCreateWithoutUserInput = {
+  id?: string
+  currency?: $Enums.Currency
+  locale?: string
+  theme?: $Enums.Theme
+  weekStartsOn?: $Enums.WeekStartDay
+  notificationLevel?: $Enums.NotificationLevel
+  dayOfTightnessAlert?: boolean
+  minimumReserve?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  currentFamily?: Prisma.FamilyCreateNestedOneWithoutCurrentUserSettingsInput
+}
+
 export type UserSettingsUncheckedCreateWithoutUserInput = {
   id?: string
+  currentFamilyId?: string | null
   currency?: $Enums.Currency
   locale?: string
   theme?: $Enums.Theme
@@ -585,10 +735,68 @@ export type UserSettingsUpdateWithoutUserInput = {
   minimumReserve?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentFamily?: Prisma.FamilyUpdateOneWithoutCurrentUserSettingsNestedInput
 }
 
 export type UserSettingsUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  currentFamilyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currency?: Prisma.EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  theme?: Prisma.EnumThemeFieldUpdateOperationsInput | $Enums.Theme
+  weekStartsOn?: Prisma.EnumWeekStartDayFieldUpdateOperationsInput | $Enums.WeekStartDay
+  notificationLevel?: Prisma.EnumNotificationLevelFieldUpdateOperationsInput | $Enums.NotificationLevel
+  dayOfTightnessAlert?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minimumReserve?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type UserSettingsCreateManyCurrentFamilyInput = {
+  id?: string
+  userId: string
+  currency?: $Enums.Currency
+  locale?: string
+  theme?: $Enums.Theme
+  weekStartsOn?: $Enums.WeekStartDay
+  notificationLevel?: $Enums.NotificationLevel
+  dayOfTightnessAlert?: boolean
+  minimumReserve?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type UserSettingsUpdateWithoutCurrentFamilyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  currency?: Prisma.EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  theme?: Prisma.EnumThemeFieldUpdateOperationsInput | $Enums.Theme
+  weekStartsOn?: Prisma.EnumWeekStartDayFieldUpdateOperationsInput | $Enums.WeekStartDay
+  notificationLevel?: Prisma.EnumNotificationLevelFieldUpdateOperationsInput | $Enums.NotificationLevel
+  dayOfTightnessAlert?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minimumReserve?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutSettingsNestedInput
+}
+
+export type UserSettingsUncheckedUpdateWithoutCurrentFamilyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  currency?: Prisma.EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+  locale?: Prisma.StringFieldUpdateOperationsInput | string
+  theme?: Prisma.EnumThemeFieldUpdateOperationsInput | $Enums.Theme
+  weekStartsOn?: Prisma.EnumWeekStartDayFieldUpdateOperationsInput | $Enums.WeekStartDay
+  notificationLevel?: Prisma.EnumNotificationLevelFieldUpdateOperationsInput | $Enums.NotificationLevel
+  dayOfTightnessAlert?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minimumReserve?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type UserSettingsUncheckedUpdateManyWithoutCurrentFamilyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   currency?: Prisma.EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
   locale?: Prisma.StringFieldUpdateOperationsInput | string
   theme?: Prisma.EnumThemeFieldUpdateOperationsInput | $Enums.Theme
@@ -605,6 +813,7 @@ export type UserSettingsUncheckedUpdateWithoutUserInput = {
 export type UserSettingsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  currentFamilyId?: boolean
   currency?: boolean
   locale?: boolean
   theme?: boolean
@@ -615,11 +824,13 @@ export type UserSettingsSelect<ExtArgs extends runtime.Types.Extensions.Internal
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  currentFamily?: boolean | Prisma.UserSettings$currentFamilyArgs<ExtArgs>
 }, ExtArgs["result"]["userSettings"]>
 
 export type UserSettingsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  currentFamilyId?: boolean
   currency?: boolean
   locale?: boolean
   theme?: boolean
@@ -630,11 +841,13 @@ export type UserSettingsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  currentFamily?: boolean | Prisma.UserSettings$currentFamilyArgs<ExtArgs>
 }, ExtArgs["result"]["userSettings"]>
 
 export type UserSettingsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  currentFamilyId?: boolean
   currency?: boolean
   locale?: boolean
   theme?: boolean
@@ -645,11 +858,13 @@ export type UserSettingsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  currentFamily?: boolean | Prisma.UserSettings$currentFamilyArgs<ExtArgs>
 }, ExtArgs["result"]["userSettings"]>
 
 export type UserSettingsSelectScalar = {
   id?: boolean
   userId?: boolean
+  currentFamilyId?: boolean
   currency?: boolean
   locale?: boolean
   theme?: boolean
@@ -661,25 +876,30 @@ export type UserSettingsSelectScalar = {
   updatedAt?: boolean
 }
 
-export type UserSettingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "currency" | "locale" | "theme" | "weekStartsOn" | "notificationLevel" | "dayOfTightnessAlert" | "minimumReserve" | "createdAt" | "updatedAt", ExtArgs["result"]["userSettings"]>
+export type UserSettingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "currentFamilyId" | "currency" | "locale" | "theme" | "weekStartsOn" | "notificationLevel" | "dayOfTightnessAlert" | "minimumReserve" | "createdAt" | "updatedAt", ExtArgs["result"]["userSettings"]>
 export type UserSettingsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  currentFamily?: boolean | Prisma.UserSettings$currentFamilyArgs<ExtArgs>
 }
 export type UserSettingsIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  currentFamily?: boolean | Prisma.UserSettings$currentFamilyArgs<ExtArgs>
 }
 export type UserSettingsIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  currentFamily?: boolean | Prisma.UserSettings$currentFamilyArgs<ExtArgs>
 }
 
 export type $UserSettingsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "UserSettings"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
+    currentFamily: Prisma.$FamilyPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string
+    currentFamilyId: string | null
     currency: $Enums.Currency
     locale: string
     theme: $Enums.Theme
@@ -1084,6 +1304,7 @@ readonly fields: UserSettingsFieldRefs;
 export interface Prisma__UserSettingsClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  currentFamily<T extends Prisma.UserSettings$currentFamilyArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserSettings$currentFamilyArgs<ExtArgs>>): Prisma.Prisma__FamilyClient<runtime.Types.Result.GetResult<Prisma.$FamilyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1115,6 +1336,7 @@ export interface Prisma__UserSettingsClient<T, Null = never, ExtArgs extends run
 export interface UserSettingsFieldRefs {
   readonly id: Prisma.FieldRef<"UserSettings", 'String'>
   readonly userId: Prisma.FieldRef<"UserSettings", 'String'>
+  readonly currentFamilyId: Prisma.FieldRef<"UserSettings", 'String'>
   readonly currency: Prisma.FieldRef<"UserSettings", 'Currency'>
   readonly locale: Prisma.FieldRef<"UserSettings", 'String'>
   readonly theme: Prisma.FieldRef<"UserSettings", 'Theme'>
@@ -1522,6 +1744,25 @@ export type UserSettingsDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many UserSettings to delete.
    */
   limit?: number
+}
+
+/**
+ * UserSettings.currentFamily
+ */
+export type UserSettings$currentFamilyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Family
+   */
+  select?: Prisma.FamilySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Family
+   */
+  omit?: Prisma.FamilyOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FamilyInclude<ExtArgs> | null
+  where?: Prisma.FamilyWhereInput
 }
 
 /**

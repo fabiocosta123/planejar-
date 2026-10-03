@@ -19,48 +19,165 @@ async function main() {
     );
 
 
-  const user =
-    await prisma.user.upsert({
+  await prisma.$transaction(
+    async (tx) => {      
+      // USER     
 
-      where: {
-        email
-      },
+      const user =
+        await tx.user.upsert({
 
-      update: {
+          where: {
+            email
+          },
 
-        name: "Usuário Teste",
+          update: {
 
-        passwordHash,
+            name: "Usuário Teste",
 
-        status: "ACTIVE"
+            passwordHash,
 
-      },
+            status: "ACTIVE"
 
-      create: {
+          },
 
-        name: "Usuário Teste",
+          create: {
 
-        email,
+            name: "Usuário Teste",
 
-        passwordHash,
+            email,
 
-        status: "ACTIVE"
+            passwordHash,
 
-      }
+            status: "ACTIVE"
 
-    });
+          }
+
+        });
+      
+      // FAMILY      
+
+      let family =
+        await tx.family.findFirst({
+
+          where: {
+            ownerId: user.id,
+            deletedAt: null
+          },
+
+          orderBy: {
+            createdAt: "asc"
+          }
+
+        });
 
 
-  console.log(
-    "Usuário criado/atualizado:"
+      if (!family) {
+
+        family =
+          await tx.family.create({
+
+            data: {
+
+              name: "Família Teste",
+
+              ownerId: user.id
+
+            }
+
+          });
+
+      }      
+      // FAMILY MEMBER     
+
+      const familyMember =
+        await tx.familyMember.upsert({
+
+          where: {
+
+            familyId_userId: {
+
+              familyId: family.id,
+
+              userId: user.id
+
+            }
+
+          },
+
+          update: {
+
+            role: "OWNER",
+
+            deletedAt: null
+
+          },
+
+          create: {
+
+            familyId: family.id,
+
+            userId: user.id,
+
+            role: "OWNER"
+
+          }
+
+        });
+      
+      // USER SETTINGS      
+
+      const settings =
+        await tx.userSettings.upsert({
+
+          where: {
+
+            userId: user.id
+
+          },
+
+          update: {
+
+            currentFamilyId:
+              family.id
+
+          },
+
+          create: {
+
+            userId: user.id,
+
+            currentFamilyId:
+              family.id
+
+          }
+
+        });
+      
+      // LOG     
+
+      console.log(
+        "Usuário de desenvolvimento inicializado:"
+      );
+
+      console.log({
+
+        userId: user.id,
+
+        email: user.email,
+
+        familyId: family.id,
+
+        familyMemberId:
+          familyMember.id,
+
+        currentFamilyId:
+          settings.currentFamilyId
+
+      });
+
+    }
   );
 
-  console.log({
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    status: user.status
-  });
 
   console.log(
     "Senha de desenvolvimento: Teste@123"
@@ -70,16 +187,18 @@ async function main() {
 
 
 main()
+
   .catch(error => {
 
     console.error(
-      "Erro ao criar usuário:",
+      "Erro ao inicializar usuário de desenvolvimento:",
       error
     );
 
     process.exit(1);
 
   })
+
   .finally(async () => {
 
     await prisma.$disconnect();

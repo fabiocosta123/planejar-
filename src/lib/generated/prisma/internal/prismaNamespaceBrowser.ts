@@ -159,6 +159,7 @@ export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[key
 export const UserSettingsScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  currentFamilyId: 'currentFamilyId',
   currency: 'currency',
   locale: 'locale',
   theme: 'theme',

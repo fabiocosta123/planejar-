@@ -11,19 +11,18 @@ describe("AccountMapper", () => {
     const data = {
 
       id: "account-1",
-
       name: "Conta Corrente",
-
       type: "CHECKING" as const,
-
-      initialBalance: 1500
+      initialBalance: 1500,
+      initialBalanceDate: new Date("2026-08-01")
 
     };
 
 
     const account =
       AccountMapper.toDomain(
-        data
+        data,
+        
       );
 
 
@@ -75,7 +74,8 @@ describe("AccountMapper", () => {
       type: "SAVINGS" as const,
 
       initialBalance:
-        "2500.50"
+        "2500.50",
+      initialBalanceDate: new Date("2026-08-01")
 
     };
 

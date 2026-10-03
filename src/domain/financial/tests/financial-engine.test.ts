@@ -5,6 +5,46 @@ import { TransactionInput } from "../models/transaction-input";
 
 describe("FinancialEngine", () => {
 
+  it(
+    "deve calcular o saldo atual de uma conta",
+    () => {
+
+      const result =
+        financialEngine.calculateCurrentBalance(
+          1000,
+          [
+            {
+              amount: 500,
+              type: "INCOME",
+              transactionDate:
+                new Date("2026-08-05"),
+              status: "COMPLETED"
+            },
+            {
+              amount: 200,
+              type: "EXPENSE",
+              transactionDate:
+                new Date("2026-08-06"),
+              status: "COMPLETED"
+            },
+            {
+              amount: 300,
+              type: "EXPENSE",
+              transactionDate:
+                new Date("2026-08-15"),
+              status: "COMPLETED"
+            }
+          ],
+          new Date("2026-08-10")
+        );
+
+
+      expect(result)
+        .toBe(1300);
+
+    }
+  );
+
 
   it("deve calcular resumo financeiro corretamente", () => {
 
@@ -13,21 +53,24 @@ describe("FinancialEngine", () => {
       {
         type: "INCOME",
         amount: 5000,
-        transactionDate: new Date("2026-08-10"),
+        transactionDate:
+          new Date("2026-08-10"),
         status: "COMPLETED"
       },
 
       {
         type: "EXPENSE",
         amount: 3000,
-        transactionDate: new Date("2026-08-15"),
+        transactionDate:
+          new Date("2026-08-15"),
         status: "COMPLETED"
       },
 
       {
         type: "EXPENSE",
         amount: 500,
-        transactionDate: new Date("2026-08-20"),
+        transactionDate:
+          new Date("2026-08-20"),
         status: "PENDING"
       }
 
@@ -36,8 +79,13 @@ describe("FinancialEngine", () => {
 
     const result =
       financialEngine.calculateSummary(
+        1000,
         transactions
       );
+
+
+    expect(result.currentBalance)
+      .toBe(1000);
 
 
     expect(result.income)
@@ -48,8 +96,8 @@ describe("FinancialEngine", () => {
       .toBe(3500);
 
 
-    expect(result.balance)
-      .toBe(1500);
+    expect(result.currentBalance)
+      .toBe(1000);
 
 
     expect(result.hasPositiveBalance)
@@ -184,13 +232,10 @@ describe("FinancialEngine", () => {
 
     const result =
       financialEngine.calculateSummary(
+        1000,
         transactions,
         3000
       );
-
-
-
-
 
     expect(result.limitExceeded)
       .toBe(true);

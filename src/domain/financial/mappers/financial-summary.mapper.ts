@@ -8,10 +8,14 @@ export class FinancialSummaryMapper {
   ): FinancialSummaryContract {
 
     return {
-      income: summary.income,
-      expenses: summary.expenses,
-      balance: summary.balance,
-      limitExceeded: summary.limitExceeded
+      currentBalance:
+        summary.currentBalance,
+      income:
+        summary.income,
+      expenses:
+        summary.expenses,
+      limitExceeded:
+        summary.limitExceeded
     };
 
   }

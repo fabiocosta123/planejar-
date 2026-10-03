@@ -3,107 +3,132 @@ import { describe, expect, it, vi, beforeEach } from "vitest";
 import { calculateFinancialFlowAction } from "../calculate-financial-flow.action";
 import { transactionsService } from "../../../services/transactions.service";
 import { FinancialFlowEntry } from "../../../domain/financial/models/financial-flow-entry";
+import { accountBalanceService } from "../../../services/account-balance.service";
+
+vi.mock(
+  "../../../services/account-balance.service",
+  () => ({
+    accountBalanceService: {
+      calculateCurrentBalance: vi.fn()
+    }
+  })
+);
 
 describe("calculateFinancialFlowAction", () => {
 
-beforeEach(() => {
+  beforeEach(() => {
 
-vi.restoreAllMocks();
-
-
-});
-
-it("deve calcular e retornar o fluxo financeiro como contrato", async () => {
+    vi.restoreAllMocks();
 
 
-const flow = [
+  });
 
-  new FinancialFlowEntry(
-    new Date("2026-08-10"),
-    500,
-    200,
-    1300
-  ),
-
-  new FinancialFlowEntry(
-    new Date("2026-08-15"),
-    0,
-    100,
-    1200
-  )
-
-];
+  it("deve calcular e retornar o fluxo financeiro como contrato", async () => {
 
 
-vi.spyOn(
-  transactionsService,
-  "calculateFinancialFlow"
-)
-  .mockResolvedValue(flow);
+    const flow = [
+
+      new FinancialFlowEntry(
+        new Date("2026-08-10"),
+        500,
+        200,
+        1300
+      ),
+
+      new FinancialFlowEntry(
+        new Date("2026-08-15"),
+        0,
+        100,
+        1200
+      )
+
+    ];
 
 
-const result =
-  await calculateFinancialFlowAction(
-    "family-member-id",
-    new Date("2026-08-01"),
-    new Date("2026-08-31"),
-    1000
-  );
+    vi.spyOn(
+      transactionsService,
+      "calculateFinancialFlow"
+    )
+      .mockResolvedValue(flow);
 
 
-expect(result)
-  .toHaveLength(2);
+
+    vi.mocked(
+      accountBalanceService.calculateCurrentBalance
+    )
+      .mockResolvedValue(1000);
+
+    const result =
+      await calculateFinancialFlowAction(
+        "family-member-id",
+        new Date("2026-08-01"),
+        new Date("2026-08-31"),
+
+      );
 
 
-expect(result[0])
-  .toEqual({
+    expect(result)
+      .toHaveLength(2);
 
-    date: new Date("2026-08-10"),
 
-    income: 500,
+    expect(result[0])
+      .toEqual({
 
-    expenses: 200,
+        date: new Date("2026-08-10"),
 
-    balance: 1300,
+        income: 500,
 
-    isPositive: true,
+        expenses: 200,
 
-    isNegative: false
+        balance: 1300,
+
+        isPositive: true,
+
+        isNegative: false
+
+      });
+
+
+    expect(result[1])
+      .toEqual({
+
+        date: new Date("2026-08-15"),
+
+        income: 0,
+
+        expenses: 100,
+
+        balance: 1200,
+
+        isPositive: true,
+
+        isNegative: false
+
+      });
+
+
+    expect(
+      transactionsService.calculateFinancialFlow
+    )
+      .toHaveBeenCalledWith(
+
+        "family-member-id",
+
+        expect.any(Object),
+
+        1000
+
+      );
+
+    expect(
+      accountBalanceService.calculateCurrentBalance
+    )
+      .toHaveBeenCalledWith(
+        "family-member-id"
+      );
 
   });
 
 
-expect(result[1])
-  .toEqual({
-
-    date: new Date("2026-08-15"),
-
-    income: 0,
-
-    expenses: 100,
-
-    balance: 1200,
-
-    isPositive: true,
-
-    isNegative: false
-
-  });
-
-
-expect(
-  transactionsService.calculateFinancialFlow
-)
-  .toHaveBeenCalledWith(
-
-    "family-member-id",
-
-    expect.any(Object),
-
-    1000
-
-  );
-
-});
 
 });

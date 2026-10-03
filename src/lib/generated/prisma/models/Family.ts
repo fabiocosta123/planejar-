@@ -192,6 +192,7 @@ export type FamilyWhereInput = {
   deletedAt?: Prisma.DateTimeNullableFilter<"Family"> | Date | string | null
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   members?: Prisma.FamilyMemberListRelationFilter
+  currentUserSettings?: Prisma.UserSettingsListRelationFilter
 }
 
 export type FamilyOrderByWithRelationInput = {
@@ -203,6 +204,7 @@ export type FamilyOrderByWithRelationInput = {
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   owner?: Prisma.UserOrderByWithRelationInput
   members?: Prisma.FamilyMemberOrderByRelationAggregateInput
+  currentUserSettings?: Prisma.UserSettingsOrderByRelationAggregateInput
 }
 
 export type FamilyWhereUniqueInput = Prisma.AtLeast<{
@@ -217,6 +219,7 @@ export type FamilyWhereUniqueInput = Prisma.AtLeast<{
   deletedAt?: Prisma.DateTimeNullableFilter<"Family"> | Date | string | null
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   members?: Prisma.FamilyMemberListRelationFilter
+  currentUserSettings?: Prisma.UserSettingsListRelationFilter
 }, "id">
 
 export type FamilyOrderByWithAggregationInput = {
@@ -251,6 +254,7 @@ export type FamilyCreateInput = {
   deletedAt?: Date | string | null
   owner: Prisma.UserCreateNestedOneWithoutOwnedFamiliesInput
   members?: Prisma.FamilyMemberCreateNestedManyWithoutFamilyInput
+  currentUserSettings?: Prisma.UserSettingsCreateNestedManyWithoutCurrentFamilyInput
 }
 
 export type FamilyUncheckedCreateInput = {
@@ -261,6 +265,7 @@ export type FamilyUncheckedCreateInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   members?: Prisma.FamilyMemberUncheckedCreateNestedManyWithoutFamilyInput
+  currentUserSettings?: Prisma.UserSettingsUncheckedCreateNestedManyWithoutCurrentFamilyInput
 }
 
 export type FamilyUpdateInput = {
@@ -271,6 +276,7 @@ export type FamilyUpdateInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   owner?: Prisma.UserUpdateOneRequiredWithoutOwnedFamiliesNestedInput
   members?: Prisma.FamilyMemberUpdateManyWithoutFamilyNestedInput
+  currentUserSettings?: Prisma.UserSettingsUpdateManyWithoutCurrentFamilyNestedInput
 }
 
 export type FamilyUncheckedUpdateInput = {
@@ -281,6 +287,7 @@ export type FamilyUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   members?: Prisma.FamilyMemberUncheckedUpdateManyWithoutFamilyNestedInput
+  currentUserSettings?: Prisma.UserSettingsUncheckedUpdateManyWithoutCurrentFamilyNestedInput
 }
 
 export type FamilyCreateManyInput = {
@@ -351,6 +358,11 @@ export type FamilyScalarRelationFilter = {
   isNot?: Prisma.FamilyWhereInput
 }
 
+export type FamilyNullableScalarRelationFilter = {
+  is?: Prisma.FamilyWhereInput | null
+  isNot?: Prisma.FamilyWhereInput | null
+}
+
 export type StringFieldUpdateOperationsInput = {
   set?: string
 }
@@ -419,6 +431,22 @@ export type FamilyUpdateOneRequiredWithoutMembersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.FamilyUpdateToOneWithWhereWithoutMembersInput, Prisma.FamilyUpdateWithoutMembersInput>, Prisma.FamilyUncheckedUpdateWithoutMembersInput>
 }
 
+export type FamilyCreateNestedOneWithoutCurrentUserSettingsInput = {
+  create?: Prisma.XOR<Prisma.FamilyCreateWithoutCurrentUserSettingsInput, Prisma.FamilyUncheckedCreateWithoutCurrentUserSettingsInput>
+  connectOrCreate?: Prisma.FamilyCreateOrConnectWithoutCurrentUserSettingsInput
+  connect?: Prisma.FamilyWhereUniqueInput
+}
+
+export type FamilyUpdateOneWithoutCurrentUserSettingsNestedInput = {
+  create?: Prisma.XOR<Prisma.FamilyCreateWithoutCurrentUserSettingsInput, Prisma.FamilyUncheckedCreateWithoutCurrentUserSettingsInput>
+  connectOrCreate?: Prisma.FamilyCreateOrConnectWithoutCurrentUserSettingsInput
+  upsert?: Prisma.FamilyUpsertWithoutCurrentUserSettingsInput
+  disconnect?: Prisma.FamilyWhereInput | boolean
+  delete?: Prisma.FamilyWhereInput | boolean
+  connect?: Prisma.FamilyWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.FamilyUpdateToOneWithWhereWithoutCurrentUserSettingsInput, Prisma.FamilyUpdateWithoutCurrentUserSettingsInput>, Prisma.FamilyUncheckedUpdateWithoutCurrentUserSettingsInput>
+}
+
 export type FamilyCreateWithoutOwnerInput = {
   id?: string
   name: string
@@ -426,6 +454,7 @@ export type FamilyCreateWithoutOwnerInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   members?: Prisma.FamilyMemberCreateNestedManyWithoutFamilyInput
+  currentUserSettings?: Prisma.UserSettingsCreateNestedManyWithoutCurrentFamilyInput
 }
 
 export type FamilyUncheckedCreateWithoutOwnerInput = {
@@ -435,6 +464,7 @@ export type FamilyUncheckedCreateWithoutOwnerInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   members?: Prisma.FamilyMemberUncheckedCreateNestedManyWithoutFamilyInput
+  currentUserSettings?: Prisma.UserSettingsUncheckedCreateNestedManyWithoutCurrentFamilyInput
 }
 
 export type FamilyCreateOrConnectWithoutOwnerInput = {
@@ -482,6 +512,7 @@ export type FamilyCreateWithoutMembersInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   owner: Prisma.UserCreateNestedOneWithoutOwnedFamiliesInput
+  currentUserSettings?: Prisma.UserSettingsCreateNestedManyWithoutCurrentFamilyInput
 }
 
 export type FamilyUncheckedCreateWithoutMembersInput = {
@@ -491,6 +522,7 @@ export type FamilyUncheckedCreateWithoutMembersInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  currentUserSettings?: Prisma.UserSettingsUncheckedCreateNestedManyWithoutCurrentFamilyInput
 }
 
 export type FamilyCreateOrConnectWithoutMembersInput = {
@@ -516,6 +548,7 @@ export type FamilyUpdateWithoutMembersInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   owner?: Prisma.UserUpdateOneRequiredWithoutOwnedFamiliesNestedInput
+  currentUserSettings?: Prisma.UserSettingsUpdateManyWithoutCurrentFamilyNestedInput
 }
 
 export type FamilyUncheckedUpdateWithoutMembersInput = {
@@ -525,6 +558,63 @@ export type FamilyUncheckedUpdateWithoutMembersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  currentUserSettings?: Prisma.UserSettingsUncheckedUpdateManyWithoutCurrentFamilyNestedInput
+}
+
+export type FamilyCreateWithoutCurrentUserSettingsInput = {
+  id?: string
+  name: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  owner: Prisma.UserCreateNestedOneWithoutOwnedFamiliesInput
+  members?: Prisma.FamilyMemberCreateNestedManyWithoutFamilyInput
+}
+
+export type FamilyUncheckedCreateWithoutCurrentUserSettingsInput = {
+  id?: string
+  name: string
+  ownerId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  members?: Prisma.FamilyMemberUncheckedCreateNestedManyWithoutFamilyInput
+}
+
+export type FamilyCreateOrConnectWithoutCurrentUserSettingsInput = {
+  where: Prisma.FamilyWhereUniqueInput
+  create: Prisma.XOR<Prisma.FamilyCreateWithoutCurrentUserSettingsInput, Prisma.FamilyUncheckedCreateWithoutCurrentUserSettingsInput>
+}
+
+export type FamilyUpsertWithoutCurrentUserSettingsInput = {
+  update: Prisma.XOR<Prisma.FamilyUpdateWithoutCurrentUserSettingsInput, Prisma.FamilyUncheckedUpdateWithoutCurrentUserSettingsInput>
+  create: Prisma.XOR<Prisma.FamilyCreateWithoutCurrentUserSettingsInput, Prisma.FamilyUncheckedCreateWithoutCurrentUserSettingsInput>
+  where?: Prisma.FamilyWhereInput
+}
+
+export type FamilyUpdateToOneWithWhereWithoutCurrentUserSettingsInput = {
+  where?: Prisma.FamilyWhereInput
+  data: Prisma.XOR<Prisma.FamilyUpdateWithoutCurrentUserSettingsInput, Prisma.FamilyUncheckedUpdateWithoutCurrentUserSettingsInput>
+}
+
+export type FamilyUpdateWithoutCurrentUserSettingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  owner?: Prisma.UserUpdateOneRequiredWithoutOwnedFamiliesNestedInput
+  members?: Prisma.FamilyMemberUpdateManyWithoutFamilyNestedInput
+}
+
+export type FamilyUncheckedUpdateWithoutCurrentUserSettingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  members?: Prisma.FamilyMemberUncheckedUpdateManyWithoutFamilyNestedInput
 }
 
 export type FamilyCreateManyOwnerInput = {
@@ -542,6 +632,7 @@ export type FamilyUpdateWithoutOwnerInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   members?: Prisma.FamilyMemberUpdateManyWithoutFamilyNestedInput
+  currentUserSettings?: Prisma.UserSettingsUpdateManyWithoutCurrentFamilyNestedInput
 }
 
 export type FamilyUncheckedUpdateWithoutOwnerInput = {
@@ -551,6 +642,7 @@ export type FamilyUncheckedUpdateWithoutOwnerInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   members?: Prisma.FamilyMemberUncheckedUpdateManyWithoutFamilyNestedInput
+  currentUserSettings?: Prisma.UserSettingsUncheckedUpdateManyWithoutCurrentFamilyNestedInput
 }
 
 export type FamilyUncheckedUpdateManyWithoutOwnerInput = {
@@ -568,10 +660,12 @@ export type FamilyUncheckedUpdateManyWithoutOwnerInput = {
 
 export type FamilyCountOutputType = {
   members: number
+  currentUserSettings: number
 }
 
 export type FamilyCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   members?: boolean | FamilyCountOutputTypeCountMembersArgs
+  currentUserSettings?: boolean | FamilyCountOutputTypeCountCurrentUserSettingsArgs
 }
 
 /**
@@ -591,6 +685,13 @@ export type FamilyCountOutputTypeCountMembersArgs<ExtArgs extends runtime.Types.
   where?: Prisma.FamilyMemberWhereInput
 }
 
+/**
+ * FamilyCountOutputType without action
+ */
+export type FamilyCountOutputTypeCountCurrentUserSettingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserSettingsWhereInput
+}
+
 
 export type FamilySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -601,6 +702,7 @@ export type FamilySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   deletedAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   members?: boolean | Prisma.Family$membersArgs<ExtArgs>
+  currentUserSettings?: boolean | Prisma.Family$currentUserSettingsArgs<ExtArgs>
   _count?: boolean | Prisma.FamilyCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["family"]>
 
@@ -637,6 +739,7 @@ export type FamilyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
 export type FamilyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   members?: boolean | Prisma.Family$membersArgs<ExtArgs>
+  currentUserSettings?: boolean | Prisma.Family$currentUserSettingsArgs<ExtArgs>
   _count?: boolean | Prisma.FamilyCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type FamilyIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -651,6 +754,7 @@ export type $FamilyPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   objects: {
     owner: Prisma.$UserPayload<ExtArgs>
     members: Prisma.$FamilyMemberPayload<ExtArgs>[]
+    currentUserSettings: Prisma.$UserSettingsPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1055,6 +1159,7 @@ export interface Prisma__FamilyClient<T, Null = never, ExtArgs extends runtime.T
   readonly [Symbol.toStringTag]: "PrismaPromise"
   owner<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   members<T extends Prisma.Family$membersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Family$membersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FamilyMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  currentUserSettings<T extends Prisma.Family$currentUserSettingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Family$currentUserSettingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserSettingsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1512,6 +1617,30 @@ export type Family$membersArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.FamilyMemberScalarFieldEnum | Prisma.FamilyMemberScalarFieldEnum[]
+}
+
+/**
+ * Family.currentUserSettings
+ */
+export type Family$currentUserSettingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserSettings
+   */
+  select?: Prisma.UserSettingsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserSettings
+   */
+  omit?: Prisma.UserSettingsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserSettingsInclude<ExtArgs> | null
+  where?: Prisma.UserSettingsWhereInput
+  orderBy?: Prisma.UserSettingsOrderByWithRelationInput | Prisma.UserSettingsOrderByWithRelationInput[]
+  cursor?: Prisma.UserSettingsWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserSettingsScalarFieldEnum | Prisma.UserSettingsScalarFieldEnum[]
 }
 
 /**

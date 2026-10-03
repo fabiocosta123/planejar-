@@ -1,11 +1,7 @@
 export interface FinancialSummaryContract {
-
+  currentBalance: number;
   income: number;
-
   expenses: number;
-
-  balance: number;
-
   limitExceeded: boolean;
 
 }

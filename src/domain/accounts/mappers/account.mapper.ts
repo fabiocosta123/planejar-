@@ -5,49 +5,32 @@ import { AccountPersistence } from "../../../contracts/accounts/account.persiste
 
 export class AccountMapper {
 
-
   static toDomain(
     data: AccountPersistence
   ): Account {
 
-
     return new Account(
-
       data.id,
-
       data.name,
-
       data.type,
-
-      Number(
-        data.initialBalance
-      )
-
+      Number(data.initialBalance),
+      data.initialBalanceDate
     );
 
   }
-
 
 
   static toContract(
     account: Account
   ): AccountContract {
 
-
     return {
-
       id: account.id,
-
       name: account.name,
-
       type: account.type,
-
-      balance:
-        account.currentBalance
-
+      balance: account.currentBalance
     };
 
   }
-
 
 }
