@@ -74,6 +74,7 @@ async create(
       | "OTHER";
     initialBalanceDate: Date;
     initialBalance: number;
+    isDefault?: boolean;
   }
 ) {
 
@@ -92,6 +93,9 @@ async create(
         initialBalance:
           data.initialBalance,
 
+        isDefault:
+          data.isDefault ?? false,
+
         familyMember: {
 
           connect: {
@@ -106,6 +110,44 @@ async create(
   return this.normalizeAccount(account);
 
 }
+
+  async setDefault(familyMemberId: string, accountId: string) {
+    return prisma.$transaction(async (tx) => {
+      const account = await tx.account.findFirst({
+        where: {
+          id: accountId,
+          familyMemberId,
+          deletedAt: null,
+          isActive: true,
+        },
+      });
+
+      if (!account) {
+        return 0;
+      }
+
+      await tx.account.updateMany({
+        where: {
+          familyMemberId,
+          deletedAt: null,
+        },
+        data: {
+          isDefault: false,
+        },
+      });
+
+      await tx.account.update({
+        where: {
+          id: accountId,
+        },
+        data: {
+          isDefault: true,
+        },
+      });
+
+      return 1;
+    });
+  }
 
 
 }
