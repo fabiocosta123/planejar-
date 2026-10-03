@@ -26,6 +26,9 @@ import type {
 
 import type { SubscriptionPlan } from "@/domain/financial/rules/transaction-history-window.rule";
 
+import type { SeriesContract } from "@/contracts/financial/series.contract";
+
+import { SeriesList } from "./series-list";
 import { TransactionsBrowser } from "./transactions-browser";
 import { TransactionComparison } from "./transaction-comparison";
 import { TransactionCreateButton } from "./transaction-create-button";
@@ -40,6 +43,8 @@ interface TransactionsProps {
     id: string;
     name: string;
   }[];
+  series: SeriesContract[];
+  canManageSeries: boolean;
 }
 
 function formatCurrency(
@@ -62,6 +67,8 @@ export function Transactions({
   comparison,
   plan,
   accounts,
+  series,
+  canManageSeries,
 }: TransactionsProps) {
   const income = currentMonth.income;
   const expenses = currentMonth.expenses;
@@ -177,6 +184,12 @@ export function Transactions({
         {comparison ? (
           <TransactionComparison comparison={comparison} />
         ) : null}
+
+        <SeriesList
+          series={series}
+          accounts={accounts}
+          canManage={canManageSeries}
+        />
 
         <TransactionsBrowser
           transactions={transactions}

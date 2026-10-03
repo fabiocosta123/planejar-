@@ -89,8 +89,21 @@ Ocorrências projetadas têm status pendente. Lançamentos cancelados não ocupa
 
 ---
 
-## 6. Fora desta versão
+## 6. Cadastro da série
 
-* encerrar ou editar a série pela tela;
+A tela de lançamentos lista as repetições ativas.
+
+Cada item mostra descrição, valor, tipo, dia do mês e conta.
+
+**Alterar** muda a descrição, o valor, o tipo, o dia e a conta. A mudança vale para as próximas projeções. O lançamento já registrado não é reescrito.
+
+**Encerrar** desativa a série. Os próximos meses saem do dia do aperto. O lançamento já registrado permanece.
+
+Quem só consulta vê a lista e não altera nem encerra.
+
+---
+
+## 7. Fora desta versão
+
 * repetir por semana;
 * gravar cada mês futuro como lançamento na lista.

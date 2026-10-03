@@ -8,6 +8,7 @@ export interface MonthlyRecurrenceSource {
   description: string;
   startDate: Date;
   endDate: Date | null;
+  dayOfMonth?: number;
 }
 
 export interface OccupiedOccurrence {
@@ -38,7 +39,7 @@ export function projectMonthlyOccurrences(
   const projected: TransactionInput[] = [];
 
   for (const rule of rules) {
-    const dayOfMonth = rule.startDate.getDate();
+    const dayOfMonth = rule.dayOfMonth ?? rule.startDate.getDate();
 
     for (let offset = 1; offset <= RECURRENCE_HORIZON_MONTHS + 1; offset++) {
       const date = occurrenceDate(rule.startDate, offset, dayOfMonth);

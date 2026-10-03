@@ -469,7 +469,140 @@ describe("TransactionsService", () => {
       amount: 800,
       type: "EXPENSE",
       startDate: new Date(2026, 9, 10),
+      dayOfMonth: 10,
     });
+  });
+
+  it("deve alterar a repetição do membro da sessão", async () => {
+    vi.spyOn(
+      familyContextService,
+      "getCurrentContext"
+    ).mockResolvedValue({
+      familyId: "family-1",
+      familyMemberId: "member-1",
+    });
+
+    vi.spyOn(
+      familyMemberService,
+      "findById"
+    ).mockResolvedValue({
+      id: "member-1",
+      role: "MEMBER",
+      deletedAt: null,
+    } as any);
+
+    vi.spyOn(
+      accountsRepository,
+      "findById"
+    ).mockResolvedValue({
+      id: "account-1",
+      familyMemberId: "member-1",
+      deletedAt: null,
+      isActive: true,
+    } as any);
+
+    const updateSpy = vi.spyOn(
+      recurringTransactionsRepository,
+      "updateOwned"
+    ).mockResolvedValue({ count: 1 });
+
+    await transactionsService.updateSeriesForUser(
+      "user-1",
+      {
+        id: "series-1",
+        accountId: "account-1",
+        description: "Aluguel",
+        amount: "900,00",
+        type: "EXPENSE",
+        dayOfMonth: 15,
+      }
+    );
+
+    expect(updateSpy).toHaveBeenCalledWith(
+      "series-1",
+      "member-1",
+      {
+        accountId: "account-1",
+        description: "Aluguel",
+        amount: 900,
+        type: "EXPENSE",
+        dayOfMonth: 15,
+      }
+    );
+  });
+
+  it("deve encerrar a repetição do membro da sessão", async () => {
+    vi.spyOn(
+      familyContextService,
+      "getCurrentContext"
+    ).mockResolvedValue({
+      familyId: "family-1",
+      familyMemberId: "member-1",
+    });
+
+    vi.spyOn(
+      familyMemberService,
+      "findById"
+    ).mockResolvedValue({
+      id: "member-1",
+      role: "OWNER",
+      deletedAt: null,
+    } as any);
+
+    const stopSpy = vi.spyOn(
+      recurringTransactionsRepository,
+      "deactivateOwned"
+    ).mockResolvedValue({ count: 1 });
+
+    await transactionsService.stopSeriesForUser(
+      "user-1",
+      "series-1"
+    );
+
+    expect(stopSpy).toHaveBeenCalledWith(
+      "series-1",
+      "member-1"
+    );
+  });
+
+  it("deve recusar alteração de quem só consulta", async () => {
+    vi.spyOn(
+      familyContextService,
+      "getCurrentContext"
+    ).mockResolvedValue({
+      familyId: "family-1",
+      familyMemberId: "member-1",
+    });
+
+    vi.spyOn(
+      familyMemberService,
+      "findById"
+    ).mockResolvedValue({
+      id: "member-1",
+      role: "VIEWER",
+      deletedAt: null,
+    } as any);
+
+    const updateSpy = vi.spyOn(
+      recurringTransactionsRepository,
+      "updateOwned"
+    );
+
+    await expect(
+      transactionsService.updateSeriesForUser(
+        "user-1",
+        {
+          id: "series-1",
+          accountId: "account-1",
+          description: "Aluguel",
+          amount: "10,00",
+          type: "EXPENSE",
+          dayOfMonth: 5,
+        }
+      )
+    ).rejects.toBeInstanceOf(TransactionCreateError);
+
+    expect(updateSpy).not.toHaveBeenCalled();
   });
 
   it("deve recusar lançamento de um membro somente leitura", async () => {

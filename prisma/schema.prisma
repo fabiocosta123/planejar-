@@ -279,6 +279,8 @@ model RecurringTransaction {
 
   startDate DateTime
 
+  dayOfMonth Int
+
   endDate DateTime?
 
   isActive Boolean @default(true)

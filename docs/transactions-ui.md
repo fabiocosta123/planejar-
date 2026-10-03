@@ -167,3 +167,5 @@ O lançamento salvo é a primeira ocorrência e entra na lista e no resumo do m�
 As ocorrências seguintes ficam fora da lista. O dia do aperto as recebe como pendentes, por até 12 meses, no mesmo dia do mês.
 
 A regra está em `docs/recurrence.md`.
+
+A mesma tela lista as repetições ativas. Dá para alterar descrição, valor, tipo, dia e conta, e encerrar a série. O lançamento já registrado não muda.
