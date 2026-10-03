@@ -84,6 +84,29 @@ export class TransactionsRepository {
   }
 
 
+  async findSummarySince(
+    familyMemberId: string,
+    startDate: Date | null
+  ) {
+    return prisma.transaction.findMany({
+      where: {
+        familyMemberId,
+        deletedAt: null,
+        ...(startDate
+          ? {
+              transactionDate: {
+                gte: startDate,
+              },
+            }
+          : {}),
+      },
+      orderBy: {
+        transactionDate: "desc",
+      },
+    });
+  }
+
+
   async findByAccountId(
     accountId: string
   ) {

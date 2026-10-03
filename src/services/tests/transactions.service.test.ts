@@ -216,6 +216,45 @@ describe("TransactionsService", () => {
 
   });
 
+  it("deve incluir o dia do aperto no dashboard", async () => {
+    vi.spyOn(
+      transactionsRepository,
+      "findByPeriod"
+    ).mockResolvedValue([
+      {
+        amount: 200,
+        type: "EXPENSE",
+        status: "COMPLETED",
+        transactionDate: new Date(2026, 9, 20),
+      },
+    ]);
+
+    const result =
+      await transactionsService.calculateDashboard(
+        "family-member-id",
+        new FinancialPeriod(
+          new Date(2026, 9, 1),
+          new Date(2026, 9, 31, 23, 59, 59, 999)
+        ),
+        100,
+        undefined,
+        new Date(2026, 9, 3),
+        0
+      );
+
+    expect(result.tightDay?.date)
+      .toEqual(new Date(2026, 9, 20));
+
+    expect(result.tightDay?.shortfall)
+      .toBe(100);
+
+    expect(result.tightDay?.daysRemaining)
+      .toBe(17);
+
+    expect(result.tightDay?.dailyAmount)
+      .toBe(5.89);
+  });
+
   it("deve listar o resumo dos lançamentos do período", async () => {
     const period = new FinancialPeriod(
       new Date("2026-08-01"),

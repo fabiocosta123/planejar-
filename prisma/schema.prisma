@@ -62,6 +62,11 @@ enum NotificationLevel {
   ALL
 }
 
+enum SubscriptionPlan {
+  FREE
+  PRO
+}
+
 enum TransactionType {
   INCOME
   EXPENSE
@@ -273,6 +278,8 @@ model UserSettings {
   dayOfTightnessAlert Boolean @default(true)
 
   minimumReserve Decimal @default(0) @db.Decimal(12, 2)
+
+  plan SubscriptionPlan @default(FREE)
 
   createdAt DateTime @default(now())
 

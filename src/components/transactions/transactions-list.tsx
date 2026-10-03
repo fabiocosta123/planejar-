@@ -14,10 +14,9 @@ import type {
 } from "@/contracts/financial/transaction-summary.contract";
 
 interface TransactionsListProps {
-
-  transactions:
-    TransactionSummaryContract[];
-
+  transactions: TransactionSummaryContract[];
+  emptyTitle?: string;
+  emptyDescription?: string;
 }
 
 function formatCurrency(
@@ -52,6 +51,8 @@ function formatDate(
 
 export function TransactionsList({
   transactions,
+  emptyTitle = "Nenhum lançamento",
+  emptyDescription = "Toque em + para registrar o primeiro lançamento.",
 }: TransactionsListProps) {
 
   return (
@@ -89,11 +90,11 @@ export function TransactionsList({
             </div>
 
             <h3 className="mt-4 font-medium">
-              Nenhum lançamento
+              {emptyTitle}
             </h3>
 
             <p className="mt-1 max-w-xs text-sm text-muted-foreground">
-              Toque em + para registrar o primeiro lançamento.
+              {emptyDescription}
             </p>
 
           </CardContent>

@@ -4,6 +4,7 @@ import { FinancialPeriod } from "../../domain/financial/models/financial-period"
 import { FinancialSummaryMapper } from "../../domain/financial/mappers/financial-summary.mapper";
 import { FutureBalanceMapper } from "../../domain/financial/mappers/future-balance.mapper";
 import { FinancialFlowMapper } from "../../domain/financial/mappers/financial-flow.mapper";
+import { TightDayMapper } from "../../domain/financial/mappers/tight-day.mapper";
 import { DashboardContract } from "../../contracts/financial/dashboard.contract";
 
 export async function getFinancialDashboardAction(
@@ -11,7 +12,8 @@ export async function getFinancialDashboardAction(
   startDate: Date,
   endDate: Date,
   spendingLimit?: number,
-  referenceDate: Date = new Date()
+  referenceDate: Date = new Date(),
+  minimumReserve = 0
 ): Promise<DashboardContract> {
 
   const period =
@@ -32,7 +34,8 @@ export async function getFinancialDashboardAction(
       period,
       currentBalance,
       spendingLimit,
-      referenceDate
+      referenceDate,
+      minimumReserve
     );
 
   return {
@@ -49,6 +52,11 @@ export async function getFinancialDashboardAction(
     financialFlow:
       FinancialFlowMapper.toContracts(
         result.financialFlow
+      ),
+
+    tightDay:
+      TightDayMapper.toContract(
+        result.tightDay
       )
   };
 

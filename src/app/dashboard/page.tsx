@@ -2,6 +2,8 @@ import { auth } from "../../lib/auth";
 
 import { familyContextService } from "../../services/family-context.service";
 
+import { settingsService } from "../../services/settings.service";
+
 import { getFinancialDashboardAction } from "../../actions/financial/get-financial-dashboard.action";
 
 import { Dashboard } from "../../components/dashboard/dashboard";
@@ -60,19 +62,26 @@ export default async function DashboardPage() {
       999
     );
 
+  const settings =
+    await settingsService.getSettings(
+      userId
+    );
+
   const dashboard =
     await getFinancialDashboardAction(
       familyContext.familyMemberId,
       startDate,
       endDate,
       undefined,
-      today
+      today,
+      Number(settings.minimumReserve)
     );
 
   return (
     <Dashboard
       userName={session?.user?.name}
       dashboard={dashboard}
+      showTightDay={settings.dayOfTightnessAlert}
     />
   );
 }

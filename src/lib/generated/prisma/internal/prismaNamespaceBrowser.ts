@@ -167,6 +167,7 @@ export const UserSettingsScalarFieldEnum = {
   notificationLevel: 'notificationLevel',
   dayOfTightnessAlert: 'dayOfTightnessAlert',
   minimumReserve: 'minimumReserve',
+  plan: 'plan',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

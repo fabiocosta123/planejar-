@@ -409,5 +409,54 @@ describe("TransactionsRepository", () => {
             .toEqual(transactionsMock);
 
     });
+
+    it("deve buscar o histórico a partir de uma data", async () => {
+        const startDate = new Date(2026, 6, 3);
+
+        const findManyMock = vi.spyOn(
+            prisma.transaction,
+            "findMany"
+        ).mockResolvedValue([]);
+
+        await transactionsRepository.findSummarySince(
+            "family-member-id",
+            startDate
+        );
+
+        expect(findManyMock).toHaveBeenCalledWith({
+            where: {
+                familyMemberId: "family-member-id",
+                deletedAt: null,
+                transactionDate: {
+                    gte: startDate,
+                },
+            },
+            orderBy: {
+                transactionDate: "desc",
+            },
+        });
+    });
+
+    it("deve buscar o histórico completo quando não há data inicial", async () => {
+        const findManyMock = vi.spyOn(
+            prisma.transaction,
+            "findMany"
+        ).mockResolvedValue([]);
+
+        await transactionsRepository.findSummarySince(
+            "family-member-id",
+            null
+        );
+
+        expect(findManyMock).toHaveBeenCalledWith({
+            where: {
+                familyMemberId: "family-member-id",
+                deletedAt: null,
+            },
+            orderBy: {
+                transactionDate: "desc",
+            },
+        });
+    });
     
 });

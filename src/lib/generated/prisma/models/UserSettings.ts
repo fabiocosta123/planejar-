@@ -45,6 +45,7 @@ export type UserSettingsMinAggregateOutputType = {
   notificationLevel: $Enums.NotificationLevel | null
   dayOfTightnessAlert: boolean | null
   minimumReserve: runtime.Decimal | null
+  plan: $Enums.SubscriptionPlan | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -60,6 +61,7 @@ export type UserSettingsMaxAggregateOutputType = {
   notificationLevel: $Enums.NotificationLevel | null
   dayOfTightnessAlert: boolean | null
   minimumReserve: runtime.Decimal | null
+  plan: $Enums.SubscriptionPlan | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -75,6 +77,7 @@ export type UserSettingsCountAggregateOutputType = {
   notificationLevel: number
   dayOfTightnessAlert: number
   minimumReserve: number
+  plan: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -100,6 +103,7 @@ export type UserSettingsMinAggregateInputType = {
   notificationLevel?: true
   dayOfTightnessAlert?: true
   minimumReserve?: true
+  plan?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -115,6 +119,7 @@ export type UserSettingsMaxAggregateInputType = {
   notificationLevel?: true
   dayOfTightnessAlert?: true
   minimumReserve?: true
+  plan?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -130,6 +135,7 @@ export type UserSettingsCountAggregateInputType = {
   notificationLevel?: true
   dayOfTightnessAlert?: true
   minimumReserve?: true
+  plan?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -232,6 +238,7 @@ export type UserSettingsGroupByOutputType = {
   notificationLevel: $Enums.NotificationLevel
   dayOfTightnessAlert: boolean
   minimumReserve: runtime.Decimal
+  plan: $Enums.SubscriptionPlan
   createdAt: Date
   updatedAt: Date
   _count: UserSettingsCountAggregateOutputType | null
@@ -270,6 +277,7 @@ export type UserSettingsWhereInput = {
   notificationLevel?: Prisma.EnumNotificationLevelFilter<"UserSettings"> | $Enums.NotificationLevel
   dayOfTightnessAlert?: Prisma.BoolFilter<"UserSettings"> | boolean
   minimumReserve?: Prisma.DecimalFilter<"UserSettings"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  plan?: Prisma.EnumSubscriptionPlanFilter<"UserSettings"> | $Enums.SubscriptionPlan
   createdAt?: Prisma.DateTimeFilter<"UserSettings"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"UserSettings"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -287,6 +295,7 @@ export type UserSettingsOrderByWithRelationInput = {
   notificationLevel?: Prisma.SortOrder
   dayOfTightnessAlert?: Prisma.SortOrder
   minimumReserve?: Prisma.SortOrder
+  plan?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
@@ -307,6 +316,7 @@ export type UserSettingsWhereUniqueInput = Prisma.AtLeast<{
   notificationLevel?: Prisma.EnumNotificationLevelFilter<"UserSettings"> | $Enums.NotificationLevel
   dayOfTightnessAlert?: Prisma.BoolFilter<"UserSettings"> | boolean
   minimumReserve?: Prisma.DecimalFilter<"UserSettings"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  plan?: Prisma.EnumSubscriptionPlanFilter<"UserSettings"> | $Enums.SubscriptionPlan
   createdAt?: Prisma.DateTimeFilter<"UserSettings"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"UserSettings"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -324,6 +334,7 @@ export type UserSettingsOrderByWithAggregationInput = {
   notificationLevel?: Prisma.SortOrder
   dayOfTightnessAlert?: Prisma.SortOrder
   minimumReserve?: Prisma.SortOrder
+  plan?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserSettingsCountOrderByAggregateInput
@@ -347,6 +358,7 @@ export type UserSettingsScalarWhereWithAggregatesInput = {
   notificationLevel?: Prisma.EnumNotificationLevelWithAggregatesFilter<"UserSettings"> | $Enums.NotificationLevel
   dayOfTightnessAlert?: Prisma.BoolWithAggregatesFilter<"UserSettings"> | boolean
   minimumReserve?: Prisma.DecimalWithAggregatesFilter<"UserSettings"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  plan?: Prisma.EnumSubscriptionPlanWithAggregatesFilter<"UserSettings"> | $Enums.SubscriptionPlan
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"UserSettings"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"UserSettings"> | Date | string
 }
@@ -360,6 +372,7 @@ export type UserSettingsCreateInput = {
   notificationLevel?: $Enums.NotificationLevel
   dayOfTightnessAlert?: boolean
   minimumReserve?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  plan?: $Enums.SubscriptionPlan
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutSettingsInput
@@ -377,6 +390,7 @@ export type UserSettingsUncheckedCreateInput = {
   notificationLevel?: $Enums.NotificationLevel
   dayOfTightnessAlert?: boolean
   minimumReserve?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  plan?: $Enums.SubscriptionPlan
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -390,6 +404,7 @@ export type UserSettingsUpdateInput = {
   notificationLevel?: Prisma.EnumNotificationLevelFieldUpdateOperationsInput | $Enums.NotificationLevel
   dayOfTightnessAlert?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumReserve?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutSettingsNestedInput
@@ -407,6 +422,7 @@ export type UserSettingsUncheckedUpdateInput = {
   notificationLevel?: Prisma.EnumNotificationLevelFieldUpdateOperationsInput | $Enums.NotificationLevel
   dayOfTightnessAlert?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumReserve?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -422,6 +438,7 @@ export type UserSettingsCreateManyInput = {
   notificationLevel?: $Enums.NotificationLevel
   dayOfTightnessAlert?: boolean
   minimumReserve?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  plan?: $Enums.SubscriptionPlan
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -435,6 +452,7 @@ export type UserSettingsUpdateManyMutationInput = {
   notificationLevel?: Prisma.EnumNotificationLevelFieldUpdateOperationsInput | $Enums.NotificationLevel
   dayOfTightnessAlert?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumReserve?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -450,6 +468,7 @@ export type UserSettingsUncheckedUpdateManyInput = {
   notificationLevel?: Prisma.EnumNotificationLevelFieldUpdateOperationsInput | $Enums.NotificationLevel
   dayOfTightnessAlert?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumReserve?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -480,6 +499,7 @@ export type UserSettingsCountOrderByAggregateInput = {
   notificationLevel?: Prisma.SortOrder
   dayOfTightnessAlert?: Prisma.SortOrder
   minimumReserve?: Prisma.SortOrder
+  plan?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -499,6 +519,7 @@ export type UserSettingsMaxOrderByAggregateInput = {
   notificationLevel?: Prisma.SortOrder
   dayOfTightnessAlert?: Prisma.SortOrder
   minimumReserve?: Prisma.SortOrder
+  plan?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -514,6 +535,7 @@ export type UserSettingsMinOrderByAggregateInput = {
   notificationLevel?: Prisma.SortOrder
   dayOfTightnessAlert?: Prisma.SortOrder
   minimumReserve?: Prisma.SortOrder
+  plan?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -608,6 +630,10 @@ export type EnumNotificationLevelFieldUpdateOperationsInput = {
   set?: $Enums.NotificationLevel
 }
 
+export type EnumSubscriptionPlanFieldUpdateOperationsInput = {
+  set?: $Enums.SubscriptionPlan
+}
+
 export type UserSettingsCreateWithoutCurrentFamilyInput = {
   id?: string
   currency?: $Enums.Currency
@@ -617,6 +643,7 @@ export type UserSettingsCreateWithoutCurrentFamilyInput = {
   notificationLevel?: $Enums.NotificationLevel
   dayOfTightnessAlert?: boolean
   minimumReserve?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  plan?: $Enums.SubscriptionPlan
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutSettingsInput
@@ -632,6 +659,7 @@ export type UserSettingsUncheckedCreateWithoutCurrentFamilyInput = {
   notificationLevel?: $Enums.NotificationLevel
   dayOfTightnessAlert?: boolean
   minimumReserve?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  plan?: $Enums.SubscriptionPlan
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -676,6 +704,7 @@ export type UserSettingsScalarWhereInput = {
   notificationLevel?: Prisma.EnumNotificationLevelFilter<"UserSettings"> | $Enums.NotificationLevel
   dayOfTightnessAlert?: Prisma.BoolFilter<"UserSettings"> | boolean
   minimumReserve?: Prisma.DecimalFilter<"UserSettings"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  plan?: Prisma.EnumSubscriptionPlanFilter<"UserSettings"> | $Enums.SubscriptionPlan
   createdAt?: Prisma.DateTimeFilter<"UserSettings"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"UserSettings"> | Date | string
 }
@@ -689,6 +718,7 @@ export type UserSettingsCreateWithoutUserInput = {
   notificationLevel?: $Enums.NotificationLevel
   dayOfTightnessAlert?: boolean
   minimumReserve?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  plan?: $Enums.SubscriptionPlan
   createdAt?: Date | string
   updatedAt?: Date | string
   currentFamily?: Prisma.FamilyCreateNestedOneWithoutCurrentUserSettingsInput
@@ -704,6 +734,7 @@ export type UserSettingsUncheckedCreateWithoutUserInput = {
   notificationLevel?: $Enums.NotificationLevel
   dayOfTightnessAlert?: boolean
   minimumReserve?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  plan?: $Enums.SubscriptionPlan
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -733,6 +764,7 @@ export type UserSettingsUpdateWithoutUserInput = {
   notificationLevel?: Prisma.EnumNotificationLevelFieldUpdateOperationsInput | $Enums.NotificationLevel
   dayOfTightnessAlert?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumReserve?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   currentFamily?: Prisma.FamilyUpdateOneWithoutCurrentUserSettingsNestedInput
@@ -748,6 +780,7 @@ export type UserSettingsUncheckedUpdateWithoutUserInput = {
   notificationLevel?: Prisma.EnumNotificationLevelFieldUpdateOperationsInput | $Enums.NotificationLevel
   dayOfTightnessAlert?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumReserve?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -762,6 +795,7 @@ export type UserSettingsCreateManyCurrentFamilyInput = {
   notificationLevel?: $Enums.NotificationLevel
   dayOfTightnessAlert?: boolean
   minimumReserve?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  plan?: $Enums.SubscriptionPlan
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -775,6 +809,7 @@ export type UserSettingsUpdateWithoutCurrentFamilyInput = {
   notificationLevel?: Prisma.EnumNotificationLevelFieldUpdateOperationsInput | $Enums.NotificationLevel
   dayOfTightnessAlert?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumReserve?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutSettingsNestedInput
@@ -790,6 +825,7 @@ export type UserSettingsUncheckedUpdateWithoutCurrentFamilyInput = {
   notificationLevel?: Prisma.EnumNotificationLevelFieldUpdateOperationsInput | $Enums.NotificationLevel
   dayOfTightnessAlert?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumReserve?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -804,6 +840,7 @@ export type UserSettingsUncheckedUpdateManyWithoutCurrentFamilyInput = {
   notificationLevel?: Prisma.EnumNotificationLevelFieldUpdateOperationsInput | $Enums.NotificationLevel
   dayOfTightnessAlert?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumReserve?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -821,6 +858,7 @@ export type UserSettingsSelect<ExtArgs extends runtime.Types.Extensions.Internal
   notificationLevel?: boolean
   dayOfTightnessAlert?: boolean
   minimumReserve?: boolean
+  plan?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -838,6 +876,7 @@ export type UserSettingsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   notificationLevel?: boolean
   dayOfTightnessAlert?: boolean
   minimumReserve?: boolean
+  plan?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -855,6 +894,7 @@ export type UserSettingsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   notificationLevel?: boolean
   dayOfTightnessAlert?: boolean
   minimumReserve?: boolean
+  plan?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -872,11 +912,12 @@ export type UserSettingsSelectScalar = {
   notificationLevel?: boolean
   dayOfTightnessAlert?: boolean
   minimumReserve?: boolean
+  plan?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserSettingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "currentFamilyId" | "currency" | "locale" | "theme" | "weekStartsOn" | "notificationLevel" | "dayOfTightnessAlert" | "minimumReserve" | "createdAt" | "updatedAt", ExtArgs["result"]["userSettings"]>
+export type UserSettingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "currentFamilyId" | "currency" | "locale" | "theme" | "weekStartsOn" | "notificationLevel" | "dayOfTightnessAlert" | "minimumReserve" | "plan" | "createdAt" | "updatedAt", ExtArgs["result"]["userSettings"]>
 export type UserSettingsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   currentFamily?: boolean | Prisma.UserSettings$currentFamilyArgs<ExtArgs>
@@ -907,6 +948,7 @@ export type $UserSettingsPayload<ExtArgs extends runtime.Types.Extensions.Intern
     notificationLevel: $Enums.NotificationLevel
     dayOfTightnessAlert: boolean
     minimumReserve: runtime.Decimal
+    plan: $Enums.SubscriptionPlan
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["userSettings"]>
@@ -1344,6 +1386,7 @@ export interface UserSettingsFieldRefs {
   readonly notificationLevel: Prisma.FieldRef<"UserSettings", 'NotificationLevel'>
   readonly dayOfTightnessAlert: Prisma.FieldRef<"UserSettings", 'Boolean'>
   readonly minimumReserve: Prisma.FieldRef<"UserSettings", 'Decimal'>
+  readonly plan: Prisma.FieldRef<"UserSettings", 'SubscriptionPlan'>
   readonly createdAt: Prisma.FieldRef<"UserSettings", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"UserSettings", 'DateTime'>
 }

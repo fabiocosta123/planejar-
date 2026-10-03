@@ -5,16 +5,19 @@ import { DashboardSummary } from "./dashboard-summary";
 import { BottomNavigation } from "./bottom-navigation";
 import { DashboardFutureBalance } from "./dashboard-future-balance";
 import { DashboardFinancialFlow } from "./dashboard-financial-flow";
+import { DashboardTightDay } from "./dashboard-tight-day";
 
 
 interface DashboardProps {
   userName?: string | null;
   dashboard: DashboardContract;
+  showTightDay?: boolean;
 }
 
 export function Dashboard({
   userName,
   dashboard,
+  showTightDay = true,
 }: DashboardProps) {
   return (
     <main className="min-h-dvh bg-muted/30">
@@ -24,6 +27,12 @@ export function Dashboard({
         <DashboardSummary
           summary={dashboard.summary}
         />
+
+        {showTightDay ? (
+          <DashboardTightDay
+            data={dashboard.tightDay}
+          />
+        ) : null}
 
         <DashboardFinancialFlow
           financialFlow={dashboard.financialFlow}

@@ -3,11 +3,21 @@ import { accountsRepository } from "../repositories/accounts.repository";
 import { FinancialPeriod } from "../domain/financial/models/financial-period";
 import { financialEngine } from "../domain/financial/engine/financial-engine";
 import { financialFlowEngine } from "../domain/financial/engine/financial-flow-engine";
+import { tightDayRule } from "../domain/financial/rules/tight-day.rule";
 import { TransactionSummaryMapper } from "../repositories/mappers/transaction-summary.mapper";
 import { parseCreateTransactionInput } from "../contracts/transactions/parse-create-transaction";
 import { familyContextService } from "./family-context.service";
 import { familyMemberService } from "./family-member.service";
 import { TransactionCreateError } from "./errors/transaction-create.error";
+import { historyComparisonRule } from "../domain/financial/rules/history-comparison.rule";
+import {
+  resolveHistoryStart,
+  SubscriptionPlan,
+} from "../domain/financial/rules/transaction-history-window.rule";
+import {
+  toComparisonContract,
+  TransactionHistoryContract,
+} from "../contracts/financial/transaction-history.contract";
 
 export class TransactionsService {
 
@@ -37,7 +47,8 @@ export class TransactionsService {
     period: FinancialPeriod,
     currentBalance: number,
     spendingLimit?: number,
-    referenceDate: Date = new Date()
+    referenceDate: Date = new Date(),
+    minimumReserve = 0
   ) {
 
     const transactions =
@@ -66,10 +77,19 @@ export class TransactionsService {
         transactions
       );
 
+    const tightDay =
+      tightDayRule.calculate(
+        currentBalance,
+        transactions,
+        referenceDate,
+        minimumReserve
+      );
+
     return {
       summary,
       futureBalance,
-      financialFlow
+      financialFlow,
+      tightDay
     };
 
   }
@@ -127,6 +147,71 @@ export class TransactionsService {
     return transactions.map((transaction) =>
       TransactionSummaryMapper.toContract(transaction)
     );
+  }
+
+  async getHistory(
+    familyMemberId: string,
+    plan: SubscriptionPlan,
+    referenceDate: Date = new Date()
+  ): Promise<TransactionHistoryContract> {
+
+    const historyStart = resolveHistoryStart(
+      plan,
+      referenceDate
+    );
+
+    const transactions =
+      await transactionsRepository.findSummarySince(
+        familyMemberId,
+        historyStart
+      );
+
+    const historyTransactions = transactions.map((transaction) => ({
+      amount: Number(transaction.amount),
+      type: transaction.type,
+      status: transaction.status,
+      transactionDate: transaction.transactionDate,
+    }));
+
+    const currentMonthStart = new Date(
+      referenceDate.getFullYear(),
+      referenceDate.getMonth(),
+      1
+    );
+
+    const currentMonthEnd = new Date(
+      referenceDate.getFullYear(),
+      referenceDate.getMonth() + 1,
+      0,
+      23,
+      59,
+      59,
+      999
+    );
+
+    const comparison =
+      plan === "PRO"
+        ? historyComparisonRule.compare(
+            historyTransactions,
+            referenceDate
+          )
+        : null;
+
+    return {
+      plan,
+      historyStart,
+      transactions: transactions.map((transaction) =>
+        TransactionSummaryMapper.toContract(transaction)
+      ),
+      currentMonth: historyComparisonRule.sum(
+        historyTransactions,
+        currentMonthStart,
+        currentMonthEnd
+      ),
+      comparison: comparison
+        ? toComparisonContract(comparison)
+        : null,
+    };
   }
 
   async createForUser(

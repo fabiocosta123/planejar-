@@ -2,7 +2,9 @@ import Link from "next/link";
 import {
   ArrowLeftRight,
   Bell,
-  CalendarClock,
+  CalendarRange,
+  Landmark,
+  ScrollText,
   Wallet,
 } from "lucide-react";
 
@@ -14,7 +16,7 @@ const freeFeatures = [
     icon: ArrowLeftRight,
     title: "Lançamentos",
     description:
-      "Registre entradas e saídas do mês, com valor em reais e data.",
+      "Registre entradas e saídas e veja os mais recentes na hora.",
   },
   {
     icon: Wallet,
@@ -22,20 +24,44 @@ const freeFeatures = [
     description:
       "Acompanhe o saldo até hoje e o resumo de entradas e saídas.",
   },
+  {
+    icon: ScrollText,
+    title: "Busca de 3 meses",
+    description:
+      "Encontre um lançamento pela descrição nos últimos 3 meses.",
+  },
 ];
 
 const proFeatures = [
   {
-    icon: CalendarClock,
+    icon: CalendarRange,
     title: "Dia do aperto",
     description:
-      "O app encontra o primeiro dia em que o saldo fica abaixo da reserva.",
+      "Você vê com antecedência o dia em que o dinheiro fica curto.",
   },
   {
     icon: Bell,
     title: "Quanto juntar por dia",
     description:
-      "Divide o buraco pelos dias que faltam e avisa antes da conta fechar no vermelho.",
+      "Você sabe quanto separar por dia para chegar nesse dia com folga.",
+  },
+  {
+    icon: Landmark,
+    title: "Contas bancárias",
+    description:
+      "Conecte suas contas e acompanhe as movimentações sem lançar uma a uma.",
+  },
+  {
+    icon: ScrollText,
+    title: "Histórico de lançamentos",
+    description:
+      "Consulte entradas e saídas sem limite de tempo.",
+  },
+  {
+    icon: ArrowLeftRight,
+    title: "Comparativo",
+    description:
+      "Compare um mês com o outro e um ano com o outro.",
   },
 ];
 
@@ -55,8 +81,8 @@ export default async function Home() {
         </h1>
 
         <p className="mt-3 max-w-lg text-base leading-7 text-muted-foreground">
-          A versão gratuita organiza os lançamentos do mês. A Pro avisa
-          o dia do aperto e quanto guardar por dia para cobrir essa diferença.
+          A versão gratuita organiza os lançamentos recentes. A Pro amplia
+          o histórico, compara períodos e avisa quando o dinheiro vai apertar.
         </p>
 
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
@@ -93,12 +119,9 @@ export default async function Home() {
             <h2 id="pro-plan" className="text-lg font-semibold">
               Pro
             </h2>
-            <span className="rounded-full bg-primary px-2 py-0.5 text-[11px] font-medium text-primary-foreground">
-              Em breve
-            </span>
           </div>
           <p className="mt-1 text-sm text-muted-foreground">
-            A previsão que justifica a assinatura. Ainda não está liberada.
+            Histórico completo, comparativo e o aviso de quando separar dinheiro.
           </p>
 
           <ul className="mt-4 space-y-3">
