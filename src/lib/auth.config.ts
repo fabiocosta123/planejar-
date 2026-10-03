@@ -1,5 +1,20 @@
 import type { NextAuthConfig } from "next-auth";
 
+const protectedPrefixes = [
+  "/dashboard",
+  "/transactions",
+  "/accounts",
+  "/settings",
+];
+
+function isProtectedPath(pathname: string) {
+  return protectedPrefixes.some(
+    (prefix) =>
+      pathname === prefix ||
+      pathname.startsWith(`${prefix}/`)
+  );
+}
+
 export const authConfig = {
 
   pages: {
@@ -40,11 +55,11 @@ export const authConfig = {
       const isAuthenticated =
         !!auth?.user;
 
-      const isDashboard =
-        request.nextUrl.pathname
-          .startsWith("/dashboard");
-
-      if (isDashboard) {
+      if (
+        isProtectedPath(
+          request.nextUrl.pathname
+        )
+      ) {
         return isAuthenticated;
       }
 

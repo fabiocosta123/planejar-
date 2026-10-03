@@ -8,6 +8,8 @@ export interface TransactionSummaryContract {
 
   type: "INCOME" | "EXPENSE";
 
+  status: "PENDING" | "COMPLETED" | "CANCELED";
+
   date: Date;
 
 }

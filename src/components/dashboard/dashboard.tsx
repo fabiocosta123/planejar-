@@ -23,8 +23,7 @@ export function Dashboard({
 
         <DashboardSummary
           summary={dashboard.summary}
-          currentBalance={dashboard.currentBalance}
-        />       
+        />
 
         <DashboardFinancialFlow
           financialFlow={dashboard.financialFlow}

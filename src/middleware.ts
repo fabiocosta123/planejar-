@@ -11,7 +11,10 @@ export default NextAuth(
 export const config = {
 
   matcher: [
-    "/dashboard/:path*"
+    "/dashboard/:path*",
+    "/transactions/:path*",
+    "/accounts/:path*",
+    "/settings/:path*",
   ]
 
 };

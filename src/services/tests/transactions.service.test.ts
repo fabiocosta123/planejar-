@@ -2,9 +2,13 @@ import { describe, expect, it, vi, beforeEach } from "vitest";
 
 import { transactionsService } from "../transactions.service";
 import { transactionsRepository } from "../../repositories/transactions.repository";
+import { accountsRepository } from "../../repositories/accounts.repository";
 import { financialEngine } from "../../domain/financial/engine/financial-engine";
 import { FinancialPeriod } from "../../domain/financial/models/financial-period";
 import { TransactionInput } from "../../domain/financial/models/transaction-input";
+import { familyContextService } from "../family-context.service";
+import { familyMemberService } from "../family-member.service";
+import { TransactionCreateError } from "../errors/transaction-create.error";
 
 describe("TransactionsService", () => {
 
@@ -210,6 +214,190 @@ describe("TransactionsService", () => {
       .toBe(4000);
 
 
+  });
+
+  it("deve listar o resumo dos lançamentos do período", async () => {
+    const period = new FinancialPeriod(
+      new Date("2026-08-01"),
+      new Date("2026-08-31")
+    );
+
+    vi.spyOn(
+      transactionsRepository,
+      "findSummaryByPeriod"
+    ).mockResolvedValue([
+      {
+        id: "transaction-1",
+        description: "Mercado",
+        amount: 10.5,
+        type: "EXPENSE",
+        status: "COMPLETED",
+        transactionDate: new Date("2026-08-20"),
+      },
+    ] as any);
+
+    const result =
+      await transactionsService.findSummaryByPeriod(
+        "family-member-id",
+        period
+      );
+
+    expect(result).toEqual([
+      {
+        id: "transaction-1",
+        description: "Mercado",
+        amount: 10.5,
+        type: "EXPENSE",
+        status: "COMPLETED",
+        date: new Date("2026-08-20"),
+      },
+    ]);
+  });
+
+  it("deve criar o lançamento na conta do membro da sessão", async () => {
+    vi.spyOn(
+      familyContextService,
+      "getCurrentContext"
+    ).mockResolvedValue({
+      familyId: "family-1",
+      familyMemberId: "member-1",
+    });
+
+    vi.spyOn(
+      familyMemberService,
+      "findById"
+    ).mockResolvedValue({
+      id: "member-1",
+      role: "MEMBER",
+      deletedAt: null,
+    } as any);
+
+    vi.spyOn(
+      accountsRepository,
+      "findById"
+    ).mockResolvedValue({
+      id: "account-1",
+      familyMemberId: "member-1",
+      deletedAt: null,
+      isActive: true,
+    } as any);
+
+    const createSpy = vi.spyOn(
+      transactionsRepository,
+      "create"
+    ).mockResolvedValue({ id: "transaction-1" } as any);
+
+    await transactionsService.createForUser(
+      "user-1",
+      {
+        familyMemberId: "other-member",
+        accountId: "account-1",
+        description: " Mercado ",
+        amount: "1.234,56",
+        type: "EXPENSE",
+        transactionDate: "2026-08-20",
+        notes: "  ",
+      }
+    );
+
+    expect(createSpy).toHaveBeenCalledWith({
+      familyMemberId: "member-1",
+      accountId: "account-1",
+      description: "Mercado",
+      notes: undefined,
+      amount: 1234.56,
+      type: "EXPENSE",
+      status: "COMPLETED",
+      transactionDate: new Date(2026, 7, 20),
+    });
+  });
+
+  it("deve recusar lançamento de um membro somente leitura", async () => {
+    vi.spyOn(
+      familyContextService,
+      "getCurrentContext"
+    ).mockResolvedValue({
+      familyId: "family-1",
+      familyMemberId: "member-1",
+    });
+
+    vi.spyOn(
+      familyMemberService,
+      "findById"
+    ).mockResolvedValue({
+      id: "member-1",
+      role: "VIEWER",
+      deletedAt: null,
+    } as any);
+
+    const createSpy = vi.spyOn(
+      transactionsRepository,
+      "create"
+    );
+
+    await expect(
+      transactionsService.createForUser(
+        "user-1",
+        {
+          accountId: "account-1",
+          description: "Mercado",
+          amount: "10,00",
+          type: "EXPENSE",
+          transactionDate: "2026-08-20",
+        }
+      )
+    ).rejects.toBeInstanceOf(TransactionCreateError);
+
+    expect(createSpy).not.toHaveBeenCalled();
+  });
+
+  it("deve recusar conta que não pertence ao membro", async () => {
+    vi.spyOn(
+      familyContextService,
+      "getCurrentContext"
+    ).mockResolvedValue({
+      familyId: "family-1",
+      familyMemberId: "member-1",
+    });
+
+    vi.spyOn(
+      familyMemberService,
+      "findById"
+    ).mockResolvedValue({
+      id: "member-1",
+      role: "OWNER",
+      deletedAt: null,
+    } as any);
+
+    vi.spyOn(
+      accountsRepository,
+      "findById"
+    ).mockResolvedValue({
+      id: "account-2",
+      familyMemberId: "member-2",
+      deletedAt: null,
+      isActive: true,
+    } as any);
+
+    const createSpy = vi.spyOn(
+      transactionsRepository,
+      "create"
+    );
+
+    await expect(
+      transactionsService.createForUser(
+        "user-1",
+        {
+          accountId: "account-2",
+          description: "Mercado",
+          amount: 10,
+          type: "INCOME",
+          transactionDate: "2026-08-20",
+        }
+      )
+    ).rejects.toThrow("Conta não encontrada.");
+
+    expect(createSpy).not.toHaveBeenCalled();
   });
 
 

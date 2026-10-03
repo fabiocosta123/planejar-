@@ -142,20 +142,22 @@ describe("TransactionsRepository", () => {
             .toHaveBeenCalledWith({
                 where: {
                     familyMemberId: "family-member-id",
+
+                    deletedAt: null,
+
                     transactionDate: {
-                        gte: period.startDate,
-                        lte: period.endDate,
+                        gte: new Date("2026-08-01"),
+                        lte: new Date("2026-08-31"),
                     },
                 },
+
                 orderBy: {
-                    transactionDate: "asc",
+                    transactionDate: "desc",
                 },
             });
 
 
     });
-
-
 
     it("deve buscar apenas receitas do período", async () => {
 
@@ -196,8 +198,6 @@ describe("TransactionsRepository", () => {
 
     });
 
-
-
     it("deve buscar apenas despesas do período", async () => {
 
 
@@ -237,5 +237,177 @@ describe("TransactionsRepository", () => {
 
     });
 
+    it("deve criar uma transação", async () => {
 
+        const transactionMock = {
+            id: "transaction-id",
+
+            familyMemberId:
+                "family-member-id",
+
+            accountId:
+                "account-id",
+
+            description:
+                "Salário",
+
+            notes:
+                "Salário do mês",
+
+            amount: 5000,
+
+            type: "INCOME",
+
+            status: "COMPLETED",
+
+            transactionDate:
+                new Date("2026-08-21"),
+
+            effectiveDate:
+                null,
+
+            deletedAt:
+                null,
+
+            createdAt:
+                new Date(),
+
+            updatedAt:
+                new Date(),
+        };
+
+
+        const createMock =
+            vi.spyOn(
+                prisma.transaction,
+                "create"
+            )
+                .mockResolvedValue(
+                    transactionMock as any
+                );
+
+
+        const result =
+            await transactionsRepository.create({
+
+                familyMemberId:
+                    "family-member-id",
+
+                accountId:
+                    "account-id",
+
+                description:
+                    "Salário",
+
+                notes:
+                    "Salário do mês",
+
+                amount:
+                    5000,
+
+                type:
+                    "INCOME",
+
+                status:
+                    "COMPLETED",
+
+                transactionDate:
+                    new Date("2026-08-21"),
+
+            });
+
+
+        expect(createMock)
+            .toHaveBeenCalledWith({
+
+                data: {
+
+                    familyMemberId:
+                        "family-member-id",
+
+                    accountId:
+                        "account-id",
+
+                    description:
+                        "Salário",
+
+                    notes:
+                        "Salário do mês",
+
+                    amount:
+                        5000,
+
+                    type:
+                        "INCOME",
+
+                    status:
+                        "COMPLETED",
+
+                    transactionDate:
+                        new Date("2026-08-21"),
+
+                },
+
+            });
+
+
+        expect(result)
+            .toEqual(transactionMock);
+
+    });
+
+    it("deve listar o resumo dos lançamentos do período", async () => {
+
+        const transactionsMock = [
+            {
+                id: "transaction-1",
+                description: "Mercado",
+                amount: 150,
+                type: "EXPENSE",
+                status: "COMPLETED",
+                transactionDate: new Date("2026-08-20"),
+            },
+        ];
+
+        const findManyMock =
+            vi.spyOn(
+                prisma.transaction,
+                "findMany"
+            )
+                .mockResolvedValue(
+                    transactionsMock as any
+                );
+
+        const period =
+            new FinancialPeriod(
+                new Date("2026-08-01"),
+                new Date("2026-08-31")
+            );
+
+        const result =
+            await transactionsRepository.findSummaryByPeriod(
+                "family-member-id",
+                period
+            );
+
+        expect(findManyMock)
+            .toHaveBeenCalledWith({
+                where: {
+                    familyMemberId: "family-member-id",
+                    deletedAt: null,
+                    transactionDate: {
+                        gte: period.startDate,
+                        lte: period.endDate,
+                    },
+                },
+                orderBy: {
+                    transactionDate: "desc",
+                },
+            });
+
+        expect(result)
+            .toEqual(transactionsMock);
+
+    });
+    
 });
