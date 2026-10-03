@@ -164,6 +164,8 @@ Tipos:
 
 É a principal entidade financeira do sistema.
 
+Uma recorrência mensal guarda a repetição. O lançamento registrado é a primeira ocorrência. As seguintes são projetadas pelo motor para o dia do aperto.
+
 ---
 
 ## Goal

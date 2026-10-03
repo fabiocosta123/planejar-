@@ -155,3 +155,15 @@ Disponível apenas com `plan = PRO`.
 Cada bloco mostra a diferença de entradas e de saídas, e os totais dos dois períodos.
 
 A diferença é o valor atual menos o valor anterior.
+
+---
+
+## 9. Repetir todo mês
+
+O formulário de novo lançamento oferece **Repetir todo mês**.
+
+O lançamento salvo é a primeira ocorrência e entra na lista e no resumo do mês.
+
+As ocorrências seguintes ficam fora da lista. O dia do aperto as recebe como pendentes, por até 12 meses, no mesmo dia do mês.
+
+A regra está em `docs/recurrence.md`.
