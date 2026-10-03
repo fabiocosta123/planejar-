@@ -235,6 +235,8 @@ describe("AccountsRepository", () => {
 
                 initialBalance: 500,
 
+                isDefault: false,
+
                 familyMember: {
 
                     connect: {
