@@ -72,6 +72,14 @@ export const NotificationLevel = {
 export type NotificationLevel = (typeof NotificationLevel)[keyof typeof NotificationLevel]
 
 
+export const NotificationKind = {
+  LEDGER_MOVEMENT: 'LEDGER_MOVEMENT',
+  BANK_MOVEMENT: 'BANK_MOVEMENT'
+} as const
+
+export type NotificationKind = (typeof NotificationKind)[keyof typeof NotificationKind]
+
+
 export const SubscriptionPlan = {
   FREE: 'FREE',
   PRO: 'PRO'

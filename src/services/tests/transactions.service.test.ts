@@ -10,6 +10,7 @@ import { TransactionInput } from "../../domain/financial/models/transaction-inpu
 import { familyContextService } from "../family-context.service";
 import { familyMemberService } from "../family-member.service";
 import { TransactionCreateError } from "../errors/transaction-create.error";
+import { notificationsService } from "../notifications.service";
 
 describe("TransactionsService", () => {
 
@@ -387,6 +388,11 @@ describe("TransactionsService", () => {
       "create"
     ).mockResolvedValue({ id: "transaction-1" } as any);
 
+    const noticeSpy = vi.spyOn(
+      notificationsService,
+      "notifyLedgerMovement"
+    );
+
     await transactionsService.createForUser(
       "user-1",
       {
@@ -409,6 +415,70 @@ describe("TransactionsService", () => {
       type: "EXPENSE",
       status: "COMPLETED",
       transactionDate: new Date(2026, 7, 20),
+    });
+
+    expect(noticeSpy).not.toHaveBeenCalled();
+  });
+
+  it("avisa o principal quando um familiar lança", async () => {
+    vi.spyOn(
+      familyContextService,
+      "getCurrentContext"
+    ).mockResolvedValue({
+      familyId: "family-1",
+      familyMemberId: "child-member",
+      ledgerMemberId: "owner-member",
+    });
+
+    vi.spyOn(
+      familyMemberService,
+      "findById"
+    ).mockResolvedValue({
+      id: "child-member",
+      userId: "child-user",
+      role: "MEMBER",
+      deletedAt: null,
+    } as any);
+
+    vi.spyOn(
+      accountsRepository,
+      "findById"
+    ).mockResolvedValue({
+      id: "account-1",
+      familyMemberId: "owner-member",
+      deletedAt: null,
+      isActive: true,
+    } as any);
+
+    vi.spyOn(
+      transactionsRepository,
+      "create"
+    ).mockResolvedValue({ id: "transaction-2" } as any);
+
+    const noticeSpy = vi.spyOn(
+      notificationsService,
+      "notifyLedgerMovement"
+    ).mockResolvedValue(null);
+
+    await transactionsService.createForUser(
+      "child-user",
+      {
+        accountId: "account-1",
+        description: "Lanche",
+        amount: "18,50",
+        type: "EXPENSE",
+        transactionDate: "2026-10-03",
+      }
+    );
+
+    expect(noticeSpy).toHaveBeenCalledWith({
+      familyId: "family-1",
+      actorMemberId: "child-member",
+      ledgerMemberId: "owner-member",
+      actorUserId: "child-user",
+      description: "Lanche",
+      amount: 18.5,
+      movementType: "EXPENSE",
     });
   });
 

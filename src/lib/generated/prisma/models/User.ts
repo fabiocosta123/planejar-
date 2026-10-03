@@ -216,6 +216,7 @@ export type UserWhereInput = {
   deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   settings?: Prisma.XOR<Prisma.UserSettingsNullableScalarRelationFilter, Prisma.UserSettingsWhereInput> | null
   pixCharges?: Prisma.PixChargeListRelationFilter
+  notifications?: Prisma.NotificationListRelationFilter
   familyMembers?: Prisma.FamilyMemberListRelationFilter
   ownedFamilies?: Prisma.FamilyListRelationFilter
 }
@@ -232,6 +233,7 @@ export type UserOrderByWithRelationInput = {
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   settings?: Prisma.UserSettingsOrderByWithRelationInput
   pixCharges?: Prisma.PixChargeOrderByRelationAggregateInput
+  notifications?: Prisma.NotificationOrderByRelationAggregateInput
   familyMembers?: Prisma.FamilyMemberOrderByRelationAggregateInput
   ownedFamilies?: Prisma.FamilyOrderByRelationAggregateInput
 }
@@ -251,6 +253,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   settings?: Prisma.XOR<Prisma.UserSettingsNullableScalarRelationFilter, Prisma.UserSettingsWhereInput> | null
   pixCharges?: Prisma.PixChargeListRelationFilter
+  notifications?: Prisma.NotificationListRelationFilter
   familyMembers?: Prisma.FamilyMemberListRelationFilter
   ownedFamilies?: Prisma.FamilyListRelationFilter
 }, "id" | "email">
@@ -297,6 +300,7 @@ export type UserCreateInput = {
   deletedAt?: Date | string | null
   settings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
   pixCharges?: Prisma.PixChargeCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   familyMembers?: Prisma.FamilyMemberCreateNestedManyWithoutUserInput
   ownedFamilies?: Prisma.FamilyCreateNestedManyWithoutOwnerInput
 }
@@ -313,6 +317,7 @@ export type UserUncheckedCreateInput = {
   deletedAt?: Date | string | null
   settings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
   pixCharges?: Prisma.PixChargeUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   familyMembers?: Prisma.FamilyMemberUncheckedCreateNestedManyWithoutUserInput
   ownedFamilies?: Prisma.FamilyUncheckedCreateNestedManyWithoutOwnerInput
 }
@@ -329,6 +334,7 @@ export type UserUpdateInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   settings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
   pixCharges?: Prisma.PixChargeUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   familyMembers?: Prisma.FamilyMemberUpdateManyWithoutUserNestedInput
   ownedFamilies?: Prisma.FamilyUpdateManyWithoutOwnerNestedInput
 }
@@ -345,6 +351,7 @@ export type UserUncheckedUpdateInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   settings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
   pixCharges?: Prisma.PixChargeUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   familyMembers?: Prisma.FamilyMemberUncheckedUpdateManyWithoutUserNestedInput
   ownedFamilies?: Prisma.FamilyUncheckedUpdateManyWithoutOwnerNestedInput
 }
@@ -490,6 +497,20 @@ export type UserUpdateOneRequiredWithoutPixChargesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPixChargesInput, Prisma.UserUpdateWithoutPixChargesInput>, Prisma.UserUncheckedUpdateWithoutPixChargesInput>
 }
 
+export type UserCreateNestedOneWithoutNotificationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutNotificationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationsInput
+  upsert?: Prisma.UserUpsertWithoutNotificationsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutNotificationsInput, Prisma.UserUpdateWithoutNotificationsInput>, Prisma.UserUncheckedUpdateWithoutNotificationsInput>
+}
+
 export type UserCreateWithoutOwnedFamiliesInput = {
   id?: string
   name: string
@@ -502,6 +523,7 @@ export type UserCreateWithoutOwnedFamiliesInput = {
   deletedAt?: Date | string | null
   settings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
   pixCharges?: Prisma.PixChargeCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   familyMembers?: Prisma.FamilyMemberCreateNestedManyWithoutUserInput
 }
 
@@ -517,6 +539,7 @@ export type UserUncheckedCreateWithoutOwnedFamiliesInput = {
   deletedAt?: Date | string | null
   settings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
   pixCharges?: Prisma.PixChargeUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   familyMembers?: Prisma.FamilyMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -548,6 +571,7 @@ export type UserUpdateWithoutOwnedFamiliesInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   settings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
   pixCharges?: Prisma.PixChargeUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   familyMembers?: Prisma.FamilyMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -563,6 +587,7 @@ export type UserUncheckedUpdateWithoutOwnedFamiliesInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   settings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
   pixCharges?: Prisma.PixChargeUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   familyMembers?: Prisma.FamilyMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -578,6 +603,7 @@ export type UserCreateWithoutFamilyMembersInput = {
   deletedAt?: Date | string | null
   settings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
   pixCharges?: Prisma.PixChargeCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   ownedFamilies?: Prisma.FamilyCreateNestedManyWithoutOwnerInput
 }
 
@@ -593,6 +619,7 @@ export type UserUncheckedCreateWithoutFamilyMembersInput = {
   deletedAt?: Date | string | null
   settings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
   pixCharges?: Prisma.PixChargeUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   ownedFamilies?: Prisma.FamilyUncheckedCreateNestedManyWithoutOwnerInput
 }
 
@@ -624,6 +651,7 @@ export type UserUpdateWithoutFamilyMembersInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   settings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
   pixCharges?: Prisma.PixChargeUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   ownedFamilies?: Prisma.FamilyUpdateManyWithoutOwnerNestedInput
 }
 
@@ -639,6 +667,7 @@ export type UserUncheckedUpdateWithoutFamilyMembersInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   settings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
   pixCharges?: Prisma.PixChargeUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   ownedFamilies?: Prisma.FamilyUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
@@ -653,6 +682,7 @@ export type UserCreateWithoutSettingsInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   pixCharges?: Prisma.PixChargeCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   familyMembers?: Prisma.FamilyMemberCreateNestedManyWithoutUserInput
   ownedFamilies?: Prisma.FamilyCreateNestedManyWithoutOwnerInput
 }
@@ -668,6 +698,7 @@ export type UserUncheckedCreateWithoutSettingsInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   pixCharges?: Prisma.PixChargeUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   familyMembers?: Prisma.FamilyMemberUncheckedCreateNestedManyWithoutUserInput
   ownedFamilies?: Prisma.FamilyUncheckedCreateNestedManyWithoutOwnerInput
 }
@@ -699,6 +730,7 @@ export type UserUpdateWithoutSettingsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   pixCharges?: Prisma.PixChargeUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   familyMembers?: Prisma.FamilyMemberUpdateManyWithoutUserNestedInput
   ownedFamilies?: Prisma.FamilyUpdateManyWithoutOwnerNestedInput
 }
@@ -714,6 +746,7 @@ export type UserUncheckedUpdateWithoutSettingsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   pixCharges?: Prisma.PixChargeUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   familyMembers?: Prisma.FamilyMemberUncheckedUpdateManyWithoutUserNestedInput
   ownedFamilies?: Prisma.FamilyUncheckedUpdateManyWithoutOwnerNestedInput
 }
@@ -729,6 +762,7 @@ export type UserCreateWithoutPixChargesInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   settings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   familyMembers?: Prisma.FamilyMemberCreateNestedManyWithoutUserInput
   ownedFamilies?: Prisma.FamilyCreateNestedManyWithoutOwnerInput
 }
@@ -744,6 +778,7 @@ export type UserUncheckedCreateWithoutPixChargesInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   settings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   familyMembers?: Prisma.FamilyMemberUncheckedCreateNestedManyWithoutUserInput
   ownedFamilies?: Prisma.FamilyUncheckedCreateNestedManyWithoutOwnerInput
 }
@@ -775,6 +810,7 @@ export type UserUpdateWithoutPixChargesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   settings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   familyMembers?: Prisma.FamilyMemberUpdateManyWithoutUserNestedInput
   ownedFamilies?: Prisma.FamilyUpdateManyWithoutOwnerNestedInput
 }
@@ -790,6 +826,87 @@ export type UserUncheckedUpdateWithoutPixChargesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   settings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  familyMembers?: Prisma.FamilyMemberUncheckedUpdateManyWithoutUserNestedInput
+  ownedFamilies?: Prisma.FamilyUncheckedUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserCreateWithoutNotificationsInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  image?: string | null
+  status?: $Enums.UserStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  settings?: Prisma.UserSettingsCreateNestedOneWithoutUserInput
+  pixCharges?: Prisma.PixChargeCreateNestedManyWithoutUserInput
+  familyMembers?: Prisma.FamilyMemberCreateNestedManyWithoutUserInput
+  ownedFamilies?: Prisma.FamilyCreateNestedManyWithoutOwnerInput
+}
+
+export type UserUncheckedCreateWithoutNotificationsInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash?: string | null
+  image?: string | null
+  status?: $Enums.UserStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  settings?: Prisma.UserSettingsUncheckedCreateNestedOneWithoutUserInput
+  pixCharges?: Prisma.PixChargeUncheckedCreateNestedManyWithoutUserInput
+  familyMembers?: Prisma.FamilyMemberUncheckedCreateNestedManyWithoutUserInput
+  ownedFamilies?: Prisma.FamilyUncheckedCreateNestedManyWithoutOwnerInput
+}
+
+export type UserCreateOrConnectWithoutNotificationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
+}
+
+export type UserUpsertWithoutNotificationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutNotificationsInput, Prisma.UserUncheckedUpdateWithoutNotificationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutNotificationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutNotificationsInput, Prisma.UserUncheckedUpdateWithoutNotificationsInput>
+}
+
+export type UserUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  settings?: Prisma.UserSettingsUpdateOneWithoutUserNestedInput
+  pixCharges?: Prisma.PixChargeUpdateManyWithoutUserNestedInput
+  familyMembers?: Prisma.FamilyMemberUpdateManyWithoutUserNestedInput
+  ownedFamilies?: Prisma.FamilyUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  settings?: Prisma.UserSettingsUncheckedUpdateOneWithoutUserNestedInput
+  pixCharges?: Prisma.PixChargeUncheckedUpdateManyWithoutUserNestedInput
   familyMembers?: Prisma.FamilyMemberUncheckedUpdateManyWithoutUserNestedInput
   ownedFamilies?: Prisma.FamilyUncheckedUpdateManyWithoutOwnerNestedInput
 }
@@ -801,12 +918,14 @@ export type UserUncheckedUpdateWithoutPixChargesInput = {
 
 export type UserCountOutputType = {
   pixCharges: number
+  notifications: number
   familyMembers: number
   ownedFamilies: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   pixCharges?: boolean | UserCountOutputTypeCountPixChargesArgs
+  notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
   familyMembers?: boolean | UserCountOutputTypeCountFamilyMembersArgs
   ownedFamilies?: boolean | UserCountOutputTypeCountOwnedFamiliesArgs
 }
@@ -826,6 +945,13 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
  */
 export type UserCountOutputTypeCountPixChargesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.PixChargeWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.NotificationWhereInput
 }
 
 /**
@@ -855,6 +981,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   deletedAt?: boolean
   settings?: boolean | Prisma.User$settingsArgs<ExtArgs>
   pixCharges?: boolean | Prisma.User$pixChargesArgs<ExtArgs>
+  notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
   familyMembers?: boolean | Prisma.User$familyMembersArgs<ExtArgs>
   ownedFamilies?: boolean | Prisma.User$ownedFamiliesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -900,6 +1027,7 @@ export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = run
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   settings?: boolean | Prisma.User$settingsArgs<ExtArgs>
   pixCharges?: boolean | Prisma.User$pixChargesArgs<ExtArgs>
+  notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
   familyMembers?: boolean | Prisma.User$familyMembersArgs<ExtArgs>
   ownedFamilies?: boolean | Prisma.User$ownedFamiliesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -912,6 +1040,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     settings: Prisma.$UserSettingsPayload<ExtArgs> | null
     pixCharges: Prisma.$PixChargePayload<ExtArgs>[]
+    notifications: Prisma.$NotificationPayload<ExtArgs>[]
     familyMembers: Prisma.$FamilyMemberPayload<ExtArgs>[]
     ownedFamilies: Prisma.$FamilyPayload<ExtArgs>[]
   }
@@ -1321,6 +1450,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   settings<T extends Prisma.User$settingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$settingsArgs<ExtArgs>>): Prisma.Prisma__UserSettingsClient<runtime.Types.Result.GetResult<Prisma.$UserSettingsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   pixCharges<T extends Prisma.User$pixChargesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$pixChargesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PixChargePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  notifications<T extends Prisma.User$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   familyMembers<T extends Prisma.User$familyMembersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$familyMembersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FamilyMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   ownedFamilies<T extends Prisma.User$ownedFamiliesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ownedFamiliesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FamilyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -1794,6 +1924,30 @@ export type User$pixChargesArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.PixChargeScalarFieldEnum | Prisma.PixChargeScalarFieldEnum[]
+}
+
+/**
+ * User.notifications
+ */
+export type User$notificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Notification
+   */
+  select?: Prisma.NotificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Notification
+   */
+  omit?: Prisma.NotificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NotificationInclude<ExtArgs> | null
+  where?: Prisma.NotificationWhereInput
+  orderBy?: Prisma.NotificationOrderByWithRelationInput | Prisma.NotificationOrderByWithRelationInput[]
+  cursor?: Prisma.NotificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[]
 }
 
 /**

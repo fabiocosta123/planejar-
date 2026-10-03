@@ -25,6 +25,8 @@ import {
   recurrenceHorizonEnd,
 } from "../domain/financial/rules/recurrence.rule";
 import { TransactionInput } from "../domain/financial/models/transaction-input";
+import { shouldNotifyPrincipal } from "../domain/notifications/movement-notice";
+import { notificationsService } from "./notifications.service";
 
 export class TransactionsService {
 
@@ -344,6 +346,22 @@ export class TransactionsService {
         startDate: parsed.value.transactionDate,
         dayOfMonth: parsed.value.transactionDate.getDate(),
       });
+    }
+
+    if (shouldNotifyPrincipal(context.familyMemberId, ledgerMemberId)) {
+      try {
+        await notificationsService.notifyLedgerMovement({
+          familyId: context.familyId,
+          actorMemberId: context.familyMemberId,
+          ledgerMemberId,
+          actorUserId: member.userId,
+          description: parsed.value.description,
+          amount: parsed.value.amount,
+          movementType: parsed.value.type,
+        });
+      } catch {
+        return transaction;
+      }
     }
 
     return transaction;
