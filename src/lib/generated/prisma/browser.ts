@@ -62,3 +62,8 @@ export type PixCharge = Prisma.PixChargeModel
  * 
  */
 export type PixWebhookEvent = Prisma.PixWebhookEventModel
+/**
+ * Model Notification
+ * 
+ */
+export type Notification = Prisma.NotificationModel

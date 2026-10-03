@@ -200,6 +200,7 @@ export type FamilyWhereInput = {
   deletedAt?: Prisma.DateTimeNullableFilter<"Family"> | Date | string | null
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   members?: Prisma.FamilyMemberListRelationFilter
+  notifications?: Prisma.NotificationListRelationFilter
   currentUserSettings?: Prisma.UserSettingsListRelationFilter
 }
 
@@ -213,6 +214,7 @@ export type FamilyOrderByWithRelationInput = {
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   owner?: Prisma.UserOrderByWithRelationInput
   members?: Prisma.FamilyMemberOrderByRelationAggregateInput
+  notifications?: Prisma.NotificationOrderByRelationAggregateInput
   currentUserSettings?: Prisma.UserSettingsOrderByRelationAggregateInput
 }
 
@@ -229,6 +231,7 @@ export type FamilyWhereUniqueInput = Prisma.AtLeast<{
   deletedAt?: Prisma.DateTimeNullableFilter<"Family"> | Date | string | null
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   members?: Prisma.FamilyMemberListRelationFilter
+  notifications?: Prisma.NotificationListRelationFilter
   currentUserSettings?: Prisma.UserSettingsListRelationFilter
 }, "id" | "inviteCode">
 
@@ -267,6 +270,7 @@ export type FamilyCreateInput = {
   deletedAt?: Date | string | null
   owner: Prisma.UserCreateNestedOneWithoutOwnedFamiliesInput
   members?: Prisma.FamilyMemberCreateNestedManyWithoutFamilyInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutFamilyInput
   currentUserSettings?: Prisma.UserSettingsCreateNestedManyWithoutCurrentFamilyInput
 }
 
@@ -279,6 +283,7 @@ export type FamilyUncheckedCreateInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   members?: Prisma.FamilyMemberUncheckedCreateNestedManyWithoutFamilyInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutFamilyInput
   currentUserSettings?: Prisma.UserSettingsUncheckedCreateNestedManyWithoutCurrentFamilyInput
 }
 
@@ -291,6 +296,7 @@ export type FamilyUpdateInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   owner?: Prisma.UserUpdateOneRequiredWithoutOwnedFamiliesNestedInput
   members?: Prisma.FamilyMemberUpdateManyWithoutFamilyNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutFamilyNestedInput
   currentUserSettings?: Prisma.UserSettingsUpdateManyWithoutCurrentFamilyNestedInput
 }
 
@@ -303,6 +309,7 @@ export type FamilyUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   members?: Prisma.FamilyMemberUncheckedUpdateManyWithoutFamilyNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutFamilyNestedInput
   currentUserSettings?: Prisma.UserSettingsUncheckedUpdateManyWithoutCurrentFamilyNestedInput
 }
 
@@ -469,6 +476,20 @@ export type FamilyUpdateOneWithoutCurrentUserSettingsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.FamilyUpdateToOneWithWhereWithoutCurrentUserSettingsInput, Prisma.FamilyUpdateWithoutCurrentUserSettingsInput>, Prisma.FamilyUncheckedUpdateWithoutCurrentUserSettingsInput>
 }
 
+export type FamilyCreateNestedOneWithoutNotificationsInput = {
+  create?: Prisma.XOR<Prisma.FamilyCreateWithoutNotificationsInput, Prisma.FamilyUncheckedCreateWithoutNotificationsInput>
+  connectOrCreate?: Prisma.FamilyCreateOrConnectWithoutNotificationsInput
+  connect?: Prisma.FamilyWhereUniqueInput
+}
+
+export type FamilyUpdateOneRequiredWithoutNotificationsNestedInput = {
+  create?: Prisma.XOR<Prisma.FamilyCreateWithoutNotificationsInput, Prisma.FamilyUncheckedCreateWithoutNotificationsInput>
+  connectOrCreate?: Prisma.FamilyCreateOrConnectWithoutNotificationsInput
+  upsert?: Prisma.FamilyUpsertWithoutNotificationsInput
+  connect?: Prisma.FamilyWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.FamilyUpdateToOneWithWhereWithoutNotificationsInput, Prisma.FamilyUpdateWithoutNotificationsInput>, Prisma.FamilyUncheckedUpdateWithoutNotificationsInput>
+}
+
 export type FamilyCreateWithoutOwnerInput = {
   id?: string
   name: string
@@ -477,6 +498,7 @@ export type FamilyCreateWithoutOwnerInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   members?: Prisma.FamilyMemberCreateNestedManyWithoutFamilyInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutFamilyInput
   currentUserSettings?: Prisma.UserSettingsCreateNestedManyWithoutCurrentFamilyInput
 }
 
@@ -488,6 +510,7 @@ export type FamilyUncheckedCreateWithoutOwnerInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   members?: Prisma.FamilyMemberUncheckedCreateNestedManyWithoutFamilyInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutFamilyInput
   currentUserSettings?: Prisma.UserSettingsUncheckedCreateNestedManyWithoutCurrentFamilyInput
 }
 
@@ -538,6 +561,7 @@ export type FamilyCreateWithoutMembersInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   owner: Prisma.UserCreateNestedOneWithoutOwnedFamiliesInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutFamilyInput
   currentUserSettings?: Prisma.UserSettingsCreateNestedManyWithoutCurrentFamilyInput
 }
 
@@ -549,6 +573,7 @@ export type FamilyUncheckedCreateWithoutMembersInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutFamilyInput
   currentUserSettings?: Prisma.UserSettingsUncheckedCreateNestedManyWithoutCurrentFamilyInput
 }
 
@@ -576,6 +601,7 @@ export type FamilyUpdateWithoutMembersInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   owner?: Prisma.UserUpdateOneRequiredWithoutOwnedFamiliesNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutFamilyNestedInput
   currentUserSettings?: Prisma.UserSettingsUpdateManyWithoutCurrentFamilyNestedInput
 }
 
@@ -587,6 +613,7 @@ export type FamilyUncheckedUpdateWithoutMembersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutFamilyNestedInput
   currentUserSettings?: Prisma.UserSettingsUncheckedUpdateManyWithoutCurrentFamilyNestedInput
 }
 
@@ -599,6 +626,7 @@ export type FamilyCreateWithoutCurrentUserSettingsInput = {
   deletedAt?: Date | string | null
   owner: Prisma.UserCreateNestedOneWithoutOwnedFamiliesInput
   members?: Prisma.FamilyMemberCreateNestedManyWithoutFamilyInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutFamilyInput
 }
 
 export type FamilyUncheckedCreateWithoutCurrentUserSettingsInput = {
@@ -610,6 +638,7 @@ export type FamilyUncheckedCreateWithoutCurrentUserSettingsInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   members?: Prisma.FamilyMemberUncheckedCreateNestedManyWithoutFamilyInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutFamilyInput
 }
 
 export type FamilyCreateOrConnectWithoutCurrentUserSettingsInput = {
@@ -637,6 +666,7 @@ export type FamilyUpdateWithoutCurrentUserSettingsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   owner?: Prisma.UserUpdateOneRequiredWithoutOwnedFamiliesNestedInput
   members?: Prisma.FamilyMemberUpdateManyWithoutFamilyNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutFamilyNestedInput
 }
 
 export type FamilyUncheckedUpdateWithoutCurrentUserSettingsInput = {
@@ -648,6 +678,71 @@ export type FamilyUncheckedUpdateWithoutCurrentUserSettingsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   members?: Prisma.FamilyMemberUncheckedUpdateManyWithoutFamilyNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutFamilyNestedInput
+}
+
+export type FamilyCreateWithoutNotificationsInput = {
+  id?: string
+  name: string
+  inviteCode: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  owner: Prisma.UserCreateNestedOneWithoutOwnedFamiliesInput
+  members?: Prisma.FamilyMemberCreateNestedManyWithoutFamilyInput
+  currentUserSettings?: Prisma.UserSettingsCreateNestedManyWithoutCurrentFamilyInput
+}
+
+export type FamilyUncheckedCreateWithoutNotificationsInput = {
+  id?: string
+  name: string
+  inviteCode: string
+  ownerId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  members?: Prisma.FamilyMemberUncheckedCreateNestedManyWithoutFamilyInput
+  currentUserSettings?: Prisma.UserSettingsUncheckedCreateNestedManyWithoutCurrentFamilyInput
+}
+
+export type FamilyCreateOrConnectWithoutNotificationsInput = {
+  where: Prisma.FamilyWhereUniqueInput
+  create: Prisma.XOR<Prisma.FamilyCreateWithoutNotificationsInput, Prisma.FamilyUncheckedCreateWithoutNotificationsInput>
+}
+
+export type FamilyUpsertWithoutNotificationsInput = {
+  update: Prisma.XOR<Prisma.FamilyUpdateWithoutNotificationsInput, Prisma.FamilyUncheckedUpdateWithoutNotificationsInput>
+  create: Prisma.XOR<Prisma.FamilyCreateWithoutNotificationsInput, Prisma.FamilyUncheckedCreateWithoutNotificationsInput>
+  where?: Prisma.FamilyWhereInput
+}
+
+export type FamilyUpdateToOneWithWhereWithoutNotificationsInput = {
+  where?: Prisma.FamilyWhereInput
+  data: Prisma.XOR<Prisma.FamilyUpdateWithoutNotificationsInput, Prisma.FamilyUncheckedUpdateWithoutNotificationsInput>
+}
+
+export type FamilyUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  inviteCode?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  owner?: Prisma.UserUpdateOneRequiredWithoutOwnedFamiliesNestedInput
+  members?: Prisma.FamilyMemberUpdateManyWithoutFamilyNestedInput
+  currentUserSettings?: Prisma.UserSettingsUpdateManyWithoutCurrentFamilyNestedInput
+}
+
+export type FamilyUncheckedUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  inviteCode?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  members?: Prisma.FamilyMemberUncheckedUpdateManyWithoutFamilyNestedInput
+  currentUserSettings?: Prisma.UserSettingsUncheckedUpdateManyWithoutCurrentFamilyNestedInput
 }
 
 export type FamilyCreateManyOwnerInput = {
@@ -667,6 +762,7 @@ export type FamilyUpdateWithoutOwnerInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   members?: Prisma.FamilyMemberUpdateManyWithoutFamilyNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutFamilyNestedInput
   currentUserSettings?: Prisma.UserSettingsUpdateManyWithoutCurrentFamilyNestedInput
 }
 
@@ -678,6 +774,7 @@ export type FamilyUncheckedUpdateWithoutOwnerInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   members?: Prisma.FamilyMemberUncheckedUpdateManyWithoutFamilyNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutFamilyNestedInput
   currentUserSettings?: Prisma.UserSettingsUncheckedUpdateManyWithoutCurrentFamilyNestedInput
 }
 
@@ -697,11 +794,13 @@ export type FamilyUncheckedUpdateManyWithoutOwnerInput = {
 
 export type FamilyCountOutputType = {
   members: number
+  notifications: number
   currentUserSettings: number
 }
 
 export type FamilyCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   members?: boolean | FamilyCountOutputTypeCountMembersArgs
+  notifications?: boolean | FamilyCountOutputTypeCountNotificationsArgs
   currentUserSettings?: boolean | FamilyCountOutputTypeCountCurrentUserSettingsArgs
 }
 
@@ -725,6 +824,13 @@ export type FamilyCountOutputTypeCountMembersArgs<ExtArgs extends runtime.Types.
 /**
  * FamilyCountOutputType without action
  */
+export type FamilyCountOutputTypeCountNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.NotificationWhereInput
+}
+
+/**
+ * FamilyCountOutputType without action
+ */
 export type FamilyCountOutputTypeCountCurrentUserSettingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.UserSettingsWhereInput
 }
@@ -740,6 +846,7 @@ export type FamilySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   deletedAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   members?: boolean | Prisma.Family$membersArgs<ExtArgs>
+  notifications?: boolean | Prisma.Family$notificationsArgs<ExtArgs>
   currentUserSettings?: boolean | Prisma.Family$currentUserSettingsArgs<ExtArgs>
   _count?: boolean | Prisma.FamilyCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["family"]>
@@ -780,6 +887,7 @@ export type FamilyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
 export type FamilyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   members?: boolean | Prisma.Family$membersArgs<ExtArgs>
+  notifications?: boolean | Prisma.Family$notificationsArgs<ExtArgs>
   currentUserSettings?: boolean | Prisma.Family$currentUserSettingsArgs<ExtArgs>
   _count?: boolean | Prisma.FamilyCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -795,6 +903,7 @@ export type $FamilyPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   objects: {
     owner: Prisma.$UserPayload<ExtArgs>
     members: Prisma.$FamilyMemberPayload<ExtArgs>[]
+    notifications: Prisma.$NotificationPayload<ExtArgs>[]
     currentUserSettings: Prisma.$UserSettingsPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1201,6 +1310,7 @@ export interface Prisma__FamilyClient<T, Null = never, ExtArgs extends runtime.T
   readonly [Symbol.toStringTag]: "PrismaPromise"
   owner<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   members<T extends Prisma.Family$membersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Family$membersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FamilyMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  notifications<T extends Prisma.Family$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Family$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   currentUserSettings<T extends Prisma.Family$currentUserSettingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Family$currentUserSettingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserSettingsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1660,6 +1770,30 @@ export type Family$membersArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.FamilyMemberScalarFieldEnum | Prisma.FamilyMemberScalarFieldEnum[]
+}
+
+/**
+ * Family.notifications
+ */
+export type Family$notificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Notification
+   */
+  select?: Prisma.NotificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Notification
+   */
+  omit?: Prisma.NotificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NotificationInclude<ExtArgs> | null
+  where?: Prisma.NotificationWhereInput
+  orderBy?: Prisma.NotificationOrderByWithRelationInput | Prisma.NotificationOrderByWithRelationInput[]
+  cursor?: Prisma.NotificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[]
 }
 
 /**

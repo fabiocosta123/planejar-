@@ -2,6 +2,7 @@ import { auth } from "../../lib/auth";
 
 import { familyContextService } from "../../services/family-context.service";
 import { familyService } from "../../services/family.service";
+import { notificationsService } from "../../services/notifications.service";
 
 import { settingsService } from "../../services/settings.service";
 
@@ -65,9 +66,10 @@ export default async function DashboardPage() {
       999
     );
 
-  const [settings, inviteCode] = await Promise.all([
+  const [settings, inviteCode, notices] = await Promise.all([
     settingsService.getSettings(userId),
     familyService.inviteCodeForOwner(familyContext.familyId, userId),
+    notificationsService.listUnread(userId),
   ]);
 
   const dashboard =
@@ -89,6 +91,7 @@ export default async function DashboardPage() {
       plan={settings.plan}
       proAmount={readProCheckoutConfig().amount}
       inviteCode={inviteCode}
+      notices={notices}
     />
   );
 }
