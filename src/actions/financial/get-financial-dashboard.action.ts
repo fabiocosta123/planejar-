@@ -13,7 +13,8 @@ export async function getFinancialDashboardAction(
   endDate: Date,
   spendingLimit?: number,
   referenceDate: Date = new Date(),
-  minimumReserve = 0
+  minimumReserve = 0,
+  includeTightDay = true
 ): Promise<DashboardContract> {
 
   const period =
@@ -35,7 +36,8 @@ export async function getFinancialDashboardAction(
       currentBalance,
       spendingLimit,
       referenceDate,
-      minimumReserve
+      minimumReserve,
+      includeTightDay
     );
 
   return {

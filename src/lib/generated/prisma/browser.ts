@@ -52,3 +52,13 @@ export type RecurringTransaction = Prisma.RecurringTransactionModel
  * 
  */
 export type UserSettings = Prisma.UserSettingsModel
+/**
+ * Model PixCharge
+ * 
+ */
+export type PixCharge = Prisma.PixChargeModel
+/**
+ * Model PixWebhookEvent
+ * 
+ */
+export type PixWebhookEvent = Prisma.PixWebhookEventModel

@@ -403,7 +403,9 @@ export const ModelName = {
   Account: 'Account',
   Transaction: 'Transaction',
   RecurringTransaction: 'RecurringTransaction',
-  UserSettings: 'UserSettings'
+  UserSettings: 'UserSettings',
+  PixCharge: 'PixCharge',
+  PixWebhookEvent: 'PixWebhookEvent'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -419,7 +421,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "family" | "user" | "familyMember" | "account" | "transaction" | "recurringTransaction" | "userSettings"
+    modelProps: "family" | "user" | "familyMember" | "account" | "transaction" | "recurringTransaction" | "userSettings" | "pixCharge" | "pixWebhookEvent"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -941,6 +943,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PixCharge: {
+      payload: Prisma.$PixChargePayload<ExtArgs>
+      fields: Prisma.PixChargeFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PixChargeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PixChargePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PixChargeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PixChargePayload>
+        }
+        findFirst: {
+          args: Prisma.PixChargeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PixChargePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PixChargeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PixChargePayload>
+        }
+        findMany: {
+          args: Prisma.PixChargeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PixChargePayload>[]
+        }
+        create: {
+          args: Prisma.PixChargeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PixChargePayload>
+        }
+        createMany: {
+          args: Prisma.PixChargeCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PixChargeCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PixChargePayload>[]
+        }
+        delete: {
+          args: Prisma.PixChargeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PixChargePayload>
+        }
+        update: {
+          args: Prisma.PixChargeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PixChargePayload>
+        }
+        deleteMany: {
+          args: Prisma.PixChargeDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PixChargeUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PixChargeUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PixChargePayload>[]
+        }
+        upsert: {
+          args: Prisma.PixChargeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PixChargePayload>
+        }
+        aggregate: {
+          args: Prisma.PixChargeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePixCharge>
+        }
+        groupBy: {
+          args: Prisma.PixChargeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PixChargeGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PixChargeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PixChargeCountAggregateOutputType> | number
+        }
+      }
+    }
+    PixWebhookEvent: {
+      payload: Prisma.$PixWebhookEventPayload<ExtArgs>
+      fields: Prisma.PixWebhookEventFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PixWebhookEventFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PixWebhookEventPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PixWebhookEventFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PixWebhookEventPayload>
+        }
+        findFirst: {
+          args: Prisma.PixWebhookEventFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PixWebhookEventPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PixWebhookEventFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PixWebhookEventPayload>
+        }
+        findMany: {
+          args: Prisma.PixWebhookEventFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PixWebhookEventPayload>[]
+        }
+        create: {
+          args: Prisma.PixWebhookEventCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PixWebhookEventPayload>
+        }
+        createMany: {
+          args: Prisma.PixWebhookEventCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PixWebhookEventCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PixWebhookEventPayload>[]
+        }
+        delete: {
+          args: Prisma.PixWebhookEventDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PixWebhookEventPayload>
+        }
+        update: {
+          args: Prisma.PixWebhookEventUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PixWebhookEventPayload>
+        }
+        deleteMany: {
+          args: Prisma.PixWebhookEventDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PixWebhookEventUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PixWebhookEventUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PixWebhookEventPayload>[]
+        }
+        upsert: {
+          args: Prisma.PixWebhookEventUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PixWebhookEventPayload>
+        }
+        aggregate: {
+          args: Prisma.PixWebhookEventAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePixWebhookEvent>
+        }
+        groupBy: {
+          args: Prisma.PixWebhookEventGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PixWebhookEventGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PixWebhookEventCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PixWebhookEventCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1098,6 +1248,33 @@ export const UserSettingsScalarFieldEnum = {
 } as const
 
 export type UserSettingsScalarFieldEnum = (typeof UserSettingsScalarFieldEnum)[keyof typeof UserSettingsScalarFieldEnum]
+
+
+export const PixChargeScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  idFaturaPag: 'idFaturaPag',
+  amount: 'amount',
+  status: 'status',
+  copyPaste: 'copyPaste',
+  expiresAt: 'expiresAt',
+  paidAt: 'paidAt',
+  refundedAt: 'refundedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PixChargeScalarFieldEnum = (typeof PixChargeScalarFieldEnum)[keyof typeof PixChargeScalarFieldEnum]
+
+
+export const PixWebhookEventScalarFieldEnum = {
+  id: 'id',
+  tipo: 'tipo',
+  idFaturaPag: 'idFaturaPag',
+  createdAt: 'createdAt'
+} as const
+
+export type PixWebhookEventScalarFieldEnum = (typeof PixWebhookEventScalarFieldEnum)[keyof typeof PixWebhookEventScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1348,6 +1525,20 @@ export type ListEnumSubscriptionPlanFieldRefInput<$PrismaModel> = FieldRefInputT
 
 
 /**
+ * Reference to a field of type 'PixChargeStatus'
+ */
+export type EnumPixChargeStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PixChargeStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'PixChargeStatus[]'
+ */
+export type ListEnumPixChargeStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PixChargeStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -1518,6 +1709,8 @@ export type GlobalOmitConfig = {
   transaction?: Prisma.TransactionOmit
   recurringTransaction?: Prisma.RecurringTransactionOmit
   userSettings?: Prisma.UserSettingsOmit
+  pixCharge?: Prisma.PixChargeOmit
+  pixWebhookEvent?: Prisma.PixWebhookEventOmit
 }
 
 /* Types for Logging */

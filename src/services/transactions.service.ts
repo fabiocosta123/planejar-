@@ -55,7 +55,8 @@ export class TransactionsService {
     currentBalance: number,
     spendingLimit?: number,
     referenceDate: Date = new Date(),
-    minimumReserve = 0
+    minimumReserve = 0,
+    includeTightDay = true
   ) {
 
     const horizonEnd = recurrenceHorizonEnd(referenceDate);
@@ -66,14 +67,18 @@ export class TransactionsService {
           familyMemberId,
           period
         ),
-        transactionsRepository.findAfter(
-          familyMemberId,
-          period.endDate,
-          horizonEnd
-        ),
-        recurringTransactionsRepository.findActiveByFamilyMember(
-          familyMemberId
-        ),
+        includeTightDay
+          ? transactionsRepository.findAfter(
+              familyMemberId,
+              period.endDate,
+              horizonEnd
+            )
+          : Promise.resolve([]),
+        includeTightDay
+          ? recurringTransactionsRepository.findActiveByFamilyMember(
+              familyMemberId
+            )
+          : Promise.resolve([]),
       ]);
 
     const summary =
@@ -125,17 +130,18 @@ export class TransactionsService {
         }))
     );
 
-    const tightDay =
-      tightDayRule.calculate(
-        currentBalance,
-        [
-          ...transactions,
-          ...upcomingInputs,
-          ...projected,
-        ],
-        referenceDate,
-        minimumReserve
-      );
+    const tightDay = includeTightDay
+      ? tightDayRule.calculate(
+          currentBalance,
+          [
+            ...transactions,
+            ...upcomingInputs,
+            ...projected,
+          ],
+          referenceDate,
+          minimumReserve
+        )
+      : null;
 
     return {
       summary,
