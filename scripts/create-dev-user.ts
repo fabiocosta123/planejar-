@@ -2,6 +2,7 @@ import "dotenv/config";
 
 import { prisma } from "../src/lib/prisma";
 import { hashPassword } from "../src/lib/password";
+import { createInviteCode } from "../src/domain/family/invite-code";
 
 
 async function main() {
@@ -80,7 +81,9 @@ async function main() {
 
               name: "Família Teste",
 
-              ownerId: user.id
+              ownerId: user.id,
+
+              inviteCode: createInviteCode()
 
             }
 

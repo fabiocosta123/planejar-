@@ -173,7 +173,7 @@ describe("TransactionsService", () => {
         .mockReturnValue({
           income: 5000,
           expenses: 1000,
-          balance: 4000,
+          currentBalance: 4000,
           limitExceeded: false
         } as any);
 
@@ -190,7 +190,8 @@ describe("TransactionsService", () => {
     const result =
       await transactionsService.calculateSummary(
         "family-member-id",
-        period
+        period,
+        0
       );
 
 
@@ -212,7 +213,7 @@ describe("TransactionsService", () => {
 
 
 
-    expect(result.balance)
+    expect(result.currentBalance)
       .toBe(4000);
 
 
@@ -362,6 +363,7 @@ describe("TransactionsService", () => {
     ).mockResolvedValue({
       familyId: "family-1",
       familyMemberId: "member-1",
+      ledgerMemberId: "member-1",
     });
 
     vi.spyOn(
@@ -489,6 +491,7 @@ describe("TransactionsService", () => {
     ).mockResolvedValue({
       familyId: "family-1",
       familyMemberId: "member-1",
+      ledgerMemberId: "member-1",
     });
 
     vi.spyOn(
@@ -550,6 +553,7 @@ describe("TransactionsService", () => {
     ).mockResolvedValue({
       familyId: "family-1",
       familyMemberId: "member-1",
+      ledgerMemberId: "member-1",
     });
 
     vi.spyOn(
@@ -608,6 +612,7 @@ describe("TransactionsService", () => {
     ).mockResolvedValue({
       familyId: "family-1",
       familyMemberId: "member-1",
+      ledgerMemberId: "member-1",
     });
 
     vi.spyOn(
@@ -642,6 +647,7 @@ describe("TransactionsService", () => {
     ).mockResolvedValue({
       familyId: "family-1",
       familyMemberId: "member-1",
+      ledgerMemberId: "member-1",
     });
 
     vi.spyOn(
@@ -682,6 +688,7 @@ describe("TransactionsService", () => {
     ).mockResolvedValue({
       familyId: "family-1",
       familyMemberId: "member-1",
+      ledgerMemberId: "member-1",
     });
 
     vi.spyOn(
@@ -721,6 +728,7 @@ describe("TransactionsService", () => {
     ).mockResolvedValue({
       familyId: "family-1",
       familyMemberId: "member-1",
+      ledgerMemberId: "member-1",
     });
 
     vi.spyOn(
