@@ -1,611 +1,231 @@
-# 📊 Planejamento Financeiro App
+# 📊 Planejar+ — Planejamento Financeiro Familiar
 
 > **Planeje hoje para nunca ser surpreendido amanhã.**
 
-O **Planejar+** é um sistema web desenvolvido para ajudar pessoas a administrar sua vida financeira de forma inteligente, indo muito além do tradicional controle de receitas e despesas.
+O **Planejar+** é um app web (PWA) para organizar o dinheiro da família. Além do saldo de hoje, ele mostra **quando o dinheiro vai apertar** e **quanto guardar por dia** para chegar lá sem ficar no vermelho.
 
-O principal objetivo do projeto é permitir que o usuário visualize não apenas o saldo atual, mas também o impacto financeiro de suas decisões futuras, identificando antecipadamente situações de risco e auxiliando no planejamento diário.
-
----
-
-# 🎯 Objetivo
-
-A maioria dos aplicativos financeiros responde apenas à pergunta:
-
-> **"Quanto dinheiro eu tenho hoje?"**
-
-Este projeto responde perguntas muito mais importantes:
-
-* Quanto dinheiro terei daqui a 7 dias?
-* Quando ficarei sem dinheiro?
-* Quanto preciso guardar por dia para cumprir meus compromissos?
-* Posso realizar determinada compra sem comprometer meu planejamento?
-* Qual será o impacto financeiro dessa decisão?
+Ele funciona no navegador e pode ser instalado na tela inicial do celular (Android e iOS).
 
 ---
 
-# 🚀 Diferenciais
+## 🚀 Funcionalidades
 
-* 📈 Saldo Atual
-* 🔮 Saldo Projetado
-* 📅 Calendário Financeiro Inteligente
-* 🔴 Dia do Aperto
-* 💰 Guardar por Dia
-* 🏦 Múltiplas Contas
-* 🎯 Metas Financeiras
-* 📊 Fluxo de Caixa Projetado
-* 📱 Mobile First
-* 📲 Progressive Web App (PWA)
-* 🤖 Assistente Financeiro com IA (fase futura)
+### Conta e família
 
----
+* Cadastro e login com e-mail e senha.
+* Quem se cadastra primeiro é o **responsável** e cria a família.
+* Os familiares entram com o **código de convite** de 6 caracteres e passam a usar o **mesmo saldo** do responsável.
+* Papéis: **responsável**, **membro** (lança e edita) e **visualizador** (só consulta).
 
-# 🔴 Dia do Aperto
+### Painel
 
-O **Dia do Aperto** é uma funcionalidade exclusiva do projeto.
+* Saldo até hoje, entradas e saídas do mês.
+* Últimos lançamentos.
+* **Dia do aperto** e **quanto guardar por dia** (versão Pro).
+* Avisos não lidos, com contador no sino.
 
-Ela identifica automaticamente a primeira data em que o usuário ficará com saldo negativo considerando todas as receitas e despesas futuras cadastradas.
+### Lançamentos
 
-Exemplo:
+* Entradas e saídas com descrição, valor em R$, data e conta.
+* Lançamentos que **se repetem todo mês** (aluguel, água, salário…).
+* Séries mensais: editar valor, dia ou conta e parar a repetição sem alterar o que já foi lançado.
+* Histórico: **últimos 3 meses** na versão grátis e **sem limite** na Pro.
+* Comparação com o mês e o ano anteriores (versão Pro).
 
-| Data      | Evento          | Saldo Projetado |
-| --------- | --------------- | --------------: |
-| Hoje      | Saldo Inicial   |       R$ 100,00 |
-| 06/08     | Mercado         |        R$ 50,00 |
-| **08/08** | **Combustível** |   **-R$ 10,00** |
-| 10/08     | Salário         |     R$ 1.790,00 |
+### Contas
 
-Nesse cenário o sistema informa:
+* Lista das contas da família com tipo (corrente, poupança, carteira, investimento, outra) e saldo até hoje.
+* Criar conta com saldo inicial e data.
+* Escolher qual conta vem marcada nos novos lançamentos.
 
-* 📅 Dia do Aperto: **08/08**
-* 💰 Valor necessário: **R$ 10,00**
-* 📈 Economia diária sugerida: **R$ 2,00 por dia**
+### Avisos
 
----
+* O responsável recebe um aviso quando um familiar registra uma entrada ou saída.
+* O que o próprio responsável lança não gera aviso.
+* Avisos de movimentação bancária ficam preparados para a versão Pro, para quando houver integração com bancos.
 
-# 💡 Conceitos Principais
+### Configurações
 
-O sistema foi projetado para funcionar como um **Planejador Financeiro Inteligente**, baseado em projeções financeiras e não apenas em registros históricos.
+* Reserva mínima (valor que não deve ser usado).
+* Mostrar ou esconder o dia do aperto no painel.
+* Nível de avisos: nenhum, só importantes ou todos.
+* Plano atual e liberação da versão Pro.
+* Sair da conta.
 
-Os principais conceitos são:
+### Versão Pro
 
-* Saldo Atual
-* Saldo Projetado
-* Fluxo de Caixa Diário
-* Reserva Financeira
-* Valor Disponível para Gastar
-* Dia do Aperto
-* Guardar por Dia
-* Simulação Financeira (futuro)
+* Pagamento **único por PIX** de **R$ 9,90** (valor configurável), via MyCredit.
+* Libera o dia do aperto, quanto guardar por dia, histórico completo e comparações.
 
----
+### PWA
 
-# 🧠 Motor Financeiro
-
-Toda a inteligência do sistema será centralizada em um componente chamado **Financial Engine**.
-
-Ele será responsável por calcular:
-
-* Saldo Atual
-* Saldo Projetado
-* Fluxo Financeiro
-* Dia do Aperto
-* Reserva Financeira
-* Valor a Guardar por Dia
-* Simulações Financeiras
-
-Nenhuma outra parte da aplicação realizará cálculos financeiros.
+* Instalável no **Android** (Chrome → *Instalar app*) e no **iOS** (Safari → *Compartilhar* → *Adicionar à Tela de Início*).
+* Abre em tela cheia, com ícone e cores do app.
+* Precisa de internet para mostrar os dados. Só os ícones ficam guardados no aparelho.
 
 ---
 
-# 🤖 Inteligência Artificial
+## 🔴 Dia do aperto
 
-A IA será implementada em uma fase posterior do projeto.
+É o primeiro dia em que o saldo previsto fica **abaixo da reserva mínima**, considerando os lançamentos futuros e as contas que se repetem todo mês.
 
-Ela **não será responsável por cálculos financeiros**.
+| Data      | Evento          | Saldo previsto |
+| --------- | --------------- | -------------- |
+| Hoje      | Saldo atual     | R$ 100,00      |
+| 06/08     | Mercado         | R$ 50,00       |
+| **08/08** | **Combustível** | **-R$ 10,00**  |
+| 10/08     | Salário         | R$ 1.790,00    |
 
-Seu papel será interpretar os resultados produzidos pelo **Financial Engine**, permitindo ao usuário interagir utilizando linguagem natural.
-
-Exemplos:
-
-* "Posso comprar uma televisão?"
-* "Quanto posso gastar este final de semana?"
-* "Quando ficarei negativo?"
-* "Como posso evitar o Dia do Aperto?"
-
-Toda resposta será baseada nos cálculos realizados pelo Motor Financeiro.
+Resultado: dia do aperto em **08/08**. Faltam **R$ 10,00**, o que dá **R$ 2,00 por dia** guardados até lá.
 
 ---
 
-# 🏗️ Arquitetura
+## 🛠️ Tecnologias
 
-A aplicação será organizada por domínio, permitindo evolução contínua do projeto.
+* **Next.js 16** (App Router, Server Actions) + **React 19** + **TypeScript**
+* **Tailwind CSS 4** + **shadcn/ui** (Radix UI)
+* **Auth.js v5** (login por e-mail e senha, senhas com bcrypt)
+* **Prisma 7** + **PostgreSQL no Neon** (região São Paulo)
+* **MyCredit** para cobrança PIX
+* **Vitest** para testes
+* Deploy na **Vercel**
+
+---
+
+## 🏗️ Arquitetura
+
+Monólito em camadas. Cada camada só conversa com a de baixo:
 
 ```
-app/
-
-components/
-
-features/
-    dashboard/
-    transactions/
-    categories/
-    calendar/
-    goals/
-    accounts/
-
-actions/
-
-repositories/
-
-services/
-
-lib/
-    financial-engine/
-
-prisma/
-
-types/
-
-utils/
+Tela (app / components)
+        ↓
+Server Action (actions)        ← sessão do usuário e entrada do formulário
+        ↓
+Serviço (services)             ← permissões, família e plano
+        ↓
+Domínio (domain)               ← regras e cálculos financeiros, sem banco
+        ↓
+Repositório (repositories)     ← acesso ao banco via Prisma
+        ↓
+PostgreSQL (Neon)
 ```
 
----
+Regras do projeto:
 
-# 🛠️ Stack
-
-## Frontend
-
-* Next.js
-* TypeScript
-* React
-* Tailwind CSS
-* shadcn/ui
-* Radix UI
-
-## Backend
-
-* Next.js Server Actions
-* Prisma ORM
-
-## Banco de Dados
-
-* Neon PostgreSQL
-
-## Futuro
-
-* OpenAI API
-* Push Notifications
-* Offline Sync
-* Widgets Mobile
-
----
-
-# 📱 Mobile First
-
-O sistema será desenvolvido priorizando dispositivos móveis.
-
-Toda a experiência será pensada inicialmente para smartphones, sendo posteriormente adaptada para tablets e desktops.
-
----
-
-# 📲 Progressive Web App
-
-O projeto será disponibilizado como **PWA**, permitindo:
-
-* Instalação na tela inicial
-* Experiência semelhante a aplicativo nativo
-* Atualizações automáticas
-* Funcionamento offline (quando suportado)
-* Sincronização de dados
-* Notificações (fase futura)
-
----
-
-# 📋 Princípios do Projeto
-
-Durante todo o desenvolvimento serão seguidos os seguintes princípios:
-
-* Mobile First
-* Progressive Web App
-* Clean Architecture
-* SOLID
-* Domain-Driven Design (DDD)
-* Componentização
-* Tipagem forte com TypeScript
-* Prisma como fonte de verdade do banco de dados
-* UUID como identificador padrão
-* Soft Delete
-* Auditoria de entidades
-
----
-
-# 📏 Regras de Arquitetura
-
-Estas regras são obrigatórias durante todo o desenvolvimento.
-
-### O Motor Financeiro é a única fonte de verdade.
-
-Todo cálculo financeiro deverá ser realizado exclusivamente pelo **Financial Engine**.
-
-### A IA nunca realizará cálculos financeiros.
-
-A Inteligência Artificial apenas interpretará os dados produzidos pelo Motor Financeiro.
-
-### Nenhuma tela acessará o banco diretamente.
-
-Fluxo obrigatório:
+* **Todo cálculo financeiro fica no domínio** (motor financeiro). A tela só exibe o resultado.
+* **Nenhuma tela acessa o banco diretamente.**
+* **Permissões ficam no serviço**: o visualizador não grava, e o membro grava no saldo do responsável.
+* Valores em `Decimal(12,2)`, exibidos em R$. Datas em DD/MM/AAAA.
+* Exclusão lógica (`deletedAt`) e IDs em UUID.
 
 ```
-Interface
-
-↓
-
-Server Action
-
-↓
-
-Repository
-
-↓
-
-Prisma
-
-↓
-
-Neon PostgreSQL
+src/
+  app/            páginas e rotas (dashboard, transactions, accounts, settings, login, register)
+  components/     componentes de tela
+  actions/        server actions
+  services/       casos de uso
+  domain/         regras puras (financeiro, família, avisos, contas)
+  contracts/      validação de entrada e formatos de resposta
+  repositories/   acesso ao banco
+  integrations/   serviços externos (MyCredit)
+  lib/            prisma, auth e utilitários
+prisma/           schema e migrations
+docs/             documentação e decisões (ADR)
 ```
 
-### O domínio será a base da aplicação.
+As decisões de arquitetura estão em [`docs/adr`](docs/adr):
 
-Toda nova funcionalidade deverá respeitar o modelo de domínio previamente definido.
-
----
-
-# 🚀 Roadmap
-
-## Fase 1
-
-* Estrutura do projeto
-* Banco de dados
-* Autenticação
-* Dashboard
-* Receitas
-* Despesas
-* Categorias
-* Contas
-* Calendário Financeiro
-
-## Fase 2
-
-* Motor Financeiro
-* Dia do Aperto
-* Guardar por Dia
-* Reserva Financeira
-* Simulações
-
-## Fase 3
-
-* Metas
-* Relatórios
-* Cartões de Crédito
-* Orçamentos
-* Investimentos
-
-## Fase 4
-
-* Inteligência Artificial
-* Recomendações Inteligentes
-* Assistente Financeiro
-* Planejamento Automático
+| ADR | Assunto |
+| --- | --- |
+| [001](docs/adr/ADR001-financial-engine.md) | Motor financeiro |
+| [002](docs/adr/ADR002-authentication.md) | Autenticação |
+| [003](docs/adr/ADR003-dashboard.md) | Painel |
+| [004](docs/adr/ADR004-transaction-plans.md) | Lançamentos por plano |
+| [005](docs/adr/ADR005-recurring-transactions.md) | Lançamentos mensais |
+| [006](docs/adr/ADR006-series-maintenance.md) | Edição de séries |
+| [007](docs/adr/ADR007-pro-pix.md) | Versão Pro por PIX |
+| [008](docs/adr/ADR008-family-signup.md) | Cadastro da família |
+| [009](docs/adr/ADR009-notifications.md) | Avisos |
+| [010](docs/adr/ADR010-accounts.md) | Contas |
+| [011](docs/adr/ADR011-settings.md) | Configurações |
 
 ---
 
-# Desenho de Dominio
-                     User
-                       │
-      ┌────────────────┼────────────────┐
-      │                │                │
-      ▼                ▼                ▼
-   Account         Category         Settings
-      │                │
-      │                │
-      └──────────┐     │
-                 ▼     ▼
-             Transaction
-                 │
-      ┌──────────┴──────────┐
-      ▼                     ▼
-RecurringTransaction      Attachment
+## ▶️ Como rodar
 
-                 │
-                 ▼
-          Financial Engine
-      ┌─────────┼────────────┬──────────────┬─────────────┐
-      ▼         ▼            ▼              ▼             ▼
- Current    Projected    Crunch Day    Daily Saving   Timeline
+Pré-requisitos: Node.js 20+ e um banco PostgreSQL (por exemplo, no Neon).
 
-                 │
-                 ▼
-              Calendar
+```bash
+npm install
+```
 
-                 │
-                 ▼
-               Reports
+Crie um arquivo `.env` na raiz:
 
-                 │
-                 ▼
-                 Goal
+```env
+DATABASE_URL="postgresql://usuario:senha@host/neondb?sslmode=require"
+AUTH_SECRET="gere com: npx auth secret"
 
----
-# Arquitetura Geral do projeto
+# Versão Pro (PIX)
+MYCREDIT_API_BASE="https://sandboxapi.mycredit.com.br"
+MYCREDIT_CNPJ=""
+MYCREDIT_INTEGRATOR_KEY=""
+MYCREDIT_WEBHOOK_TOKEN=""
+PRO_PLAN_AMOUNT="9.90"
+```
 
+Crie as tabelas e gere o cliente do Prisma:
 
-                              Planejamento Financeiro
-                                       │
-    ┌──────────────────────────────────┼──────────────────────────────────┐
-    │                                  │                                  │
-Authentication                     Financial Core                     User Experience
-    │                                  │                                  │
-    ▼                                  ▼                                  ▼
-User                           Financial Engine                    Dashboard
-Session                        Ledger                              Calendar
-Auth                           Planning                            Reports
-                               Simulation                          PWA
-                               Goals                              Notifications
+```bash
+npx prisma migrate deploy
+npx prisma generate
+```
 
----
-# ERD (Modelo Conceitual)
-                         User
-                          |
-                          |
-                    FamilyMember
-                          |
-              ┌───────────┼───────────┐
-              |           |           |
-              ▼           ▼           ▼
-           Account     Transaction   (futuro)
-                          |
-                          |
-                        Category
+Opcional: crie um usuário de teste (`teste@planejamento.local` / `Teste@123`) com uma conta:
 
+```bash
+npx tsx scripts/create-dev-user.ts
+npx tsx scripts/create-dev-account.ts
+```
 
-                         Family
-                           |
-              ┌────────────┼────────────┐
-              |                         |
-              ▼                         ▼
-          Members                  Categories
+Suba o app em [http://localhost:3000](http://localhost:3000):
 
-              |
-              ▼
+```bash
+npm run dev
+```
 
-            Goals
+### Comandos
 
-User
-──────────────────────────────
-id (UUID)
-name
-email
-passwordHash
-image
-createdAt
-updatedAt
-deletedAt
-
-
-Relacionamentos
-1 User
-
-↓
-
-N Accounts
-
-N Categories
-
-N Transactions
-
-N Goals
-
-1 Settings
-
-
-
-Account
-──────────────────────────────
-id
-userId
-name
-type
-initialBalance
-color
-icon
-isDefault
-isActive
-createdAt
-updatedAt
-deletedAt
-
-
-Category
-──────────────────────────────
-id
-userId
-name
-icon
-color
-type
-isDefault
-isActive
-createdAt
-updatedAt
-deletedAt
-
-
-Transaction
-──────────────────────────────
-id
-userId
-accountId
-categoryId
-
-description
-
-amount
-
-transactionType
-
-status
-
-transactionDate
-
-competencyDate
-
-isRecurring
-
-notes
-
-createdAt
-
-updatedAt
-
-deletedAt
-
-
-
-
-Relacionamentos
-
-User
-
-↓
-
-Transaction
-
-↓
-
-Category
-
-↓
-
-Account
-
-Goal
-──────────────────────────────
-id
-
-userId
-
-title
-
-description
-
-targetAmount
-
-currentAmount
-
-targetDate
-
-status
-
-createdAt
-
-updatedAt
-
-
-Settings
-──────────────────────────────
-id
-
-userId
-
-theme
-
-language
-
-currency
-
-firstDayOfMonth
-
-createdAt
-
-updatedAt
-
-
-RecurringTransaction
-──────────────────────────────
-id
-
-transactionId
-
-frequency
-
-interval
-
-startDate
-
-endDate
-
-nextExecution
-
-
-Attachment
-──────────────────────────────
-id
-
-transactionId
-
-fileName
-
-mimeType
-
-size
-
-url
-
-createdAt
-
-
-
-# Model Schema
-Enums
-
-↓
-
-User
-
-↓
-
-Settings
-
-↓
-
-Account
-
-↓
-
-Category
-
-↓
-
-Goal
-
-↓
-
-Transaction
-
-↓
-
-RecurringTransaction
-
-↓
-
-Attachment
+| Comando | O que faz |
+| --- | --- |
+| `npm run dev` | Ambiente de desenvolvimento |
+| `npm run build` | Build de produção (inclui checagem de tipos) |
+| `npm start` | Roda o build de produção |
+| `npm test` | Testes com Vitest |
+| `npm run lint` | ESLint |
 
 ---
 
-# 📄 Licença
+## 💳 PIX em produção
 
-Projeto em desenvolvimento.
+Detalhes em [`docs/pro-checkout.md`](docs/pro-checkout.md). Para cobrar de verdade:
 
-Todos os direitos reservados.
+1. Troque `MYCREDIT_API_BASE` para `https://api.mycredit.com.br` e use a chave de produção.
+2. Defina `MYCREDIT_WEBHOOK_TOKEN`.
+3. Cadastre na MyCredit a URL `https://SEU-DOMINIO/api/webhooks/mycredit/{MYCREDIT_WEBHOOK_TOKEN}`.
+
+---
+
+## 🗺️ Próximos passos
+
+* PIX em produção.
+* Transferência entre contas.
+* Categorias e metas.
+* Integração com bancos (Open Finance) para avisos de movimentação na versão Pro.
+* Notificações push e uso offline.
+* Assistente com IA para explicar os números do motor financeiro, sem fazer cálculos.
+
+---
+
+## 📄 Licença
+
+Projeto em desenvolvimento. Todos os direitos reservados.
