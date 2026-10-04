@@ -147,7 +147,9 @@ describe("FamilyRepository", () => {
 
         name: "Família Silva",
 
-        ownerId: "user-1"
+        ownerId: "user-1",
+
+        inviteCode: expect.stringMatching(/^[A-HJ-NP-Z2-9]{6}$/)
 
       }
 

@@ -12,9 +12,11 @@ export interface ParsedCreateTransaction {
   repeatsMonthly: boolean;
 }
 
+type ParseFailure = { ok: false; message: string };
+
 export type ParseCreateTransactionResult =
   | { ok: true; value: ParsedCreateTransaction }
-  | { ok: false; message: string };
+  | ParseFailure;
 
 export function parseCreateTransactionInput(
   input: unknown
@@ -86,7 +88,7 @@ export function parseCreateTransactionInput(
 
 function readDescription(
   value: unknown
-): string | ParseCreateTransactionResult {
+): string | ParseFailure {
   if (typeof value !== "string" || !value.trim()) {
     return {
       ok: false,
@@ -108,7 +110,7 @@ function readDescription(
 
 function readAmount(
   value: unknown
-): number | ParseCreateTransactionResult {
+): number | ParseFailure {
   const amount = parseAmount(value);
 
   if (amount === null) {
@@ -123,7 +125,7 @@ function readAmount(
 
 function readType(
   value: unknown
-): "INCOME" | "EXPENSE" | ParseCreateTransactionResult {
+): "INCOME" | "EXPENSE" | ParseFailure {
   if (value === "INCOME" || value === "EXPENSE") {
     return value;
   }
@@ -136,7 +138,7 @@ function readType(
 
 function readAccountId(
   value: unknown
-): string | ParseCreateTransactionResult {
+): string | ParseFailure {
   if (typeof value !== "string" || !value.trim() || value.trim().length > 64) {
     return {
       ok: false,
@@ -149,7 +151,7 @@ function readAccountId(
 
 function readDate(
   value: unknown
-): Date | ParseCreateTransactionResult {
+): Date | ParseFailure {
   if (typeof value !== "string") {
     return {
       ok: false,
@@ -262,7 +264,7 @@ export function parseUpdateSeriesInput(
 
 function readSeriesId(
   value: unknown
-): string | ParseUpdateSeriesResult {
+): string | ParseFailure {
   if (typeof value !== "string" || !value.trim() || value.trim().length > 64) {
     return {
       ok: false,
@@ -275,7 +277,7 @@ function readSeriesId(
 
 function readDayOfMonth(
   value: unknown
-): number | ParseUpdateSeriesResult {
+): number | ParseFailure {
   const day = typeof value === "number"
     ? value
     : typeof value === "string" && /^\d{1,2}$/.test(value.trim())
@@ -294,7 +296,7 @@ function readDayOfMonth(
 
 function readRepeatsMonthly(
   value: unknown
-): boolean | ParseCreateTransactionResult {
+): boolean | ParseFailure {
   if (value === undefined || value === null || value === false) {
     return false;
   }
@@ -311,7 +313,7 @@ function readRepeatsMonthly(
 
 function readNotes(
   value: unknown
-): string | undefined | ParseCreateTransactionResult {
+): string | undefined | ParseFailure {
   if (value === undefined || value === null) {
     return undefined;
   }
