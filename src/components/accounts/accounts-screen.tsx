@@ -5,6 +5,7 @@ import { Plus, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
+import { DateInput } from "@/components/ui/date-input";
 
 import {
   createLedgerAccountAction,
@@ -250,13 +251,11 @@ function AccountCreateButton() {
                 <label htmlFor="initial-balance-date" className="text-sm font-medium">
                   Data do saldo inicial
                 </label>
-                <input
+                <DateInput
                   id="initial-balance-date"
-                  type="date"
                   value={initialBalanceDate}
-                  onChange={(event) => setInitialBalanceDate(event.target.value)}
+                  onChange={setInitialBalanceDate}
                   required
-                  className="h-11 w-full rounded-md border bg-background px-3 outline-none focus:ring-2 focus:ring-primary"
                 />
               </div>
 

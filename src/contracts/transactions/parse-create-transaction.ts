@@ -1,6 +1,20 @@
+import {
+  dailyEndProblem,
+  defaultDailyEnd,
+} from "../../domain/financial/rules/recurrence.rule";
+import {
+  isValidWeekday,
+  normalizeWeekdays,
+} from "../../domain/financial/rules/weekdays";
+
 const MAX_AMOUNT = 9_999_999_999.99;
 const MIN_YEAR = 2000;
 const MAX_YEAR = 2100;
+
+export interface DailyRepeat {
+  weekdays: number[];
+  endDate: Date;
+}
 
 export interface ParsedCreateTransaction {
   accountId: string;
@@ -10,6 +24,7 @@ export interface ParsedCreateTransaction {
   type: "INCOME" | "EXPENSE";
   transactionDate: Date;
   repeatsMonthly: boolean;
+  daily?: DailyRepeat;
 }
 
 type ParseFailure = { ok: false; message: string };
@@ -66,10 +81,26 @@ export function parseCreateTransactionInput(
     return notes;
   }
 
-  const repeatsMonthly = readRepeatsMonthly(data.repeatsMonthly);
+  const repeat = readRepeat(data.repeat, data.repeatsMonthly);
 
-  if (typeof repeatsMonthly !== "boolean") {
-    return repeatsMonthly;
+  if (typeof repeat !== "string") {
+    return repeat;
+  }
+
+  let daily: DailyRepeat | undefined;
+
+  if (repeat === "DAILY") {
+    const parsedDaily = readDailyRepeat(
+      transactionDate,
+      data.weekdays,
+      data.repeatUntil
+    );
+
+    if ("ok" in parsedDaily) {
+      return parsedDaily;
+    }
+
+    daily = parsedDaily;
   }
 
   return {
@@ -81,9 +112,106 @@ export function parseCreateTransactionInput(
       amount,
       type,
       transactionDate,
-      repeatsMonthly,
+      repeatsMonthly: repeat === "MONTHLY",
+      daily,
     },
   };
+}
+
+function readRepeat(
+  repeat: unknown,
+  repeatsMonthly: unknown
+): "NONE" | "MONTHLY" | "DAILY" | ParseFailure {
+  if (repeat === undefined || repeat === null || repeat === "") {
+    const legacy = readRepeatsMonthly(repeatsMonthly);
+
+    if (typeof legacy !== "boolean") {
+      return legacy;
+    }
+
+    return legacy ? "MONTHLY" : "NONE";
+  }
+
+  if (repeat === "NONE" || repeat === "MONTHLY" || repeat === "DAILY") {
+    return repeat;
+  }
+
+  return {
+    ok: false,
+    message: "Não foi possível ler a repetição.",
+  };
+}
+
+function readDailyRepeat(
+  startDate: Date,
+  weekdaysValue: unknown,
+  untilValue: unknown
+): DailyRepeat | ParseFailure {
+  const weekdays = readWeekdays(weekdaysValue);
+
+  if (!Array.isArray(weekdays)) {
+    return weekdays;
+  }
+
+  const endDate = untilValue === undefined || untilValue === null || untilValue === ""
+    ? defaultDailyEnd(startDate)
+    : readDate(untilValue);
+
+  if (!(endDate instanceof Date)) {
+    return {
+      ok: false,
+      message: "Informe uma data final válida (DD/MM/AAAA).",
+    };
+  }
+
+  const problem = readDailyEndProblem(startDate, endDate);
+
+  if (problem) {
+    return problem;
+  }
+
+  return { weekdays, endDate };
+}
+
+export function readDailyEndProblem(
+  startDate: Date,
+  endDate: Date
+): ParseFailure | null {
+  const problem = dailyEndProblem(startDate, endDate);
+
+  if (problem === "NOT_AFTER_START") {
+    return {
+      ok: false,
+      message: "A data final precisa ser depois do primeiro lançamento.",
+    };
+  }
+
+  if (problem === "TOO_FAR") {
+    return {
+      ok: false,
+      message: "A repetição diária pode durar até 12 meses.",
+    };
+  }
+
+  return null;
+}
+
+function readWeekdays(value: unknown): number[] | ParseFailure {
+  if (!Array.isArray(value) || value.length === 0) {
+    return {
+      ok: false,
+      message: "Escolha em quais dias da semana o lançamento se repete.",
+    };
+  }
+
+  if (!value.every(isValidWeekday)) {
+    return {
+      ok: false,
+      message: "Não foi possível ler os dias da semana.",
+    };
+  }
+
+  return normalizeWeekdays(value);
 }
 
 function readDescription(
@@ -155,7 +283,7 @@ function readDate(
   if (typeof value !== "string") {
     return {
       ok: false,
-      message: "Informe uma data válida.",
+      message: "Informe uma data válida (DD/MM/AAAA).",
     };
   }
 
@@ -164,7 +292,7 @@ function readDate(
   if (!match) {
     return {
       ok: false,
-      message: "Informe uma data válida.",
+      message: "Informe uma data válida (DD/MM/AAAA).",
     };
   }
 
@@ -182,21 +310,28 @@ function readDate(
   ) {
     return {
       ok: false,
-      message: "Informe uma data válida.",
+      message: "Informe uma data válida (DD/MM/AAAA).",
     };
   }
 
   return date;
 }
 
-export interface ParsedUpdateSeries {
+interface ParsedUpdateSeriesBase {
   id: string;
   accountId: string;
   description: string;
   amount: number;
   type: "INCOME" | "EXPENSE";
-  dayOfMonth: number;
 }
+
+export type ParsedUpdateSeries =
+  | (ParsedUpdateSeriesBase & { frequency: "MONTHLY"; dayOfMonth: number })
+  | (ParsedUpdateSeriesBase & {
+      frequency: "DAILY";
+      weekdays: number[];
+      endDate: Date;
+    });
 
 export type ParseUpdateSeriesResult =
   | { ok: true; value: ParsedUpdateSeries }
@@ -243,6 +378,30 @@ export function parseUpdateSeriesInput(
     return accountId;
   }
 
+  const base = { id, accountId, description, amount, type };
+
+  if (data.frequency === "DAILY") {
+    const weekdays = readWeekdays(data.weekdays);
+
+    if (!Array.isArray(weekdays)) {
+      return weekdays;
+    }
+
+    const endDate = readDate(data.endDate);
+
+    if (!(endDate instanceof Date)) {
+      return {
+        ok: false,
+        message: "Informe uma data final válida (DD/MM/AAAA).",
+      };
+    }
+
+    return {
+      ok: true,
+      value: { ...base, frequency: "DAILY", weekdays, endDate },
+    };
+  }
+
   const dayOfMonth = readDayOfMonth(data.dayOfMonth);
 
   if (typeof dayOfMonth !== "number") {
@@ -251,14 +410,7 @@ export function parseUpdateSeriesInput(
 
   return {
     ok: true,
-    value: {
-      id,
-      accountId,
-      description,
-      amount,
-      type,
-      dayOfMonth,
-    },
+    value: { ...base, frequency: "MONTHLY", dayOfMonth },
   };
 }
 

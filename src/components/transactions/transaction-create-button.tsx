@@ -5,8 +5,20 @@ import { Plus, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
+import { DateInput } from "@/components/ui/date-input";
 
 import { createTransactionAction } from "../../actions/transactions/create-transaction.action";
+import { defaultDailyEnd } from "../../domain/financial/rules/recurrence.rule";
+import { MONDAY_TO_FRIDAY } from "../../domain/financial/rules/weekdays";
+import { WeekdayPicker } from "./weekday-picker";
+
+type Repeat = "NONE" | "MONTHLY" | "DAILY";
+
+const REPEAT_OPTIONS: { id: Repeat; label: string }[] = [
+  { id: "NONE", label: "Não repete" },
+  { id: "MONTHLY", label: "Todo mês" },
+  { id: "DAILY", label: "Todo dia" },
+];
 
 interface AccountOption {
   id: string;
@@ -25,6 +37,13 @@ function todayInputValue() {
   return `${now.getFullYear()}-${month}-${day}`;
 }
 
+function defaultEndLabel(dateInput: string) {
+  const [year, month, day] = dateInput.split("-").map(Number);
+  const start = year && month && day ? new Date(year, month - 1, day) : new Date();
+
+  return defaultDailyEnd(start).toLocaleDateString("pt-BR");
+}
+
 export function TransactionCreateButton({
   accounts,
 }: TransactionCreateButtonProps) {
@@ -36,7 +55,9 @@ export function TransactionCreateButton({
   const [accountId, setAccountId] = useState(accounts[0]?.id ?? "");
   const [transactionDate, setTransactionDate] = useState(todayInputValue);
   const [notes, setNotes] = useState("");
-  const [repeatsMonthly, setRepeatsMonthly] = useState(false);
+  const [repeat, setRepeat] = useState<Repeat>("NONE");
+  const [weekdays, setWeekdays] = useState<number[]>([...MONDAY_TO_FRIDAY]);
+  const [repeatUntil, setRepeatUntil] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -80,7 +101,9 @@ export function TransactionCreateButton({
       type,
       transactionDate,
       notes,
-      repeatsMonthly,
+      repeat,
+      weekdays: repeat === "DAILY" ? weekdays : undefined,
+      repeatUntil: repeat === "DAILY" ? repeatUntil : undefined,
     });
 
     setLoading(false);
@@ -93,7 +116,9 @@ export function TransactionCreateButton({
     setDescription("");
     setAmount("");
     setNotes("");
-    setRepeatsMonthly(false);
+    setRepeat("NONE");
+    setWeekdays([...MONDAY_TO_FRIDAY]);
+    setRepeatUntil("");
     setType("EXPENSE");
     setTransactionDate(todayInputValue());
     setOpen(false);
@@ -228,34 +253,67 @@ export function TransactionCreateButton({
                   <label htmlFor="transaction-date" className="text-sm font-medium">
                     Data
                   </label>
-                  <input
+                  <DateInput
                     id="transaction-date"
                     name="transactionDate"
-                    type="date"
                     value={transactionDate}
-                    onChange={(event) => setTransactionDate(event.target.value)}
+                    onChange={setTransactionDate}
                     required
-                    className="h-11 w-full rounded-md border bg-background px-3 outline-none focus:ring-2 focus:ring-primary"
                   />
                 </div>
 
-                <div className="flex items-start gap-3 rounded-xl border p-3">
-                  <input
-                    id="repeats-monthly"
-                    type="checkbox"
-                    checked={repeatsMonthly}
-                    onChange={(event) => setRepeatsMonthly(event.target.checked)}
-                    className="mt-1 size-5"
-                  />
-                  <div>
-                    <label htmlFor="repeats-monthly" className="text-sm font-medium">
-                      Repetir todo mês
-                    </label>
-                    <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                <fieldset className="space-y-3 rounded-xl border p-3">
+                  <legend className="px-1 text-sm font-medium">Repetir</legend>
+
+                  <div className="grid grid-cols-3 gap-2">
+                    {REPEAT_OPTIONS.map((option) => (
+                      <Button
+                        key={option.id}
+                        type="button"
+                        variant={repeat === option.id ? "default" : "outline"}
+                        className="h-11 px-2"
+                        aria-pressed={repeat === option.id}
+                        onClick={() => setRepeat(option.id)}
+                      >
+                        {option.label}
+                      </Button>
+                    ))}
+                  </div>
+
+                  {repeat === "MONTHLY" ? (
+                    <p className="text-xs leading-5 text-muted-foreground">
                       Este lançamento fica registrado. Os próximos meses entram no dia do aperto.
                     </p>
-                  </div>
-                </div>
+                  ) : null}
+
+                  {repeat === "DAILY" ? (
+                    <div className="space-y-3">
+                      <WeekdayPicker
+                        idPrefix="new-transaction"
+                        value={weekdays}
+                        onChange={setWeekdays}
+                      />
+
+                      <div className="space-y-2">
+                        <label htmlFor="repeat-until" className="text-sm font-medium">
+                          Repetir até
+                        </label>
+                        <DateInput
+                          id="repeat-until"
+                          value={repeatUntil}
+                          onChange={setRepeatUntil}
+                        />
+                        <p className="text-xs leading-5 text-muted-foreground">
+                          Se ficar em branco, vai até {defaultEndLabel(transactionDate)}. Pode durar até 12 meses.
+                        </p>
+                      </div>
+
+                      <p className="text-xs leading-5 text-muted-foreground">
+                        Este lançamento fica registrado. Os próximos dias entram no dia do aperto.
+                      </p>
+                    </div>
+                  ) : null}
+                </fieldset>
 
                 <div className="space-y-2">
                   <label htmlFor="notes" className="text-sm font-medium">
