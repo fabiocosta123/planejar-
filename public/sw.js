@@ -1,4 +1,4 @@
-const CACHE_NAME = "planejamento-financeiro-v1";
+const CACHE_NAME = "planejar-v2";
 
 const PRECACHE_URLS = [
   "/icons/icon-192.png",
