@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Planejamento Financeiro",
-    short_name: "Finanças",
+    name: "Planejar",
+    short_name: "Planejar",
     description:
       "Lançamentos do mês e, na versão Pro, o dia do aperto.",
     start_url: "/",
