@@ -20,11 +20,11 @@ export const metadata: Metadata = {
   title: "Planejamento Financeiro",
   description:
     "Controle lançamentos do mês e acompanhe o saldo até hoje.",
-  applicationName: "Planejamento Financeiro",
+  applicationName: "Planejar",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Finanças",
+    title: "Planejar",
   },
   icons: {
     icon: [
