@@ -29,11 +29,13 @@ export type AggregateRecurringTransaction = {
 export type RecurringTransactionAvgAggregateOutputType = {
   amount: runtime.Decimal | null
   dayOfMonth: number | null
+  weekdays: number | null
 }
 
 export type RecurringTransactionSumAggregateOutputType = {
   amount: runtime.Decimal | null
   dayOfMonth: number | null
+  weekdays: number[]
 }
 
 export type RecurringTransactionMinAggregateOutputType = {
@@ -80,6 +82,7 @@ export type RecurringTransactionCountAggregateOutputType = {
   frequency: number
   startDate: number
   dayOfMonth: number
+  weekdays: number
   endDate: number
   isActive: number
   createdAt: number
@@ -92,11 +95,13 @@ export type RecurringTransactionCountAggregateOutputType = {
 export type RecurringTransactionAvgAggregateInputType = {
   amount?: true
   dayOfMonth?: true
+  weekdays?: true
 }
 
 export type RecurringTransactionSumAggregateInputType = {
   amount?: true
   dayOfMonth?: true
+  weekdays?: true
 }
 
 export type RecurringTransactionMinAggregateInputType = {
@@ -143,6 +148,7 @@ export type RecurringTransactionCountAggregateInputType = {
   frequency?: true
   startDate?: true
   dayOfMonth?: true
+  weekdays?: true
   endDate?: true
   isActive?: true
   createdAt?: true
@@ -247,6 +253,7 @@ export type RecurringTransactionGroupByOutputType = {
   frequency: $Enums.RecurrenceFrequency
   startDate: Date
   dayOfMonth: number
+  weekdays: number[]
   endDate: Date | null
   isActive: boolean
   createdAt: Date
@@ -287,6 +294,7 @@ export type RecurringTransactionWhereInput = {
   frequency?: Prisma.EnumRecurrenceFrequencyFilter<"RecurringTransaction"> | $Enums.RecurrenceFrequency
   startDate?: Prisma.DateTimeFilter<"RecurringTransaction"> | Date | string
   dayOfMonth?: Prisma.IntFilter<"RecurringTransaction"> | number
+  weekdays?: Prisma.IntNullableListFilter<"RecurringTransaction">
   endDate?: Prisma.DateTimeNullableFilter<"RecurringTransaction"> | Date | string | null
   isActive?: Prisma.BoolFilter<"RecurringTransaction"> | boolean
   createdAt?: Prisma.DateTimeFilter<"RecurringTransaction"> | Date | string
@@ -306,6 +314,7 @@ export type RecurringTransactionOrderByWithRelationInput = {
   frequency?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   dayOfMonth?: Prisma.SortOrder
+  weekdays?: Prisma.SortOrder
   endDate?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -328,6 +337,7 @@ export type RecurringTransactionWhereUniqueInput = Prisma.AtLeast<{
   frequency?: Prisma.EnumRecurrenceFrequencyFilter<"RecurringTransaction"> | $Enums.RecurrenceFrequency
   startDate?: Prisma.DateTimeFilter<"RecurringTransaction"> | Date | string
   dayOfMonth?: Prisma.IntFilter<"RecurringTransaction"> | number
+  weekdays?: Prisma.IntNullableListFilter<"RecurringTransaction">
   endDate?: Prisma.DateTimeNullableFilter<"RecurringTransaction"> | Date | string | null
   isActive?: Prisma.BoolFilter<"RecurringTransaction"> | boolean
   createdAt?: Prisma.DateTimeFilter<"RecurringTransaction"> | Date | string
@@ -347,6 +357,7 @@ export type RecurringTransactionOrderByWithAggregationInput = {
   frequency?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   dayOfMonth?: Prisma.SortOrder
+  weekdays?: Prisma.SortOrder
   endDate?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -372,6 +383,7 @@ export type RecurringTransactionScalarWhereWithAggregatesInput = {
   frequency?: Prisma.EnumRecurrenceFrequencyWithAggregatesFilter<"RecurringTransaction"> | $Enums.RecurrenceFrequency
   startDate?: Prisma.DateTimeWithAggregatesFilter<"RecurringTransaction"> | Date | string
   dayOfMonth?: Prisma.IntWithAggregatesFilter<"RecurringTransaction"> | number
+  weekdays?: Prisma.IntNullableListFilter<"RecurringTransaction">
   endDate?: Prisma.DateTimeNullableWithAggregatesFilter<"RecurringTransaction"> | Date | string | null
   isActive?: Prisma.BoolWithAggregatesFilter<"RecurringTransaction"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"RecurringTransaction"> | Date | string
@@ -387,6 +399,7 @@ export type RecurringTransactionCreateInput = {
   frequency?: $Enums.RecurrenceFrequency
   startDate: Date | string
   dayOfMonth: number
+  weekdays?: Prisma.RecurringTransactionCreateweekdaysInput | number[]
   endDate?: Date | string | null
   isActive?: boolean
   createdAt?: Date | string
@@ -406,6 +419,7 @@ export type RecurringTransactionUncheckedCreateInput = {
   frequency?: $Enums.RecurrenceFrequency
   startDate: Date | string
   dayOfMonth: number
+  weekdays?: Prisma.RecurringTransactionCreateweekdaysInput | number[]
   endDate?: Date | string | null
   isActive?: boolean
   createdAt?: Date | string
@@ -421,6 +435,7 @@ export type RecurringTransactionUpdateInput = {
   frequency?: Prisma.EnumRecurrenceFrequencyFieldUpdateOperationsInput | $Enums.RecurrenceFrequency
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dayOfMonth?: Prisma.IntFieldUpdateOperationsInput | number
+  weekdays?: Prisma.RecurringTransactionUpdateweekdaysInput | number[]
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -440,6 +455,7 @@ export type RecurringTransactionUncheckedUpdateInput = {
   frequency?: Prisma.EnumRecurrenceFrequencyFieldUpdateOperationsInput | $Enums.RecurrenceFrequency
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dayOfMonth?: Prisma.IntFieldUpdateOperationsInput | number
+  weekdays?: Prisma.RecurringTransactionUpdateweekdaysInput | number[]
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -457,6 +473,7 @@ export type RecurringTransactionCreateManyInput = {
   frequency?: $Enums.RecurrenceFrequency
   startDate: Date | string
   dayOfMonth: number
+  weekdays?: Prisma.RecurringTransactionCreateweekdaysInput | number[]
   endDate?: Date | string | null
   isActive?: boolean
   createdAt?: Date | string
@@ -472,6 +489,7 @@ export type RecurringTransactionUpdateManyMutationInput = {
   frequency?: Prisma.EnumRecurrenceFrequencyFieldUpdateOperationsInput | $Enums.RecurrenceFrequency
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dayOfMonth?: Prisma.IntFieldUpdateOperationsInput | number
+  weekdays?: Prisma.RecurringTransactionUpdateweekdaysInput | number[]
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -489,6 +507,7 @@ export type RecurringTransactionUncheckedUpdateManyInput = {
   frequency?: Prisma.EnumRecurrenceFrequencyFieldUpdateOperationsInput | $Enums.RecurrenceFrequency
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dayOfMonth?: Prisma.IntFieldUpdateOperationsInput | number
+  weekdays?: Prisma.RecurringTransactionUpdateweekdaysInput | number[]
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -506,6 +525,14 @@ export type RecurringTransactionOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type IntNullableListFilter<$PrismaModel = never> = {
+  equals?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel> | null
+  has?: number | Prisma.IntFieldRefInput<$PrismaModel> | null
+  hasEvery?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel>
+  hasSome?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
+}
+
 export type RecurringTransactionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   familyMemberId?: Prisma.SortOrder
@@ -516,6 +543,7 @@ export type RecurringTransactionCountOrderByAggregateInput = {
   frequency?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   dayOfMonth?: Prisma.SortOrder
+  weekdays?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -526,6 +554,7 @@ export type RecurringTransactionCountOrderByAggregateInput = {
 export type RecurringTransactionAvgOrderByAggregateInput = {
   amount?: Prisma.SortOrder
   dayOfMonth?: Prisma.SortOrder
+  weekdays?: Prisma.SortOrder
 }
 
 export type RecurringTransactionMaxOrderByAggregateInput = {
@@ -565,6 +594,7 @@ export type RecurringTransactionMinOrderByAggregateInput = {
 export type RecurringTransactionSumOrderByAggregateInput = {
   amount?: Prisma.SortOrder
   dayOfMonth?: Prisma.SortOrder
+  weekdays?: Prisma.SortOrder
 }
 
 export type RecurringTransactionCreateNestedManyWithoutFamilyMemberInput = {
@@ -651,8 +681,17 @@ export type RecurringTransactionUncheckedUpdateManyWithoutAccountNestedInput = {
   deleteMany?: Prisma.RecurringTransactionScalarWhereInput | Prisma.RecurringTransactionScalarWhereInput[]
 }
 
+export type RecurringTransactionCreateweekdaysInput = {
+  set: number[]
+}
+
 export type EnumRecurrenceFrequencyFieldUpdateOperationsInput = {
   set?: $Enums.RecurrenceFrequency
+}
+
+export type RecurringTransactionUpdateweekdaysInput = {
+  set?: number[]
+  push?: number | number[]
 }
 
 export type RecurringTransactionCreateWithoutFamilyMemberInput = {
@@ -663,6 +702,7 @@ export type RecurringTransactionCreateWithoutFamilyMemberInput = {
   frequency?: $Enums.RecurrenceFrequency
   startDate: Date | string
   dayOfMonth: number
+  weekdays?: Prisma.RecurringTransactionCreateweekdaysInput | number[]
   endDate?: Date | string | null
   isActive?: boolean
   createdAt?: Date | string
@@ -680,6 +720,7 @@ export type RecurringTransactionUncheckedCreateWithoutFamilyMemberInput = {
   frequency?: $Enums.RecurrenceFrequency
   startDate: Date | string
   dayOfMonth: number
+  weekdays?: Prisma.RecurringTransactionCreateweekdaysInput | number[]
   endDate?: Date | string | null
   isActive?: boolean
   createdAt?: Date | string
@@ -726,6 +767,7 @@ export type RecurringTransactionScalarWhereInput = {
   frequency?: Prisma.EnumRecurrenceFrequencyFilter<"RecurringTransaction"> | $Enums.RecurrenceFrequency
   startDate?: Prisma.DateTimeFilter<"RecurringTransaction"> | Date | string
   dayOfMonth?: Prisma.IntFilter<"RecurringTransaction"> | number
+  weekdays?: Prisma.IntNullableListFilter<"RecurringTransaction">
   endDate?: Prisma.DateTimeNullableFilter<"RecurringTransaction"> | Date | string | null
   isActive?: Prisma.BoolFilter<"RecurringTransaction"> | boolean
   createdAt?: Prisma.DateTimeFilter<"RecurringTransaction"> | Date | string
@@ -741,6 +783,7 @@ export type RecurringTransactionCreateWithoutAccountInput = {
   frequency?: $Enums.RecurrenceFrequency
   startDate: Date | string
   dayOfMonth: number
+  weekdays?: Prisma.RecurringTransactionCreateweekdaysInput | number[]
   endDate?: Date | string | null
   isActive?: boolean
   createdAt?: Date | string
@@ -758,6 +801,7 @@ export type RecurringTransactionUncheckedCreateWithoutAccountInput = {
   frequency?: $Enums.RecurrenceFrequency
   startDate: Date | string
   dayOfMonth: number
+  weekdays?: Prisma.RecurringTransactionCreateweekdaysInput | number[]
   endDate?: Date | string | null
   isActive?: boolean
   createdAt?: Date | string
@@ -800,6 +844,7 @@ export type RecurringTransactionCreateManyFamilyMemberInput = {
   frequency?: $Enums.RecurrenceFrequency
   startDate: Date | string
   dayOfMonth: number
+  weekdays?: Prisma.RecurringTransactionCreateweekdaysInput | number[]
   endDate?: Date | string | null
   isActive?: boolean
   createdAt?: Date | string
@@ -815,6 +860,7 @@ export type RecurringTransactionUpdateWithoutFamilyMemberInput = {
   frequency?: Prisma.EnumRecurrenceFrequencyFieldUpdateOperationsInput | $Enums.RecurrenceFrequency
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dayOfMonth?: Prisma.IntFieldUpdateOperationsInput | number
+  weekdays?: Prisma.RecurringTransactionUpdateweekdaysInput | number[]
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -832,6 +878,7 @@ export type RecurringTransactionUncheckedUpdateWithoutFamilyMemberInput = {
   frequency?: Prisma.EnumRecurrenceFrequencyFieldUpdateOperationsInput | $Enums.RecurrenceFrequency
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dayOfMonth?: Prisma.IntFieldUpdateOperationsInput | number
+  weekdays?: Prisma.RecurringTransactionUpdateweekdaysInput | number[]
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -848,6 +895,7 @@ export type RecurringTransactionUncheckedUpdateManyWithoutFamilyMemberInput = {
   frequency?: Prisma.EnumRecurrenceFrequencyFieldUpdateOperationsInput | $Enums.RecurrenceFrequency
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dayOfMonth?: Prisma.IntFieldUpdateOperationsInput | number
+  weekdays?: Prisma.RecurringTransactionUpdateweekdaysInput | number[]
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -864,6 +912,7 @@ export type RecurringTransactionCreateManyAccountInput = {
   frequency?: $Enums.RecurrenceFrequency
   startDate: Date | string
   dayOfMonth: number
+  weekdays?: Prisma.RecurringTransactionCreateweekdaysInput | number[]
   endDate?: Date | string | null
   isActive?: boolean
   createdAt?: Date | string
@@ -879,6 +928,7 @@ export type RecurringTransactionUpdateWithoutAccountInput = {
   frequency?: Prisma.EnumRecurrenceFrequencyFieldUpdateOperationsInput | $Enums.RecurrenceFrequency
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dayOfMonth?: Prisma.IntFieldUpdateOperationsInput | number
+  weekdays?: Prisma.RecurringTransactionUpdateweekdaysInput | number[]
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -896,6 +946,7 @@ export type RecurringTransactionUncheckedUpdateWithoutAccountInput = {
   frequency?: Prisma.EnumRecurrenceFrequencyFieldUpdateOperationsInput | $Enums.RecurrenceFrequency
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dayOfMonth?: Prisma.IntFieldUpdateOperationsInput | number
+  weekdays?: Prisma.RecurringTransactionUpdateweekdaysInput | number[]
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -912,6 +963,7 @@ export type RecurringTransactionUncheckedUpdateManyWithoutAccountInput = {
   frequency?: Prisma.EnumRecurrenceFrequencyFieldUpdateOperationsInput | $Enums.RecurrenceFrequency
   startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dayOfMonth?: Prisma.IntFieldUpdateOperationsInput | number
+  weekdays?: Prisma.RecurringTransactionUpdateweekdaysInput | number[]
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -931,6 +983,7 @@ export type RecurringTransactionSelect<ExtArgs extends runtime.Types.Extensions.
   frequency?: boolean
   startDate?: boolean
   dayOfMonth?: boolean
+  weekdays?: boolean
   endDate?: boolean
   isActive?: boolean
   createdAt?: boolean
@@ -950,6 +1003,7 @@ export type RecurringTransactionSelectCreateManyAndReturn<ExtArgs extends runtim
   frequency?: boolean
   startDate?: boolean
   dayOfMonth?: boolean
+  weekdays?: boolean
   endDate?: boolean
   isActive?: boolean
   createdAt?: boolean
@@ -969,6 +1023,7 @@ export type RecurringTransactionSelectUpdateManyAndReturn<ExtArgs extends runtim
   frequency?: boolean
   startDate?: boolean
   dayOfMonth?: boolean
+  weekdays?: boolean
   endDate?: boolean
   isActive?: boolean
   createdAt?: boolean
@@ -988,6 +1043,7 @@ export type RecurringTransactionSelectScalar = {
   frequency?: boolean
   startDate?: boolean
   dayOfMonth?: boolean
+  weekdays?: boolean
   endDate?: boolean
   isActive?: boolean
   createdAt?: boolean
@@ -995,7 +1051,7 @@ export type RecurringTransactionSelectScalar = {
   deletedAt?: boolean
 }
 
-export type RecurringTransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "familyMemberId" | "accountId" | "description" | "amount" | "type" | "frequency" | "startDate" | "dayOfMonth" | "endDate" | "isActive" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["recurringTransaction"]>
+export type RecurringTransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "familyMemberId" | "accountId" | "description" | "amount" | "type" | "frequency" | "startDate" | "dayOfMonth" | "weekdays" | "endDate" | "isActive" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["recurringTransaction"]>
 export type RecurringTransactionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   familyMember?: boolean | Prisma.FamilyMemberDefaultArgs<ExtArgs>
   account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
@@ -1025,6 +1081,7 @@ export type $RecurringTransactionPayload<ExtArgs extends runtime.Types.Extension
     frequency: $Enums.RecurrenceFrequency
     startDate: Date
     dayOfMonth: number
+    weekdays: number[]
     endDate: Date | null
     isActive: boolean
     createdAt: Date
@@ -1464,6 +1521,7 @@ export interface RecurringTransactionFieldRefs {
   readonly frequency: Prisma.FieldRef<"RecurringTransaction", 'RecurrenceFrequency'>
   readonly startDate: Prisma.FieldRef<"RecurringTransaction", 'DateTime'>
   readonly dayOfMonth: Prisma.FieldRef<"RecurringTransaction", 'Int'>
+  readonly weekdays: Prisma.FieldRef<"RecurringTransaction", 'Int[]'>
   readonly endDate: Prisma.FieldRef<"RecurringTransaction", 'DateTime'>
   readonly isActive: Prisma.FieldRef<"RecurringTransaction", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"RecurringTransaction", 'DateTime'>

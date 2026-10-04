@@ -8,6 +8,9 @@ export interface CreateRecurringTransactionInput {
   type: "INCOME" | "EXPENSE";
   startDate: Date;
   dayOfMonth: number;
+  frequency?: "MONTHLY" | "DAILY";
+  weekdays?: number[];
+  endDate?: Date | null;
 }
 
 export class RecurringTransactionsRepository {
@@ -19,9 +22,11 @@ export class RecurringTransactionsRepository {
         description: data.description,
         amount: data.amount,
         type: data.type,
-        frequency: "MONTHLY",
+        frequency: data.frequency ?? "MONTHLY",
         startDate: data.startDate,
         dayOfMonth: data.dayOfMonth,
+        weekdays: data.weekdays ?? [],
+        endDate: data.endDate ?? null,
       },
     });
   }
@@ -50,6 +55,17 @@ export class RecurringTransactionsRepository {
     });
   }
 
+  async findActiveOwned(id: string, familyMemberId: string) {
+    return prisma.recurringTransaction.findFirst({
+      where: {
+        id,
+        familyMemberId,
+        deletedAt: null,
+        isActive: true,
+      },
+    });
+  }
+
   async updateOwned(
     id: string,
     familyMemberId: string,
@@ -58,13 +74,17 @@ export class RecurringTransactionsRepository {
       description: string;
       amount: number;
       type: "INCOME" | "EXPENSE";
-      dayOfMonth: number;
-    }
+      dayOfMonth?: number;
+      weekdays?: number[];
+      endDate?: Date;
+    },
+    frequency: "MONTHLY" | "DAILY"
   ) {
     return prisma.recurringTransaction.updateMany({
       where: {
         id,
         familyMemberId,
+        frequency,
         deletedAt: null,
         isActive: true,
       },

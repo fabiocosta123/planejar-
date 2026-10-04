@@ -5,7 +5,12 @@ import { financialEngine } from "../domain/financial/engine/financial-engine";
 import { financialFlowEngine } from "../domain/financial/engine/financial-flow-engine";
 import { tightDayRule } from "../domain/financial/rules/tight-day.rule";
 import { TransactionSummaryMapper } from "../repositories/mappers/transaction-summary.mapper";
-import { parseCreateTransactionInput, parseUpdateSeriesInput } from "../contracts/transactions/parse-create-transaction";
+import {
+  parseCreateTransactionInput,
+  parseUpdateSeriesInput,
+  readDailyEndProblem,
+} from "../contracts/transactions/parse-create-transaction";
+import { weekdaysLabel } from "../domain/financial/rules/weekdays";
 import { SeriesContract } from "../contracts/financial/series.contract";
 import { familyContextService } from "./family-context.service";
 import { familyMemberService } from "./family-member.service";
@@ -21,7 +26,7 @@ import {
 } from "../contracts/financial/transaction-history.contract";
 import { recurringTransactionsRepository } from "../repositories/recurring-transactions.repository";
 import {
-  projectMonthlyOccurrences,
+  projectRecurringOccurrences,
   recurrenceHorizonEnd,
 } from "../domain/financial/rules/recurrence.rule";
 import { TransactionInput } from "../domain/financial/models/transaction-input";
@@ -112,14 +117,16 @@ export class TransactionsService {
       })
     );
 
-    const projected = projectMonthlyOccurrences(
+    const projected = projectRecurringOccurrences(
       rules.map((rule) => ({
         amount: Number(rule.amount),
         type: rule.type,
         description: rule.description,
         startDate: rule.startDate,
         endDate: rule.endDate,
+        frequency: rule.frequency,
         dayOfMonth: rule.dayOfMonth,
+        weekdays: rule.weekdays,
       })),
       referenceDate,
       horizonEnd,
@@ -348,6 +355,21 @@ export class TransactionsService {
       });
     }
 
+    if (parsed.value.daily) {
+      await recurringTransactionsRepository.create({
+        familyMemberId: ledgerMemberId,
+        accountId: account.id,
+        description: parsed.value.description,
+        amount: parsed.value.amount,
+        type: parsed.value.type,
+        frequency: "DAILY",
+        startDate: parsed.value.transactionDate,
+        dayOfMonth: parsed.value.transactionDate.getDate(),
+        weekdays: parsed.value.daily.weekdays,
+        endDate: parsed.value.daily.endDate,
+      });
+    }
+
     if (shouldNotifyPrincipal(context.familyMemberId, ledgerMemberId)) {
       try {
         await notificationsService.notifyLedgerMovement({
@@ -378,7 +400,15 @@ export class TransactionsService {
       description: item.description,
       amount: Number(item.amount),
       type: item.type,
+      frequency: item.frequency,
       dayOfMonth: item.dayOfMonth,
+      weekdays: item.weekdays,
+      scheduleLabel:
+        item.frequency === "DAILY"
+          ? weekdaysLabel(item.weekdays)
+          : `todo dia ${item.dayOfMonth}`,
+      startDate: toDateInput(item.startDate),
+      endDate: item.endDate ? toDateInput(item.endDate) : null,
       accountId: item.accountId,
       accountName: item.account.name,
     }));
@@ -406,16 +436,44 @@ export class TransactionsService {
       throw new TransactionCreateError("Conta não encontrada.");
     }
 
+    const base = {
+      accountId: account.id,
+      description: parsed.value.description,
+      amount: parsed.value.amount,
+      type: parsed.value.type,
+    };
+
+    let schedule: { dayOfMonth: number } | { weekdays: number[]; endDate: Date };
+
+    if (parsed.value.frequency === "DAILY") {
+      const series = await recurringTransactionsRepository.findActiveOwned(
+        parsed.value.id,
+        ledgerMemberId
+      );
+
+      if (!series || series.frequency !== "DAILY") {
+        throw new TransactionCreateError("Repetição não encontrada.");
+      }
+
+      const problem = readDailyEndProblem(series.startDate, parsed.value.endDate);
+
+      if (problem) {
+        throw new TransactionCreateError(problem.message);
+      }
+
+      schedule = {
+        weekdays: parsed.value.weekdays,
+        endDate: parsed.value.endDate,
+      };
+    } else {
+      schedule = { dayOfMonth: parsed.value.dayOfMonth };
+    }
+
     const updated = await recurringTransactionsRepository.updateOwned(
       parsed.value.id,
       ledgerMemberId,
-      {
-        accountId: account.id,
-        description: parsed.value.description,
-        amount: parsed.value.amount,
-        type: parsed.value.type,
-        dayOfMonth: parsed.value.dayOfMonth,
-      }
+      { ...base, ...schedule },
+      parsed.value.frequency
     );
 
     if (updated.count === 0) {
@@ -460,6 +518,13 @@ export class TransactionsService {
     return context;
   }
 
+}
+
+function toDateInput(date: Date): string {
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${date.getFullYear()}-${month}-${day}`;
 }
 
 export const transactionsService =
