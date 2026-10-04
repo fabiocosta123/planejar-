@@ -58,7 +58,9 @@ export class FinancialEngine {
 
     const futureTransactions =
       this.futureTransactionRule.filterFuture(
-        transactions,
+        transactions.filter(
+          transaction => transaction.status !== "CANCELED"
+        ),
         fromDate
       );
 

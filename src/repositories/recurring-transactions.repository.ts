@@ -76,7 +76,7 @@ export class RecurringTransactionsRepository {
       type: "INCOME" | "EXPENSE";
       dayOfMonth?: number;
       weekdays?: number[];
-      endDate?: Date;
+      endDate?: Date | null;
     },
     frequency: "MONTHLY" | "DAILY"
   ) {

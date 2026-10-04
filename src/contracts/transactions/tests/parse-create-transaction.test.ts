@@ -98,7 +98,97 @@ describe("parseCreateTransactionInput", () => {
         type: "EXPENSE",
         frequency: "MONTHLY",
         dayOfMonth: 10,
+        endDate: null,
       },
+    });
+  });
+
+  it("deve repetir todo mês sem data para acabar quando não há fim", () => {
+    const result = parseCreateTransactionInput({
+      ...validInput,
+      repeat: "MONTHLY",
+      monthlyEnd: "NONE",
+    });
+
+    expect(result).toMatchObject({
+      ok: true,
+      value: { repeatsMonthly: true, monthlyEndDate: undefined },
+    });
+  });
+
+  it("deve calcular a última vez da repetição mensal pelo número de vezes", () => {
+    const result = parseCreateTransactionInput({
+      ...validInput,
+      transactionDate: "2026-01-31",
+      repeat: "MONTHLY",
+      monthlyEnd: "TIMES",
+      repeatTimes: "3",
+    });
+
+    expect(result).toMatchObject({
+      ok: true,
+      value: { repeatsMonthly: true, monthlyEndDate: new Date(2026, 2, 31) },
+    });
+  });
+
+  it("deve recusar número de vezes fora do limite", () => {
+    for (const repeatTimes of ["1", "121", "abc"]) {
+      expect(
+        parseCreateTransactionInput({
+          ...validInput,
+          repeat: "MONTHLY",
+          monthlyEnd: "TIMES",
+          repeatTimes,
+        })
+      ).toEqual({ ok: false, message: "Informe de 2 a 120 vezes." });
+    }
+  });
+
+  it("deve aceitar repetição mensal até a data informada", () => {
+    const result = parseCreateTransactionInput({
+      ...validInput,
+      transactionDate: "2026-10-10",
+      repeat: "MONTHLY",
+      monthlyEnd: "UNTIL",
+      repeatUntil: "2027-06-10",
+    });
+
+    expect(result).toMatchObject({
+      ok: true,
+      value: { monthlyEndDate: new Date(2027, 5, 10) },
+    });
+  });
+
+  it("deve recusar repetição mensal com data final antes do lançamento", () => {
+    expect(
+      parseCreateTransactionInput({
+        ...validInput,
+        transactionDate: "2026-10-10",
+        repeat: "MONTHLY",
+        monthlyEnd: "UNTIL",
+        repeatUntil: "2026-10-10",
+      })
+    ).toEqual({
+      ok: false,
+      message: "A data final precisa ser depois do primeiro lançamento.",
+    });
+  });
+
+  it("deve aceitar a data final na alteração da repetição mensal", () => {
+    expect(
+      parseUpdateSeriesInput({
+        id: "series-1",
+        accountId: "account-1",
+        description: "Aluguel",
+        amount: "800,00",
+        type: "EXPENSE",
+        frequency: "MONTHLY",
+        dayOfMonth: "10",
+        endDate: "2027-06-10",
+      })
+    ).toMatchObject({
+      ok: true,
+      value: { frequency: "MONTHLY", endDate: new Date(2027, 5, 10) },
     });
   });
 

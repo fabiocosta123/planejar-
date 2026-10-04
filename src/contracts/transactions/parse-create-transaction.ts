@@ -1,6 +1,10 @@
 import {
   dailyEndProblem,
   defaultDailyEnd,
+  isEndAfterStart,
+  MONTHLY_MAX_TIMES,
+  MONTHLY_MIN_TIMES,
+  monthlyEndAfterTimes,
 } from "../../domain/financial/rules/recurrence.rule";
 import {
   isValidWeekday,
@@ -24,6 +28,7 @@ export interface ParsedCreateTransaction {
   type: "INCOME" | "EXPENSE";
   transactionDate: Date;
   repeatsMonthly: boolean;
+  monthlyEndDate?: Date;
   daily?: DailyRepeat;
 }
 
@@ -103,6 +108,23 @@ export function parseCreateTransactionInput(
     daily = parsedDaily;
   }
 
+  let monthlyEndDate: Date | undefined;
+
+  if (repeat === "MONTHLY") {
+    const parsedEnd = readMonthlyEnd(
+      transactionDate,
+      data.monthlyEnd,
+      data.repeatTimes,
+      data.repeatUntil
+    );
+
+    if (parsedEnd && !(parsedEnd instanceof Date)) {
+      return parsedEnd;
+    }
+
+    monthlyEndDate = parsedEnd ?? undefined;
+  }
+
   return {
     ok: true,
     value: {
@@ -113,9 +135,76 @@ export function parseCreateTransactionInput(
       type,
       transactionDate,
       repeatsMonthly: repeat === "MONTHLY",
+      monthlyEndDate,
       daily,
     },
   };
+}
+
+function readMonthlyEnd(
+  startDate: Date,
+  mode: unknown,
+  timesValue: unknown,
+  untilValue: unknown
+): Date | null | ParseFailure {
+  if (mode === undefined || mode === null || mode === "" || mode === "NONE") {
+    return null;
+  }
+
+  if (mode === "TIMES") {
+    const times = readInteger(timesValue);
+
+    if (times === null || times < MONTHLY_MIN_TIMES || times > MONTHLY_MAX_TIMES) {
+      return {
+        ok: false,
+        message: `Informe de ${MONTHLY_MIN_TIMES} a ${MONTHLY_MAX_TIMES} vezes.`,
+      };
+    }
+
+    return monthlyEndAfterTimes(startDate, times);
+  }
+
+  if (mode === "UNTIL") {
+    return readEndDateAfter(startDate, untilValue);
+  }
+
+  return {
+    ok: false,
+    message: "Não foi possível ler até quando o lançamento se repete.",
+  };
+}
+
+function readEndDateAfter(
+  startDate: Date,
+  value: unknown
+): Date | ParseFailure {
+  const endDate = readDate(value);
+
+  if (!(endDate instanceof Date)) {
+    return {
+      ok: false,
+      message: "Informe uma data final válida (DD/MM/AAAA).",
+    };
+  }
+
+  if (!isEndAfterStart(startDate, endDate)) {
+    return {
+      ok: false,
+      message: "A data final precisa ser depois do primeiro lançamento.",
+    };
+  }
+
+  return endDate;
+}
+
+function readInteger(value: unknown): number | null {
+  const number = typeof value === "number"
+    ? value
+    : typeof value === "string" && /^\d{1,4}$/.test(value.trim())
+      ? Number(value.trim())
+      : Number.NaN;
+
+  return Number.isInteger(number) ? number : null;
 }
 
 function readRepeat(
@@ -326,7 +415,11 @@ interface ParsedUpdateSeriesBase {
 }
 
 export type ParsedUpdateSeries =
-  | (ParsedUpdateSeriesBase & { frequency: "MONTHLY"; dayOfMonth: number })
+  | (ParsedUpdateSeriesBase & {
+      frequency: "MONTHLY";
+      dayOfMonth: number;
+      endDate: Date | null;
+    })
   | (ParsedUpdateSeriesBase & {
       frequency: "DAILY";
       weekdays: number[];
@@ -408,10 +501,39 @@ export function parseUpdateSeriesInput(
     return dayOfMonth;
   }
 
+  let endDate: Date | null = null;
+
+  if (data.endDate !== undefined && data.endDate !== null && data.endDate !== "") {
+    const parsedEnd = readDate(data.endDate);
+
+    if (!(parsedEnd instanceof Date)) {
+      return {
+        ok: false,
+        message: "Informe uma data final válida (DD/MM/AAAA).",
+      };
+    }
+
+    endDate = parsedEnd;
+  }
+
   return {
     ok: true,
-    value: { ...base, frequency: "MONTHLY", dayOfMonth },
+    value: { ...base, frequency: "MONTHLY", dayOfMonth, endDate },
   };
+}
+
+export function readSeriesEndProblem(
+  startDate: Date,
+  endDate: Date | null
+): ParseFailure | null {
+  if (endDate && !isEndAfterStart(startDate, endDate)) {
+    return {
+      ok: false,
+      message: "A data final precisa ser depois do primeiro lançamento.",
+    };
+  }
+
+  return null;
 }
 
 function readSeriesId(

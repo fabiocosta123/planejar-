@@ -71,6 +71,17 @@ export function dailyEndProblem(
   return null;
 }
 
+export const MONTHLY_MIN_TIMES = 2;
+export const MONTHLY_MAX_TIMES = 120;
+
+export function monthlyEndAfterTimes(startDate: Date, times: number): Date {
+  return monthlyDate(startOfDay(startDate), times - 1, startDate.getDate());
+}
+
+export function isEndAfterStart(startDate: Date, endDate: Date): boolean {
+  return startOfDay(endDate).getTime() > startOfDay(startDate).getTime();
+}
+
 export function projectRecurringOccurrences(
   rules: RecurrenceSource[],
   referenceDate: Date,

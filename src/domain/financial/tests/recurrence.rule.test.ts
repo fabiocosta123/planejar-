@@ -3,6 +3,8 @@ import { describe, expect, it } from "vitest";
 import {
   dailyEndProblem,
   defaultDailyEnd,
+  isEndAfterStart,
+  monthlyEndAfterTimes,
   projectRecurringOccurrences,
   recurrenceHorizonEnd,
 } from "../rules/recurrence.rule";
@@ -223,5 +225,45 @@ describe("dailyEndProblem", () => {
     expect(
       dailyEndProblem(new Date(2026, 9, 5), new Date(2027, 9, 6))
     ).toBe("TOO_FAR");
+  });
+});
+
+describe("monthlyEndAfterTimes", () => {
+  it("conta o primeiro lançamento e preserva o fim do mês", () => {
+    expect(monthlyEndAfterTimes(new Date(2026, 9, 10), 12)).toEqual(
+      new Date(2027, 8, 10)
+    );
+    expect(monthlyEndAfterTimes(new Date(2026, 0, 31), 2)).toEqual(
+      new Date(2026, 1, 28)
+    );
+  });
+
+  it("projeta só até a última vez escolhida", () => {
+    const start = new Date(2026, 9, 10);
+    const projected = projectRecurringOccurrences(
+      [
+        {
+          amount: 1000,
+          type: "EXPENSE",
+          description: "Parcela",
+          startDate: start,
+          endDate: monthlyEndAfterTimes(start, 3),
+        },
+      ],
+      start,
+      recurrenceHorizonEnd(start)
+    );
+
+    expect(projected.map((item) => item.transactionDate)).toEqual([
+      new Date(2026, 10, 10),
+      new Date(2026, 11, 10),
+    ]);
+  });
+});
+
+describe("isEndAfterStart", () => {
+  it("exige pelo menos um dia depois do início", () => {
+    expect(isEndAfterStart(new Date(2026, 9, 10), new Date(2026, 9, 11))).toBe(true);
+    expect(isEndAfterStart(new Date(2026, 9, 10, 15), new Date(2026, 9, 10))).toBe(false);
   });
 });

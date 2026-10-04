@@ -77,7 +77,7 @@ export function SeriesList({
                   <p className="mt-1 text-sm text-muted-foreground">
                     {item.type === "INCOME" ? "Entrada" : "Saída"} ·{" "}
                     {item.scheduleLabel}
-                    {item.frequency === "DAILY" && item.endDate
+                    {item.endDate
                       ? ` até ${formatDateInput(item.endDate)}`
                       : ""}{" "}
                     · {item.accountName}
@@ -180,7 +180,7 @@ function SeriesEditDialog({
       accountId,
       ...(isDaily
         ? { frequency: "DAILY", weekdays, endDate }
-        : { frequency: "MONTHLY", dayOfMonth }),
+        : { frequency: "MONTHLY", dayOfMonth, endDate }),
     });
 
     setLoading(false);
@@ -299,6 +299,22 @@ function SeriesEditDialog({
                 required
                 className="h-11 w-full rounded-md border bg-background px-3 outline-none focus:ring-2 focus:ring-primary"
               />
+            </div>
+          )}
+
+          {isDaily ? null : (
+            <div className="space-y-2">
+              <label htmlFor="series-end" className="text-sm font-medium">
+                Repetir até
+              </label>
+              <DateInput
+                id="series-end"
+                value={endDate}
+                onChange={setEndDate}
+              />
+              <p className="text-xs leading-5 text-muted-foreground">
+                Deixe em branco para repetir sem data para acabar.
+              </p>
             </div>
           )}
 

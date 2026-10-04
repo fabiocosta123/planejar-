@@ -9,6 +9,7 @@ import {
   parseCreateTransactionInput,
   parseUpdateSeriesInput,
   readDailyEndProblem,
+  readSeriesEndProblem,
 } from "../contracts/transactions/parse-create-transaction";
 import { weekdaysLabel } from "../domain/financial/rules/weekdays";
 import { SeriesContract } from "../contracts/financial/series.contract";
@@ -68,19 +69,16 @@ export class TransactionsService {
 
     const horizonEnd = recurrenceHorizonEnd(referenceDate);
 
-    const [transactions, upcoming, rules] =
+    const [transactions, laterTransactions, rules] =
       await Promise.all([
         transactionsRepository.findByPeriod(
           familyMemberId,
           period
         ),
-        includeTightDay
-          ? transactionsRepository.findAfter(
-              familyMemberId,
-              period.endDate,
-              horizonEnd
-            )
-          : Promise.resolve([]),
+        transactionsRepository.findAfter(
+          familyMemberId,
+          period.endDate
+        ),
         includeTightDay
           ? recurringTransactionsRepository.findActiveByFamilyMember(
               familyMemberId
@@ -95,10 +93,19 @@ export class TransactionsService {
         spendingLimit
       );
 
+    const laterInputs: TransactionInput[] = laterTransactions.map(
+      (transaction) => ({
+        amount: Number(transaction.amount),
+        type: transaction.type,
+        status: transaction.status,
+        transactionDate: transaction.transactionDate,
+      })
+    );
+
     const futureBalance =
       financialEngine.calculateFutureBalance(
         currentBalance,
-        transactions,
+        [...transactions, ...laterInputs],
         referenceDate
       );
 
@@ -108,13 +115,15 @@ export class TransactionsService {
         transactions
       );
 
-    const upcomingInputs: TransactionInput[] = upcoming.map(
-      (transaction) => ({
-        amount: Number(transaction.amount),
-        type: transaction.type,
-        status: transaction.status,
-        transactionDate: transaction.transactionDate,
-      })
+    const upcoming = includeTightDay
+      ? laterTransactions.filter(
+          (transaction) => transaction.transactionDate <= horizonEnd
+        )
+      : [];
+
+    const upcomingInputs: TransactionInput[] = laterInputs.filter(
+      (transaction) =>
+        includeTightDay && transaction.transactionDate <= horizonEnd
     );
 
     const projected = projectRecurringOccurrences(
@@ -352,6 +361,7 @@ export class TransactionsService {
         type: parsed.value.type,
         startDate: parsed.value.transactionDate,
         dayOfMonth: parsed.value.transactionDate.getDate(),
+        endDate: parsed.value.monthlyEndDate ?? null,
       });
     }
 
@@ -443,18 +453,20 @@ export class TransactionsService {
       type: parsed.value.type,
     };
 
-    let schedule: { dayOfMonth: number } | { weekdays: number[]; endDate: Date };
+    const series = await recurringTransactionsRepository.findActiveOwned(
+      parsed.value.id,
+      ledgerMemberId
+    );
+
+    if (!series || series.frequency !== parsed.value.frequency) {
+      throw new TransactionCreateError("Repetição não encontrada.");
+    }
+
+    let schedule:
+      | { dayOfMonth: number; endDate: Date | null }
+      | { weekdays: number[]; endDate: Date };
 
     if (parsed.value.frequency === "DAILY") {
-      const series = await recurringTransactionsRepository.findActiveOwned(
-        parsed.value.id,
-        ledgerMemberId
-      );
-
-      if (!series || series.frequency !== "DAILY") {
-        throw new TransactionCreateError("Repetição não encontrada.");
-      }
-
       const problem = readDailyEndProblem(series.startDate, parsed.value.endDate);
 
       if (problem) {
@@ -466,7 +478,16 @@ export class TransactionsService {
         endDate: parsed.value.endDate,
       };
     } else {
-      schedule = { dayOfMonth: parsed.value.dayOfMonth };
+      const problem = readSeriesEndProblem(series.startDate, parsed.value.endDate);
+
+      if (problem) {
+        throw new TransactionCreateError(problem.message);
+      }
+
+      schedule = {
+        dayOfMonth: parsed.value.dayOfMonth,
+        endDate: parsed.value.endDate,
+      };
     }
 
     const updated = await recurringTransactionsRepository.updateOwned(
