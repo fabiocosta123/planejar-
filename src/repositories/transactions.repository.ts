@@ -87,7 +87,7 @@ export class TransactionsRepository {
   async findAfter(
     familyMemberId: string,
     after: Date,
-    until: Date
+    until?: Date
   ) {
     return prisma.transaction.findMany({
       where: {
@@ -95,7 +95,7 @@ export class TransactionsRepository {
         deletedAt: null,
         transactionDate: {
           gt: after,
-          lte: until,
+          ...(until ? { lte: until } : {}),
         },
       },
       orderBy: {

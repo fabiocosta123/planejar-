@@ -8,16 +8,28 @@ import { Button } from "@/components/ui/button";
 import { DateInput } from "@/components/ui/date-input";
 
 import { createTransactionAction } from "../../actions/transactions/create-transaction.action";
-import { defaultDailyEnd } from "../../domain/financial/rules/recurrence.rule";
+import {
+  defaultDailyEnd,
+  MONTHLY_MAX_TIMES,
+  MONTHLY_MIN_TIMES,
+  monthlyEndAfterTimes,
+} from "../../domain/financial/rules/recurrence.rule";
 import { MONDAY_TO_FRIDAY } from "../../domain/financial/rules/weekdays";
 import { WeekdayPicker } from "./weekday-picker";
 
 type Repeat = "NONE" | "MONTHLY" | "DAILY";
+type MonthlyEnd = "NONE" | "TIMES" | "UNTIL";
 
 const REPEAT_OPTIONS: { id: Repeat; label: string }[] = [
   { id: "NONE", label: "Não repete" },
   { id: "MONTHLY", label: "Todo mês" },
   { id: "DAILY", label: "Todo dia" },
+];
+
+const MONTHLY_END_OPTIONS: { id: MonthlyEnd; label: string }[] = [
+  { id: "NONE", label: "Sem data para acabar" },
+  { id: "TIMES", label: "Número de vezes" },
+  { id: "UNTIL", label: "Até uma data" },
 ];
 
 interface AccountOption {
@@ -37,11 +49,28 @@ function todayInputValue() {
   return `${now.getFullYear()}-${month}-${day}`;
 }
 
-function defaultEndLabel(dateInput: string) {
+function dateFromInput(dateInput: string) {
   const [year, month, day] = dateInput.split("-").map(Number);
-  const start = year && month && day ? new Date(year, month - 1, day) : new Date();
 
-  return defaultDailyEnd(start).toLocaleDateString("pt-BR");
+  return year && month && day ? new Date(year, month - 1, day) : new Date();
+}
+
+function defaultEndLabel(dateInput: string) {
+  return defaultDailyEnd(dateFromInput(dateInput)).toLocaleDateString("pt-BR");
+}
+
+function lastMonthlyLabel(dateInput: string, timesInput: string) {
+  const times = Number(timesInput);
+
+  if (
+    !Number.isInteger(times) ||
+    times < MONTHLY_MIN_TIMES ||
+    times > MONTHLY_MAX_TIMES
+  ) {
+    return null;
+  }
+
+  return monthlyEndAfterTimes(dateFromInput(dateInput), times).toLocaleDateString("pt-BR");
 }
 
 export function TransactionCreateButton({
@@ -58,6 +87,8 @@ export function TransactionCreateButton({
   const [repeat, setRepeat] = useState<Repeat>("NONE");
   const [weekdays, setWeekdays] = useState<number[]>([...MONDAY_TO_FRIDAY]);
   const [repeatUntil, setRepeatUntil] = useState("");
+  const [monthlyEnd, setMonthlyEnd] = useState<MonthlyEnd>("NONE");
+  const [repeatTimes, setRepeatTimes] = useState("12");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -103,7 +134,13 @@ export function TransactionCreateButton({
       notes,
       repeat,
       weekdays: repeat === "DAILY" ? weekdays : undefined,
-      repeatUntil: repeat === "DAILY" ? repeatUntil : undefined,
+      repeatUntil:
+        repeat === "DAILY" || (repeat === "MONTHLY" && monthlyEnd === "UNTIL")
+          ? repeatUntil
+          : undefined,
+      monthlyEnd: repeat === "MONTHLY" ? monthlyEnd : undefined,
+      repeatTimes:
+        repeat === "MONTHLY" && monthlyEnd === "TIMES" ? repeatTimes : undefined,
     });
 
     setLoading(false);
@@ -119,11 +156,15 @@ export function TransactionCreateButton({
     setRepeat("NONE");
     setWeekdays([...MONDAY_TO_FRIDAY]);
     setRepeatUntil("");
+    setMonthlyEnd("NONE");
+    setRepeatTimes("12");
     setType("EXPENSE");
     setTransactionDate(todayInputValue());
     setOpen(false);
     router.refresh();
   }
+
+  const lastMonthly = lastMonthlyLabel(transactionDate, repeatTimes);
 
   return (
     <>
@@ -281,9 +322,70 @@ export function TransactionCreateButton({
                   </div>
 
                   {repeat === "MONTHLY" ? (
-                    <p className="text-xs leading-5 text-muted-foreground">
-                      Este lançamento fica registrado. Os próximos meses entram no dia do aperto.
-                    </p>
+                    <div className="space-y-3">
+                      <div
+                        role="group"
+                        aria-label="Por quanto tempo"
+                        className="space-y-2"
+                      >
+                        <p className="text-sm font-medium">Por quanto tempo</p>
+                        <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+                          {MONTHLY_END_OPTIONS.map((option) => (
+                            <Button
+                              key={option.id}
+                              type="button"
+                              variant={monthlyEnd === option.id ? "default" : "outline"}
+                              className="h-11 px-2"
+                              aria-pressed={monthlyEnd === option.id}
+                              onClick={() => setMonthlyEnd(option.id)}
+                            >
+                              {option.label}
+                            </Button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {monthlyEnd === "TIMES" ? (
+                        <div className="space-y-2">
+                          <label htmlFor="repeat-times" className="text-sm font-medium">
+                            Quantas vezes, contando esta
+                          </label>
+                          <input
+                            id="repeat-times"
+                            inputMode="numeric"
+                            value={repeatTimes}
+                            onChange={(event) =>
+                              setRepeatTimes(event.target.value.replace(/\D/g, "").slice(0, 3))
+                            }
+                            required
+                            className="h-11 w-full rounded-md border bg-background px-3 outline-none focus:ring-2 focus:ring-primary"
+                          />
+                          <p className="text-xs leading-5 text-muted-foreground">
+                            {lastMonthly
+                              ? `A última vez será em ${lastMonthly}.`
+                              : `Informe de ${MONTHLY_MIN_TIMES} a ${MONTHLY_MAX_TIMES} vezes.`}
+                          </p>
+                        </div>
+                      ) : null}
+
+                      {monthlyEnd === "UNTIL" ? (
+                        <div className="space-y-2">
+                          <label htmlFor="repeat-until" className="text-sm font-medium">
+                            Repetir até
+                          </label>
+                          <DateInput
+                            id="repeat-until"
+                            value={repeatUntil}
+                            onChange={setRepeatUntil}
+                            required
+                          />
+                        </div>
+                      ) : null}
+
+                      <p className="text-xs leading-5 text-muted-foreground">
+                        Este lançamento fica registrado. Os próximos meses entram no dia do aperto.
+                      </p>
+                    </div>
                   ) : null}
 
                   {repeat === "DAILY" ? (
