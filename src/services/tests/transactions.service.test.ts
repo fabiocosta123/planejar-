@@ -318,6 +318,78 @@ describe("TransactionsService", () => {
       .toBe(0);
   });
 
+  it("deve somar no saldo futuro os lançamentos dos próximos meses", async () => {
+    vi.spyOn(
+      transactionsRepository,
+      "findByPeriod"
+    ).mockResolvedValue([
+      {
+        amount: 549,
+        type: "INCOME",
+        status: "COMPLETED",
+        transactionDate: new Date(2026, 9, 14),
+      },
+    ]);
+
+    vi.spyOn(
+      transactionsRepository,
+      "findAfter"
+    ).mockResolvedValue([
+      {
+        amount: 249.9,
+        type: "INCOME",
+        status: "COMPLETED",
+        description: "Mensalidade",
+        transactionDate: new Date(2026, 10, 4),
+      },
+      {
+        amount: 300,
+        type: "EXPENSE",
+        status: "COMPLETED",
+        description: "Conserto",
+        transactionDate: new Date(2026, 11, 20),
+      },
+      {
+        amount: 1000,
+        type: "EXPENSE",
+        status: "CANCELED",
+        description: "Cancelado",
+        transactionDate: new Date(2026, 10, 15),
+      },
+    ] as any);
+
+    vi.spyOn(
+      recurringTransactionsRepository,
+      "findActiveByFamilyMember"
+    ).mockResolvedValue([]);
+
+    const result =
+      await transactionsService.calculateDashboard(
+        "family-member-id",
+        new FinancialPeriod(
+          new Date(2026, 9, 1),
+          new Date(2026, 9, 31, 23, 59, 59, 999)
+        ),
+        100,
+        undefined,
+        new Date(2026, 9, 4),
+        0,
+        false
+      );
+
+    expect(result.futureBalance.futureIncome)
+      .toBeCloseTo(798.9, 2);
+
+    expect(result.futureBalance.futureExpenses)
+      .toBe(300);
+
+    expect(result.futureBalance.futureBalance)
+      .toBeCloseTo(598.9, 2);
+
+    expect(result.tightDay)
+      .toBeNull();
+  });
+
   it("deve listar o resumo dos lançamentos do período", async () => {
     const period = new FinancialPeriod(
       new Date("2026-08-01"),
@@ -543,7 +615,69 @@ describe("TransactionsService", () => {
       type: "EXPENSE",
       startDate: new Date(2026, 9, 10),
       dayOfMonth: 10,
+      endDate: null,
     });
+  });
+
+  it("deve guardar a série mensal com o número de vezes informado", async () => {
+    vi.spyOn(
+      familyContextService,
+      "getCurrentContext"
+    ).mockResolvedValue({
+      familyId: "family-1",
+      familyMemberId: "member-1",
+      ledgerMemberId: "member-1",
+    });
+
+    vi.spyOn(
+      familyMemberService,
+      "findById"
+    ).mockResolvedValue({
+      id: "member-1",
+      role: "OWNER",
+      deletedAt: null,
+    } as any);
+
+    vi.spyOn(
+      accountsRepository,
+      "findById"
+    ).mockResolvedValue({
+      id: "account-1",
+      familyMemberId: "member-1",
+      deletedAt: null,
+      isActive: true,
+    } as any);
+
+    vi.spyOn(
+      transactionsRepository,
+      "create"
+    ).mockResolvedValue({ id: "transaction-1" } as any);
+
+    const recurrenceSpy = vi.spyOn(
+      recurringTransactionsRepository,
+      "create"
+    ).mockResolvedValue({ id: "recurrence-1" } as any);
+
+    await transactionsService.createForUser(
+      "user-1",
+      {
+        accountId: "account-1",
+        description: "Parcela do carro",
+        amount: "1.000,00",
+        type: "EXPENSE",
+        transactionDate: "2026-10-10",
+        repeat: "MONTHLY",
+        monthlyEnd: "TIMES",
+        repeatTimes: "12",
+      }
+    );
+
+    expect(recurrenceSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        dayOfMonth: 10,
+        endDate: new Date(2027, 8, 10),
+      })
+    );
   });
 
   it("deve guardar a série diária com os dias da semana e a data final", async () => {
@@ -642,6 +776,15 @@ describe("TransactionsService", () => {
       isActive: true,
     } as any);
 
+    vi.spyOn(
+      recurringTransactionsRepository,
+      "findActiveOwned"
+    ).mockResolvedValue({
+      id: "series-1",
+      frequency: "MONTHLY",
+      startDate: new Date(2026, 9, 10),
+    } as any);
+
     const updateSpy = vi.spyOn(
       recurringTransactionsRepository,
       "updateOwned"
@@ -656,6 +799,7 @@ describe("TransactionsService", () => {
         amount: "900,00",
         type: "EXPENSE",
         dayOfMonth: 15,
+        endDate: "2027-03-15",
       }
     );
 
@@ -668,9 +812,68 @@ describe("TransactionsService", () => {
         amount: 900,
         type: "EXPENSE",
         dayOfMonth: 15,
+        endDate: new Date(2027, 2, 15),
       },
       "MONTHLY"
     );
+  });
+
+  it("deve recusar data final da repetição mensal antes do início", async () => {
+    vi.spyOn(
+      familyContextService,
+      "getCurrentContext"
+    ).mockResolvedValue({
+      familyId: "family-1",
+      familyMemberId: "member-1",
+      ledgerMemberId: "member-1",
+    });
+
+    vi.spyOn(
+      familyMemberService,
+      "findById"
+    ).mockResolvedValue({
+      id: "member-1",
+      role: "OWNER",
+      deletedAt: null,
+    } as any);
+
+    vi.spyOn(
+      accountsRepository,
+      "findById"
+    ).mockResolvedValue({
+      id: "account-1",
+      familyMemberId: "member-1",
+      deletedAt: null,
+      isActive: true,
+    } as any);
+
+    vi.spyOn(
+      recurringTransactionsRepository,
+      "findActiveOwned"
+    ).mockResolvedValue({
+      id: "series-1",
+      frequency: "MONTHLY",
+      startDate: new Date(2026, 9, 10),
+    } as any);
+
+    const updateSpy = vi.spyOn(
+      recurringTransactionsRepository,
+      "updateOwned"
+    ).mockResolvedValue({ count: 1 });
+
+    await expect(
+      transactionsService.updateSeriesForUser("user-1", {
+        id: "series-1",
+        accountId: "account-1",
+        description: "Aluguel",
+        amount: "900,00",
+        type: "EXPENSE",
+        dayOfMonth: 15,
+        endDate: "2026-10-01",
+      })
+    ).rejects.toThrow("A data final precisa ser depois do primeiro lançamento.");
+
+    expect(updateSpy).not.toHaveBeenCalled();
   });
 
   it("deve encerrar a repetição do membro da sessão", async () => {

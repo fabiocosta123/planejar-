@@ -77,7 +77,7 @@ A frequência é mensal (`MONTHLY`) ou diária (`DAILY`).
 
 A primeira data é a data do lançamento registrado.
 
-**Mensal:** a projeção começa no mês seguinte. O dia do mês é o mesmo da data inicial. Em um mês mais curto, a ocorrência cai no último dia. No mês seguinte, o dia original volta. Não há data final até a série ser encerrada.
+**Mensal:** a projeção começa no mês seguinte. O dia do mês é o mesmo da data inicial. Em um mês mais curto, a ocorrência cai no último dia. No mês seguinte, o dia original volta. O formulário pergunta por quanto tempo: **sem data para acabar** (sem data final), **número de vezes** (de 2 a 120, contando o lançamento; a data final é a da última vez) ou **até uma data** (precisa ser depois do lançamento). Vale para entrada e saída.
 
 **Diária:** a projeção começa no dia seguinte e só entra nos dias da semana escolhidos (`weekdays`, 0 = domingo a 6 = sábado). O formulário oferece segunda a domingo, segunda a sexta, segunda a sábado ou dias avulsos. A data do lançamento pode cair fora desses dias (por exemplo, cadastrar no domingo uma série de segunda a sábado): ele fica registrado na data escolhida e só os dias da semana marcados entram na projeção. A data final é obrigatória na série: se o formulário vier sem ela, vale 31/12 do ano do lançamento (ou do ano seguinte, se o lançamento for em 31/12). Ela precisa ser depois do lançamento e no máximo 12 meses depois dele.
 
@@ -95,9 +95,9 @@ Ocorrências projetadas têm status pendente. Lançamentos cancelados não ocupa
 
 A tela de lançamentos lista as repetições ativas.
 
-Cada item mostra descrição, valor, tipo, conta e quando repete: o dia do mês, ou os dias da semana e a data final.
+Cada item mostra descrição, valor, tipo, conta e quando repete: o dia do mês, ou os dias da semana, e a data final quando existe.
 
-**Alterar** muda a descrição, o valor, o tipo e a conta. Na mensal, muda o dia do mês. Na diária, muda os dias da semana e a data final. A frequência não muda. A mudança vale para as próximas projeções. O lançamento já registrado não é reescrito.
+**Alterar** muda a descrição, o valor, o tipo e a conta. Na mensal, muda o dia do mês e a data final (em branco = sem data para acabar). Na diária, muda os dias da semana e a data final. A frequência não muda. A mudança vale para as próximas projeções. O lançamento já registrado não é reescrito.
 
 **Encerrar** desativa a série. As próximas repetições saem do dia do aperto. O lançamento já registrado permanece.
 
