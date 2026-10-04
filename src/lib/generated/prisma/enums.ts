@@ -115,7 +115,8 @@ export type TransactionStatus = (typeof TransactionStatus)[keyof typeof Transact
 
 
 export const RecurrenceFrequency = {
-  MONTHLY: 'MONTHLY'
+  MONTHLY: 'MONTHLY',
+  DAILY: 'DAILY'
 } as const
 
 export type RecurrenceFrequency = (typeof RecurrenceFrequency)[keyof typeof RecurrenceFrequency]

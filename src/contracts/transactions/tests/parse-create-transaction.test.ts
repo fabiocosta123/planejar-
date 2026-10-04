@@ -96,7 +96,129 @@ describe("parseCreateTransactionInput", () => {
         description: "Aluguel",
         amount: 800,
         type: "EXPENSE",
+        frequency: "MONTHLY",
         dayOfMonth: 10,
+      },
+    });
+  });
+
+  it("deve aceitar repetição diária de segunda a sexta até a data informada", () => {
+    const result = parseCreateTransactionInput({
+      ...validInput,
+      transactionDate: "2026-10-05",
+      repeat: "DAILY",
+      weekdays: [5, 1, 2, 3, 4],
+      repeatUntil: "2026-11-30",
+    });
+
+    expect(result).toMatchObject({
+      ok: true,
+      value: {
+        repeatsMonthly: false,
+        daily: {
+          weekdays: [1, 2, 3, 4, 5],
+          endDate: new Date(2026, 10, 30),
+        },
+      },
+    });
+  });
+
+  it("deve assumir o último dia do ano quando a data final fica vazia", () => {
+    const result = parseCreateTransactionInput({
+      ...validInput,
+      transactionDate: "2026-10-05",
+      repeat: "DAILY",
+      weekdays: [0, 1, 2, 3, 4, 5, 6],
+      repeatUntil: "",
+    });
+
+    expect(result).toMatchObject({
+      ok: true,
+      value: {
+        daily: { endDate: new Date(2026, 11, 31) },
+      },
+    });
+  });
+
+  it("deve recusar repetição diária sem dias da semana", () => {
+    expect(
+      parseCreateTransactionInput({
+        ...validInput,
+        repeat: "DAILY",
+        weekdays: [],
+      })
+    ).toMatchObject({
+      ok: false,
+      message: "Escolha em quais dias da semana o lançamento se repete.",
+    });
+  });
+
+  it("deve aceitar começar num dia fora dos dias escolhidos", () => {
+    expect(
+      parseCreateTransactionInput({
+        ...validInput,
+        transactionDate: "2026-10-04",
+        repeat: "DAILY",
+        weekdays: [1, 2, 3, 4, 5, 6],
+        repeatUntil: "2026-10-14",
+      })
+    ).toMatchObject({
+      ok: true,
+      value: {
+        daily: {
+          weekdays: [1, 2, 3, 4, 5, 6],
+          endDate: new Date(2026, 9, 14),
+        },
+      },
+    });
+  });
+
+  it("deve recusar data final antes do lançamento ou depois de 12 meses", () => {
+    const base = {
+      ...validInput,
+      transactionDate: "2026-10-05",
+      repeat: "DAILY",
+      weekdays: [1],
+    };
+
+    expect(
+      parseCreateTransactionInput({ ...base, repeatUntil: "2026-10-05" })
+    ).toMatchObject({
+      ok: false,
+      message: "A data final precisa ser depois do primeiro lançamento.",
+    });
+
+    expect(
+      parseCreateTransactionInput({ ...base, repeatUntil: "2027-10-06" })
+    ).toMatchObject({
+      ok: false,
+      message: "A repetição diária pode durar até 12 meses.",
+    });
+  });
+
+  it("deve aceitar a alteração da repetição diária", () => {
+    expect(
+      parseUpdateSeriesInput({
+        id: "series-1",
+        accountId: "account-1",
+        description: "Diarista",
+        amount: "150,00",
+        type: "EXPENSE",
+        frequency: "DAILY",
+        weekdays: [2, 4],
+        endDate: "2026-12-31",
+      })
+    ).toEqual({
+      ok: true,
+      value: {
+        id: "series-1",
+        accountId: "account-1",
+        description: "Diarista",
+        amount: 150,
+        type: "EXPENSE",
+        frequency: "DAILY",
+        weekdays: [2, 4],
+        endDate: new Date(2026, 11, 31),
       },
     });
   });
@@ -125,7 +247,7 @@ describe("parseCreateTransactionInput", () => {
 
     expect(result).toMatchObject({
       ok: false,
-      message: "Informe uma data válida.",
+      message: "Informe uma data válida (DD/MM/AAAA).",
     });
   });
 });

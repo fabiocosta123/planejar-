@@ -4,10 +4,12 @@ import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
+import { DateInput } from "@/components/ui/date-input";
 import type { SeriesContract } from "@/contracts/financial/series.contract";
 
 import { stopSeriesAction } from "../../actions/transactions/stop-series.action";
 import { updateSeriesAction } from "../../actions/transactions/update-series.action";
+import { WeekdayPicker } from "./weekday-picker";
 
 interface AccountOption {
   id: string;
@@ -25,6 +27,12 @@ function formatCurrency(value: number) {
     style: "currency",
     currency: "BRL",
   }).format(value);
+}
+
+function formatDateInput(value: string) {
+  const [year, month, day] = value.split("-");
+
+  return `${day}/${month}/${year}`;
 }
 
 function amountToInput(value: number) {
@@ -49,12 +57,12 @@ export function SeriesList({
         Repetições
       </h2>
       <p className="mt-1 text-sm text-muted-foreground">
-        O que se repete todo mês e entra no dia do aperto.
+        O que se repete todo mês ou todo dia e entra no dia do aperto.
       </p>
 
       {series.length === 0 ? (
         <p className="mt-3 text-sm text-muted-foreground">
-          Nenhuma repetição. Marque Repetir todo mês ao registrar um lançamento.
+          Nenhuma repetição. Escolha Todo mês ou Todo dia ao registrar um lançamento.
         </p>
       ) : (
         <ul className="mt-3 space-y-3">
@@ -67,8 +75,12 @@ export function SeriesList({
                 <div>
                   <p className="font-medium">{item.description}</p>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    {item.type === "INCOME" ? "Entrada" : "Saída"} · todo dia{" "}
-                    {item.dayOfMonth} · {item.accountName}
+                    {item.type === "INCOME" ? "Entrada" : "Saída"} ·{" "}
+                    {item.scheduleLabel}
+                    {item.frequency === "DAILY" && item.endDate
+                      ? ` até ${formatDateInput(item.endDate)}`
+                      : ""}{" "}
+                    · {item.accountName}
                   </p>
                 </div>
                 <p
@@ -148,7 +160,10 @@ function SeriesEditDialog({
   const [amount, setAmount] = useState(amountToInput(series.amount));
   const [type, setType] = useState(series.type);
   const [dayOfMonth, setDayOfMonth] = useState(String(series.dayOfMonth));
+  const [weekdays, setWeekdays] = useState(series.weekdays);
+  const [endDate, setEndDate] = useState(series.endDate ?? "");
   const [accountId, setAccountId] = useState(series.accountId);
+  const isDaily = series.frequency === "DAILY";
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -162,8 +177,10 @@ function SeriesEditDialog({
       description,
       amount,
       type,
-      dayOfMonth,
       accountId,
+      ...(isDaily
+        ? { frequency: "DAILY", weekdays, endDate }
+        : { frequency: "MONTHLY", dayOfMonth }),
     });
 
     setLoading(false);
@@ -196,7 +213,7 @@ function SeriesEditDialog({
           Alterar repetição
         </h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          A mudança vale para os próximos meses. O lançamento já registrado permanece.
+          A mudança vale para as próximas repetições. O lançamento já registrado permanece.
         </p>
 
         <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
@@ -249,19 +266,41 @@ function SeriesEditDialog({
             />
           </div>
 
-          <div className="space-y-2">
-            <label htmlFor="series-day" className="text-sm font-medium">
-              Dia do mês
-            </label>
-            <input
-              id="series-day"
-              inputMode="numeric"
-              value={dayOfMonth}
-              onChange={(event) => setDayOfMonth(event.target.value)}
-              required
-              className="h-11 w-full rounded-md border bg-background px-3 outline-none focus:ring-2 focus:ring-primary"
-            />
-          </div>
+          {isDaily ? (
+            <>
+              <WeekdayPicker
+                idPrefix="series"
+                value={weekdays}
+                onChange={setWeekdays}
+              />
+
+              <div className="space-y-2">
+                <label htmlFor="series-end" className="text-sm font-medium">
+                  Repetir até
+                </label>
+                <DateInput
+                  id="series-end"
+                  value={endDate}
+                  onChange={setEndDate}
+                  required
+                />
+              </div>
+            </>
+          ) : (
+            <div className="space-y-2">
+              <label htmlFor="series-day" className="text-sm font-medium">
+                Dia do mês
+              </label>
+              <input
+                id="series-day"
+                inputMode="numeric"
+                value={dayOfMonth}
+                onChange={(event) => setDayOfMonth(event.target.value)}
+                required
+                className="h-11 w-full rounded-md border bg-background px-3 outline-none focus:ring-2 focus:ring-primary"
+              />
+            </div>
+          )}
 
           <div className="space-y-2">
             <label htmlFor="series-account" className="text-sm font-medium">
@@ -355,7 +394,7 @@ function SeriesStopDialog({
           Encerrar repetição
         </h2>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
-          {series.description} deixa de entrar nos próximos meses. O lançamento já registrado permanece.
+          {series.description} deixa de entrar nas próximas repetições. O lançamento já registrado permanece.
         </p>
 
         {error ? (

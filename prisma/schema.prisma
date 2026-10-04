@@ -91,6 +91,7 @@ enum TransactionStatus {
 
 enum RecurrenceFrequency {
   MONTHLY
+  DAILY
 }
 
 // =====================================================
@@ -299,6 +300,9 @@ model RecurringTransaction {
   startDate DateTime
 
   dayOfMonth Int
+
+  // 0 = domingo ... 6 = sábado. Usado só quando frequency = DAILY.
+  weekdays Int[] @default([])
 
   endDate DateTime?
 

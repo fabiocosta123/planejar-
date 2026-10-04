@@ -546,6 +546,73 @@ describe("TransactionsService", () => {
     });
   });
 
+  it("deve guardar a série diária com os dias da semana e a data final", async () => {
+    vi.spyOn(
+      familyContextService,
+      "getCurrentContext"
+    ).mockResolvedValue({
+      familyId: "family-1",
+      familyMemberId: "member-1",
+      ledgerMemberId: "member-1",
+    });
+
+    vi.spyOn(
+      familyMemberService,
+      "findById"
+    ).mockResolvedValue({
+      id: "member-1",
+      role: "OWNER",
+      deletedAt: null,
+    } as any);
+
+    vi.spyOn(
+      accountsRepository,
+      "findById"
+    ).mockResolvedValue({
+      id: "account-1",
+      familyMemberId: "member-1",
+      deletedAt: null,
+      isActive: true,
+    } as any);
+
+    vi.spyOn(
+      transactionsRepository,
+      "create"
+    ).mockResolvedValue({ id: "transaction-1" } as any);
+
+    const recurrenceSpy = vi.spyOn(
+      recurringTransactionsRepository,
+      "create"
+    ).mockResolvedValue({ id: "recurrence-1" } as any);
+
+    await transactionsService.createForUser(
+      "user-1",
+      {
+        accountId: "account-1",
+        description: "Diária do ajudante",
+        amount: "120,00",
+        type: "EXPENSE",
+        transactionDate: "2026-10-05",
+        repeat: "DAILY",
+        weekdays: [1, 2, 3, 4, 5],
+        repeatUntil: "",
+      }
+    );
+
+    expect(recurrenceSpy).toHaveBeenCalledWith({
+      familyMemberId: "member-1",
+      accountId: "account-1",
+      description: "Diária do ajudante",
+      amount: 120,
+      type: "EXPENSE",
+      frequency: "DAILY",
+      startDate: new Date(2026, 9, 5),
+      dayOfMonth: 5,
+      weekdays: [1, 2, 3, 4, 5],
+      endDate: new Date(2026, 11, 31),
+    });
+  });
+
   it("deve alterar a repetição do membro da sessão", async () => {
     vi.spyOn(
       familyContextService,
@@ -601,7 +668,8 @@ describe("TransactionsService", () => {
         amount: 900,
         type: "EXPENSE",
         dayOfMonth: 15,
-      }
+      },
+      "MONTHLY"
     );
   });
 
