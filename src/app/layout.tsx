@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Planejamento Financeiro",
+  title: "Planejar",
   description:
     "Controle lançamentos do mês e acompanhe o saldo até hoje.",
   applicationName: "Planejar",

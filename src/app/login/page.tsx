@@ -39,7 +39,7 @@ export default function LoginPage() {
   }
 
   return (<main className="flex min-h-dvh items-center justify-center bg-background px-4 py-8"> <div className="w-full max-w-md rounded-3xl border bg-card p-8 shadow-lg"> <div className="mb-8 text-center"> <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-2xl bg-primary text-lg font-semibold text-primary-foreground">P</div> <h1 className="text-2xl font-bold">
-    Planejamento Financeiro </h1>
+    Planejar </h1>
 
     <p className="mt-2 text-sm text-muted-foreground">
       Entre na sua conta
