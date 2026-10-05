@@ -54,6 +54,7 @@ async function getToken(config: ProCheckoutConfig) {
   );
 
   if (!response.ok) {
+    console.error("[mycredit] falha ao autenticar", { status: response.status });
     throw new MyCreditError("Não foi possível autenticar a cobrança.");
   }
 
@@ -79,32 +80,82 @@ export class MyCreditClient {
 
   async createImmediatePix(input: { idFaturaPag: string; amount: number }) {
     const config = this.config();
-    const response = await authorizedFetch(config, "/api/pix", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        formaPagamento: {
-          tpTransacao: 11,
-          idFaturaPag: input.idFaturaPag,
-          modPagamento: 18,
-          valorPagamento: Math.round(input.amount * 100) / 100,
+
+    for (let attempt = 1; ; attempt++) {
+      const outcome = await this.tryCreatePix(config, input);
+
+      if (outcome.created) {
+        return outcome.created;
+      }
+
+      console.error("[mycredit] falha ao gerar PIX", {
+        attempt,
+        status: outcome.status,
+        detail: outcome.detail,
+      });
+
+      if (!outcome.retryable || attempt >= 2) {
+        throw new MyCreditError("Não foi possível gerar o PIX.");
+      }
+
+      cachedToken = null;
+    }
+  }
+
+  private async tryCreatePix(
+    config: ProCheckoutConfig,
+    input: { idFaturaPag: string; amount: number }
+  ) {
+    let response: Response;
+
+    try {
+      response = await authorizedFetch(config, "/api/pix", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      }),
-    });
+        body: JSON.stringify({
+          formaPagamento: {
+            tpTransacao: 11,
+            idFaturaPag: input.idFaturaPag,
+            modPagamento: 18,
+            valorPagamento: Math.round(input.amount * 100) / 100,
+          },
+        }),
+      });
+    } catch (error) {
+      if (error instanceof MyCreditError) {
+        throw error;
+      }
 
-    const body = (await response.json().catch(() => null)) as Parameters<
-      typeof readCreatedPix
-    >[0] | null;
-
-    const created = body ? readCreatedPix(body) : null;
-
-    if (!response.ok || !created) {
-      throw new MyCreditError("Não foi possível gerar o PIX.");
+      return {
+        created: null,
+        status: null,
+        detail: error instanceof Error ? error.message : "erro de rede",
+        retryable: true,
+      };
     }
 
-    return created;
+    const text = await response.text().catch(() => "");
+    let body: Parameters<typeof readCreatedPix>[0] | null = null;
+
+    try {
+      body = text ? JSON.parse(text) : null;
+    } catch {
+      body = null;
+    }
+
+    const created = response.ok && body ? readCreatedPix(body) : null;
+
+    return {
+      created,
+      status: response.status,
+      detail: text.slice(0, 300),
+      retryable:
+        response.status >= 500 ||
+        response.status === 401 ||
+        response.status === 403,
+    };
   }
 
   async getPixStatus(idFaturaPag: string): Promise<PixLookup> {
