@@ -11,6 +11,7 @@ import {
 } from "../repositories/pix-charges.repository";
 import { settingsService } from "./settings.service";
 import type { ProCheckoutView } from "../contracts/financial/pro-checkout.contract";
+import type { ProPayer } from "../contracts/billing/parse-pro-payer";
 
 export class ProCheckoutError extends Error {
   constructor(message: string) {
@@ -27,7 +28,10 @@ export interface PixChargeStore {
     amount: number;
     copyPaste: string;
     expiresAt: Date;
+    payerName: string;
+    payerDocument: string;
   }): Promise<PixChargeRecord>;
+  findLastPayer(userId: string): Promise<ProPayer | null>;
   findOwned(userId: string, idFaturaPag: string): Promise<PixChargeRecord | null>;
   findByFatura(idFaturaPag: string): Promise<PixChargeRecord | null>;
   grantPro(chargeId: string, userId: string, paidAt: Date): Promise<void>;
@@ -44,6 +48,7 @@ export interface PixGateway {
   createImmediatePix(input: {
     idFaturaPag: string;
     amount: number;
+    payer: ProPayer;
   }): Promise<{ copyPaste: string; expiresAt: Date }>;
   getPixStatus(idFaturaPag: string): Promise<PixLookup>;
   simulatePayment(idFaturaPag: string): Promise<void>;
@@ -72,7 +77,11 @@ export class ProCheckoutService {
     private readonly config: () => ProCheckoutConfig = readProCheckoutConfig
   ) {}
 
-  async startCheckout(userId: string) {
+  async lastPayer(userId: string) {
+    return this.store.findLastPayer(userId);
+  }
+
+  async startCheckout(userId: string, payer: ProPayer) {
     const plan = await this.plans.getPlan(userId);
 
     if (plan === "PRO") {
@@ -104,6 +113,7 @@ export class ProCheckoutService {
       created = await this.gateway.createImmediatePix({
         idFaturaPag,
         amount: config.amount,
+        payer,
       });
     } catch (error) {
       if (error instanceof MyCreditError) {
@@ -120,6 +130,8 @@ export class ProCheckoutService {
       amount: config.amount,
       copyPaste: created.copyPaste,
       expiresAt: created.expiresAt,
+      payerName: payer.name,
+      payerDocument: payer.document,
     });
 
     return {

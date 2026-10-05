@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 
+import { parseProPayer } from "../../contracts/billing/parse-pro-payer";
 import { auth } from "../../lib/auth";
 import { ProCheckoutError } from "../../services/pro-checkout.service";
 import { proCheckoutService } from "../../services/pro-checkout.service";
@@ -24,15 +25,40 @@ function failure(message: string) {
   };
 }
 
-export async function startProCheckoutAction() {
+export async function getProPayerAction() {
+  const session = await auth();
+  const userId = session?.user?.id;
+
+  if (!userId) {
+    return failure("Faça login para continuar.");
+  }
+
+  const last = await proCheckoutService.lastPayer(userId);
+
+  return {
+    success: true as const,
+    result: {
+      name: last?.name ?? session.user?.name ?? "",
+      document: last?.document ?? "",
+    },
+  };
+}
+
+export async function startProCheckoutAction(input: unknown) {
   const userId = await requireUserId();
 
   if (!userId) {
     return failure("Faça login para continuar.");
   }
 
+  const payer = parseProPayer(input);
+
+  if (!payer.ok) {
+    return failure(payer.message);
+  }
+
   try {
-    const result = await proCheckoutService.startCheckout(userId);
+    const result = await proCheckoutService.startCheckout(userId, payer.value);
 
     if (result.kind === "already-pro") {
       revalidatePath("/dashboard");
