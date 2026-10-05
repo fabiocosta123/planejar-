@@ -377,6 +377,10 @@ model PixCharge {
 
   copyPaste String
 
+  payerName String?
+
+  payerDocument String?
+
   expiresAt DateTime
 
   paidAt DateTime?

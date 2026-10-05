@@ -13,6 +13,12 @@ export class MyCreditError extends Error {
   }
 }
 
+interface CreatePixInput {
+  idFaturaPag: string;
+  amount: number;
+  payer: { name: string; document: string };
+}
+
 let cachedToken: { value: string; expiresAt: number; apiBase: string } | null =
   null;
 
@@ -78,7 +84,7 @@ export class MyCreditClient {
     private readonly config: () => ProCheckoutConfig = readProCheckoutConfig
   ) {}
 
-  async createImmediatePix(input: { idFaturaPag: string; amount: number }) {
+  async createImmediatePix(input: CreatePixInput) {
     const config = this.config();
 
     for (let attempt = 1; ; attempt++) {
@@ -104,7 +110,7 @@ export class MyCreditClient {
 
   private async tryCreatePix(
     config: ProCheckoutConfig,
-    input: { idFaturaPag: string; amount: number }
+    input: CreatePixInput
   ) {
     let response: Response;
 
@@ -119,7 +125,12 @@ export class MyCreditClient {
             tpTransacao: 11,
             idFaturaPag: input.idFaturaPag,
             modPagamento: 18,
+            qtdParcelas: 1,
             valorPagamento: Math.round(input.amount * 100) / 100,
+          },
+          cliente: {
+            xNome: input.payer.name,
+            documento: input.payer.document,
           },
         }),
       });
@@ -154,7 +165,8 @@ export class MyCreditClient {
       retryable:
         response.status >= 500 ||
         response.status === 401 ||
-        response.status === 403,
+        response.status === 403 ||
+        /tempor[aá]rio/i.test(text),
     };
   }
 
@@ -176,10 +188,21 @@ export class MyCreditClient {
     const response = await authorizedFetch(
       config,
       `/api/pix/simular-pagamento/${encodeURIComponent(idFaturaPag)}`,
-      { method: "POST" }
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: "{}",
+      }
     );
 
     if (!response.ok) {
+      const detail = (await response.text().catch(() => "")).slice(0, 300);
+      console.error("[mycredit] falha ao simular pagamento", {
+        status: response.status,
+        detail,
+      });
       throw new MyCreditError("Não foi possível simular o pagamento.");
     }
   }

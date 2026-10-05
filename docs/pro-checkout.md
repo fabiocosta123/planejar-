@@ -20,6 +20,10 @@ Variáveis:
 
 A autenticação segue a MyCredit: `CNPJ|CHAVE` em Base64, trocado por um JWT em `GET /api/token/{segredo}`.
 
+Antes do PIX, a tela pede o nome e o CPF ou CNPJ de quem paga. O documento precisa ter os dígitos verificadores certos. Os dois vão em `cliente.xNome` e `cliente.documento` e ficam guardados na cobrança. Na próxima vez, o formulário já vem com os últimos dados usados.
+
+Quando a MyCredit responde erro temporário, a cobrança é pedida mais uma vez.
+
 ## 3. Confirmação
 
 A tela consulta o PIX a cada poucos segundos. O plano muda para `PRO` quando a consulta responde pago e o valor confere com a cobrança guardada.
