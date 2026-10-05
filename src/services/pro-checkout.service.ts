@@ -110,6 +110,7 @@ export class ProCheckoutService {
         throw new ProCheckoutError(error.message);
       }
 
+      console.error("[pro-checkout] falha ao gerar PIX", error);
       throw new ProCheckoutError("Não foi possível gerar o PIX.");
     }
 

@@ -48,6 +48,7 @@ export async function startProCheckoutAction() {
       return failure(error.message);
     }
 
+    console.error("[pro-checkout] falha ao gerar PIX", error);
     return failure("Não foi possível gerar o PIX.");
   }
 }
