@@ -1334,6 +1334,8 @@ export const PixChargeScalarFieldEnum = {
   amount: 'amount',
   status: 'status',
   copyPaste: 'copyPaste',
+  payerName: 'payerName',
+  payerDocument: 'payerDocument',
   expiresAt: 'expiresAt',
   paidAt: 'paidAt',
   refundedAt: 'refundedAt',

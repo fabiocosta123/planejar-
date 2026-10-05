@@ -12,6 +12,8 @@ import type { ProCheckoutConfig } from "../../integrations/mycredit/config";
 function setup() {
   const charges: PixChargeRecord[] = [];
   const events = new Set<string>();
+  const payers: { name: string; document: string }[] = [];
+  const sentPayers: { name: string; document: string }[] = [];
   let plan: "FREE" | "PRO" = "FREE";
   let pixStatus: "pending" | "paid" | "missing" = "pending";
   let paidAmount: number | null = 19.9;
@@ -34,7 +36,11 @@ function setup() {
         ...input,
       };
       charges.push(charge);
+      payers.push({ name: input.payerName, document: input.payerDocument });
       return charge;
+    },
+    async findLastPayer() {
+      return payers.at(-1) ?? null;
     },
     async findOwned(userId, idFaturaPag) {
       return (
@@ -78,7 +84,8 @@ function setup() {
   };
 
   const gateway: PixGateway = {
-    async createImmediatePix() {
+    async createImmediatePix(input) {
+      sentPayers.push(input.payer);
       return {
         copyPaste: "000201",
         expiresAt: new Date(Date.now() + 10 * 60 * 1000),
@@ -114,6 +121,7 @@ function setup() {
     service,
     charges,
     events,
+    sentPayers,
     getPlan: () => plan,
     setPixStatus: (status: typeof pixStatus) => {
       pixStatus = status;
@@ -127,12 +135,23 @@ function setup() {
   };
 }
 
+const payer = { name: "Fábio Costa", document: "52998224725" };
+
 describe("ProCheckoutService", () => {
+  it("envia e guarda o nome e o documento de quem paga", async () => {
+    const { service, sentPayers } = setup();
+
+    await service.startCheckout("user-1", payer);
+
+    expect(sentPayers).toEqual([payer]);
+    await expect(service.lastPayer("user-1")).resolves.toEqual(payer);
+  });
+
   it("não gera PIX para quem já é Pro", async () => {
     const { service, charges, setPlan } = setup();
     setPlan("PRO");
 
-    await expect(service.startCheckout("user-1")).resolves.toEqual({
+    await expect(service.startCheckout("user-1", payer)).resolves.toEqual({
       kind: "already-pro",
     });
     expect(charges).toHaveLength(0);
@@ -140,7 +159,7 @@ describe("ProCheckoutService", () => {
 
   it("só libera o Pro quando a MyCredit confirma o valor", async () => {
     const { service, getPlan, setPixStatus, setPaidAmount } = setup();
-    const started = await service.startCheckout("user-1");
+    const started = await service.startCheckout("user-1", payer);
 
     if (started.kind !== "pending") {
       throw new Error("esperava cobrança pendente");
@@ -167,7 +186,7 @@ describe("ProCheckoutService", () => {
 
   it("ignora webhook duplicado e devolve o plano no estorno", async () => {
     const { service, events, getPlan, charges } = setup();
-    const started = await service.startCheckout("user-1");
+    const started = await service.startCheckout("user-1", payer);
 
     if (started.kind !== "pending") {
       throw new Error("esperava cobrança pendente");

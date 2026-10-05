@@ -50,12 +50,26 @@ export class PixChargesRepository {
     amount: number;
     copyPaste: string;
     expiresAt: Date;
+    payerName: string;
+    payerDocument: string;
   }) {
     const charge = await prisma.pixCharge.create({
       data: input,
     });
 
     return toRecord(charge);
+  }
+
+  async findLastPayer(userId: string) {
+    const charge = await prisma.pixCharge.findFirst({
+      where: { userId, payerDocument: { not: null } },
+      orderBy: { createdAt: "desc" },
+      select: { payerName: true, payerDocument: true },
+    });
+
+    return charge?.payerName && charge.payerDocument
+      ? { name: charge.payerName, document: charge.payerDocument }
+      : null;
   }
 
   async findOwned(userId: string, idFaturaPag: string) {

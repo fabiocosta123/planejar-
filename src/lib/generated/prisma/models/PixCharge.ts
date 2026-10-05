@@ -41,6 +41,8 @@ export type PixChargeMinAggregateOutputType = {
   amount: runtime.Decimal | null
   status: $Enums.PixChargeStatus | null
   copyPaste: string | null
+  payerName: string | null
+  payerDocument: string | null
   expiresAt: Date | null
   paidAt: Date | null
   refundedAt: Date | null
@@ -55,6 +57,8 @@ export type PixChargeMaxAggregateOutputType = {
   amount: runtime.Decimal | null
   status: $Enums.PixChargeStatus | null
   copyPaste: string | null
+  payerName: string | null
+  payerDocument: string | null
   expiresAt: Date | null
   paidAt: Date | null
   refundedAt: Date | null
@@ -69,6 +73,8 @@ export type PixChargeCountAggregateOutputType = {
   amount: number
   status: number
   copyPaste: number
+  payerName: number
+  payerDocument: number
   expiresAt: number
   paidAt: number
   refundedAt: number
@@ -93,6 +99,8 @@ export type PixChargeMinAggregateInputType = {
   amount?: true
   status?: true
   copyPaste?: true
+  payerName?: true
+  payerDocument?: true
   expiresAt?: true
   paidAt?: true
   refundedAt?: true
@@ -107,6 +115,8 @@ export type PixChargeMaxAggregateInputType = {
   amount?: true
   status?: true
   copyPaste?: true
+  payerName?: true
+  payerDocument?: true
   expiresAt?: true
   paidAt?: true
   refundedAt?: true
@@ -121,6 +131,8 @@ export type PixChargeCountAggregateInputType = {
   amount?: true
   status?: true
   copyPaste?: true
+  payerName?: true
+  payerDocument?: true
   expiresAt?: true
   paidAt?: true
   refundedAt?: true
@@ -222,6 +234,8 @@ export type PixChargeGroupByOutputType = {
   amount: runtime.Decimal
   status: $Enums.PixChargeStatus
   copyPaste: string
+  payerName: string | null
+  payerDocument: string | null
   expiresAt: Date
   paidAt: Date | null
   refundedAt: Date | null
@@ -259,6 +273,8 @@ export type PixChargeWhereInput = {
   amount?: Prisma.DecimalFilter<"PixCharge"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumPixChargeStatusFilter<"PixCharge"> | $Enums.PixChargeStatus
   copyPaste?: Prisma.StringFilter<"PixCharge"> | string
+  payerName?: Prisma.StringNullableFilter<"PixCharge"> | string | null
+  payerDocument?: Prisma.StringNullableFilter<"PixCharge"> | string | null
   expiresAt?: Prisma.DateTimeFilter<"PixCharge"> | Date | string
   paidAt?: Prisma.DateTimeNullableFilter<"PixCharge"> | Date | string | null
   refundedAt?: Prisma.DateTimeNullableFilter<"PixCharge"> | Date | string | null
@@ -274,6 +290,8 @@ export type PixChargeOrderByWithRelationInput = {
   amount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   copyPaste?: Prisma.SortOrder
+  payerName?: Prisma.SortOrderInput | Prisma.SortOrder
+  payerDocument?: Prisma.SortOrderInput | Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   paidAt?: Prisma.SortOrderInput | Prisma.SortOrder
   refundedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -292,6 +310,8 @@ export type PixChargeWhereUniqueInput = Prisma.AtLeast<{
   amount?: Prisma.DecimalFilter<"PixCharge"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumPixChargeStatusFilter<"PixCharge"> | $Enums.PixChargeStatus
   copyPaste?: Prisma.StringFilter<"PixCharge"> | string
+  payerName?: Prisma.StringNullableFilter<"PixCharge"> | string | null
+  payerDocument?: Prisma.StringNullableFilter<"PixCharge"> | string | null
   expiresAt?: Prisma.DateTimeFilter<"PixCharge"> | Date | string
   paidAt?: Prisma.DateTimeNullableFilter<"PixCharge"> | Date | string | null
   refundedAt?: Prisma.DateTimeNullableFilter<"PixCharge"> | Date | string | null
@@ -307,6 +327,8 @@ export type PixChargeOrderByWithAggregationInput = {
   amount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   copyPaste?: Prisma.SortOrder
+  payerName?: Prisma.SortOrderInput | Prisma.SortOrder
+  payerDocument?: Prisma.SortOrderInput | Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   paidAt?: Prisma.SortOrderInput | Prisma.SortOrder
   refundedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -329,6 +351,8 @@ export type PixChargeScalarWhereWithAggregatesInput = {
   amount?: Prisma.DecimalWithAggregatesFilter<"PixCharge"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumPixChargeStatusWithAggregatesFilter<"PixCharge"> | $Enums.PixChargeStatus
   copyPaste?: Prisma.StringWithAggregatesFilter<"PixCharge"> | string
+  payerName?: Prisma.StringNullableWithAggregatesFilter<"PixCharge"> | string | null
+  payerDocument?: Prisma.StringNullableWithAggregatesFilter<"PixCharge"> | string | null
   expiresAt?: Prisma.DateTimeWithAggregatesFilter<"PixCharge"> | Date | string
   paidAt?: Prisma.DateTimeNullableWithAggregatesFilter<"PixCharge"> | Date | string | null
   refundedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"PixCharge"> | Date | string | null
@@ -342,6 +366,8 @@ export type PixChargeCreateInput = {
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.PixChargeStatus
   copyPaste: string
+  payerName?: string | null
+  payerDocument?: string | null
   expiresAt: Date | string
   paidAt?: Date | string | null
   refundedAt?: Date | string | null
@@ -357,6 +383,8 @@ export type PixChargeUncheckedCreateInput = {
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.PixChargeStatus
   copyPaste: string
+  payerName?: string | null
+  payerDocument?: string | null
   expiresAt: Date | string
   paidAt?: Date | string | null
   refundedAt?: Date | string | null
@@ -370,6 +398,8 @@ export type PixChargeUpdateInput = {
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumPixChargeStatusFieldUpdateOperationsInput | $Enums.PixChargeStatus
   copyPaste?: Prisma.StringFieldUpdateOperationsInput | string
+  payerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -385,6 +415,8 @@ export type PixChargeUncheckedUpdateInput = {
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumPixChargeStatusFieldUpdateOperationsInput | $Enums.PixChargeStatus
   copyPaste?: Prisma.StringFieldUpdateOperationsInput | string
+  payerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -399,6 +431,8 @@ export type PixChargeCreateManyInput = {
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.PixChargeStatus
   copyPaste: string
+  payerName?: string | null
+  payerDocument?: string | null
   expiresAt: Date | string
   paidAt?: Date | string | null
   refundedAt?: Date | string | null
@@ -412,6 +446,8 @@ export type PixChargeUpdateManyMutationInput = {
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumPixChargeStatusFieldUpdateOperationsInput | $Enums.PixChargeStatus
   copyPaste?: Prisma.StringFieldUpdateOperationsInput | string
+  payerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -426,6 +462,8 @@ export type PixChargeUncheckedUpdateManyInput = {
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumPixChargeStatusFieldUpdateOperationsInput | $Enums.PixChargeStatus
   copyPaste?: Prisma.StringFieldUpdateOperationsInput | string
+  payerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -450,6 +488,8 @@ export type PixChargeCountOrderByAggregateInput = {
   amount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   copyPaste?: Prisma.SortOrder
+  payerName?: Prisma.SortOrder
+  payerDocument?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   paidAt?: Prisma.SortOrder
   refundedAt?: Prisma.SortOrder
@@ -468,6 +508,8 @@ export type PixChargeMaxOrderByAggregateInput = {
   amount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   copyPaste?: Prisma.SortOrder
+  payerName?: Prisma.SortOrder
+  payerDocument?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   paidAt?: Prisma.SortOrder
   refundedAt?: Prisma.SortOrder
@@ -482,6 +524,8 @@ export type PixChargeMinOrderByAggregateInput = {
   amount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   copyPaste?: Prisma.SortOrder
+  payerName?: Prisma.SortOrder
+  payerDocument?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   paidAt?: Prisma.SortOrder
   refundedAt?: Prisma.SortOrder
@@ -545,6 +589,8 @@ export type PixChargeCreateWithoutUserInput = {
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.PixChargeStatus
   copyPaste: string
+  payerName?: string | null
+  payerDocument?: string | null
   expiresAt: Date | string
   paidAt?: Date | string | null
   refundedAt?: Date | string | null
@@ -558,6 +604,8 @@ export type PixChargeUncheckedCreateWithoutUserInput = {
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.PixChargeStatus
   copyPaste: string
+  payerName?: string | null
+  payerDocument?: string | null
   expiresAt: Date | string
   paidAt?: Date | string | null
   refundedAt?: Date | string | null
@@ -601,6 +649,8 @@ export type PixChargeScalarWhereInput = {
   amount?: Prisma.DecimalFilter<"PixCharge"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumPixChargeStatusFilter<"PixCharge"> | $Enums.PixChargeStatus
   copyPaste?: Prisma.StringFilter<"PixCharge"> | string
+  payerName?: Prisma.StringNullableFilter<"PixCharge"> | string | null
+  payerDocument?: Prisma.StringNullableFilter<"PixCharge"> | string | null
   expiresAt?: Prisma.DateTimeFilter<"PixCharge"> | Date | string
   paidAt?: Prisma.DateTimeNullableFilter<"PixCharge"> | Date | string | null
   refundedAt?: Prisma.DateTimeNullableFilter<"PixCharge"> | Date | string | null
@@ -614,6 +664,8 @@ export type PixChargeCreateManyUserInput = {
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: $Enums.PixChargeStatus
   copyPaste: string
+  payerName?: string | null
+  payerDocument?: string | null
   expiresAt: Date | string
   paidAt?: Date | string | null
   refundedAt?: Date | string | null
@@ -627,6 +679,8 @@ export type PixChargeUpdateWithoutUserInput = {
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumPixChargeStatusFieldUpdateOperationsInput | $Enums.PixChargeStatus
   copyPaste?: Prisma.StringFieldUpdateOperationsInput | string
+  payerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -640,6 +694,8 @@ export type PixChargeUncheckedUpdateWithoutUserInput = {
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumPixChargeStatusFieldUpdateOperationsInput | $Enums.PixChargeStatus
   copyPaste?: Prisma.StringFieldUpdateOperationsInput | string
+  payerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -653,6 +709,8 @@ export type PixChargeUncheckedUpdateManyWithoutUserInput = {
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumPixChargeStatusFieldUpdateOperationsInput | $Enums.PixChargeStatus
   copyPaste?: Prisma.StringFieldUpdateOperationsInput | string
+  payerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payerDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paidAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -669,6 +727,8 @@ export type PixChargeSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   amount?: boolean
   status?: boolean
   copyPaste?: boolean
+  payerName?: boolean
+  payerDocument?: boolean
   expiresAt?: boolean
   paidAt?: boolean
   refundedAt?: boolean
@@ -684,6 +744,8 @@ export type PixChargeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   amount?: boolean
   status?: boolean
   copyPaste?: boolean
+  payerName?: boolean
+  payerDocument?: boolean
   expiresAt?: boolean
   paidAt?: boolean
   refundedAt?: boolean
@@ -699,6 +761,8 @@ export type PixChargeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   amount?: boolean
   status?: boolean
   copyPaste?: boolean
+  payerName?: boolean
+  payerDocument?: boolean
   expiresAt?: boolean
   paidAt?: boolean
   refundedAt?: boolean
@@ -714,6 +778,8 @@ export type PixChargeSelectScalar = {
   amount?: boolean
   status?: boolean
   copyPaste?: boolean
+  payerName?: boolean
+  payerDocument?: boolean
   expiresAt?: boolean
   paidAt?: boolean
   refundedAt?: boolean
@@ -721,7 +787,7 @@ export type PixChargeSelectScalar = {
   updatedAt?: boolean
 }
 
-export type PixChargeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "idFaturaPag" | "amount" | "status" | "copyPaste" | "expiresAt" | "paidAt" | "refundedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["pixCharge"]>
+export type PixChargeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "idFaturaPag" | "amount" | "status" | "copyPaste" | "payerName" | "payerDocument" | "expiresAt" | "paidAt" | "refundedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["pixCharge"]>
 export type PixChargeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -744,6 +810,8 @@ export type $PixChargePayload<ExtArgs extends runtime.Types.Extensions.InternalA
     amount: runtime.Decimal
     status: $Enums.PixChargeStatus
     copyPaste: string
+    payerName: string | null
+    payerDocument: string | null
     expiresAt: Date
     paidAt: Date | null
     refundedAt: Date | null
@@ -1179,6 +1247,8 @@ export interface PixChargeFieldRefs {
   readonly amount: Prisma.FieldRef<"PixCharge", 'Decimal'>
   readonly status: Prisma.FieldRef<"PixCharge", 'PixChargeStatus'>
   readonly copyPaste: Prisma.FieldRef<"PixCharge", 'String'>
+  readonly payerName: Prisma.FieldRef<"PixCharge", 'String'>
+  readonly payerDocument: Prisma.FieldRef<"PixCharge", 'String'>
   readonly expiresAt: Prisma.FieldRef<"PixCharge", 'DateTime'>
   readonly paidAt: Prisma.FieldRef<"PixCharge", 'DateTime'>
   readonly refundedAt: Prisma.FieldRef<"PixCharge", 'DateTime'>
